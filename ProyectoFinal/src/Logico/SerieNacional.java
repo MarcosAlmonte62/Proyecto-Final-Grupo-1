@@ -4,5 +4,6 @@ import java.util.ArrayList;
 
 public class SerieNacional {
 	
-	private ArrayList<Equipo> misEquipos;
+	private ArrayList<Equipo> clasificacion;
+	private ArrayList<Partido> partidosJugados;
 }
