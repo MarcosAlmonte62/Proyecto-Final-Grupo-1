@@ -1,3 +1,4 @@
+
 package Logico;
 
 public class Escolta extends Atacante{
