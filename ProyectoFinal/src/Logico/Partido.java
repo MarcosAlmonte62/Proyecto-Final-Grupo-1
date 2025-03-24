@@ -88,7 +88,7 @@ public class Partido {
         } else if (marcadorVisit > marcadorLocal) {
             return equipoVisit;
         }
-        return null; // Empate
+        return null;
     }
     
     public String generarResumen() {
