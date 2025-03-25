@@ -4,7 +4,32 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Main {
+    public static String generarResumen(Partido partido) {
+        StringBuilder resumen = new StringBuilder();
+        resumen.append("Partido: ").append(partido.getEquipoLocal().getNombre())
+              .append(" vs ").append(partido.getEquipoVisit().getNombre()).append("\n");
+        resumen.append("Resultado: ").append(partido.getMarcadorLocal())
+              .append(" - ").append(partido.getMarcadorVisit()).append("\n");
+        resumen.append("Ubicación: ").append(partido.getUbicacion()).append("\n");
+        resumen.append("Fecha: ").append(partido.getFechaPartido()).append("\n");
+        
+        if (partido.isPartidoFinalizado()) {
+            Equipo ganador = partido.obtenerGanador();
+            resumen.append(ganador != null ? "Ganador: " + ganador.getNombre() : "Empate").append("\n");
+        } else {
+            resumen.append("En progreso - Periodo: ").append(partido.getPeriodoActual()).append("\n");
+        }
+        
+        resumen.append("\nJugadores destacados:\n");
+        for (Jugador jugador : partido.getJugadoresDestacados()) {
+            resumen.append("- ").append(jugador.getNombre())
+                  .append(" (").append(jugador.getEquipo().getNombre()).append(")\n");
+        }
+        return resumen.toString();
+    }
+
     public static void main(String[] args) {
+        // Configuración de equipos y jugadores
         Equipo equipo1 = new Equipo();
         equipo1.setNombre("Leones de Santo Domingo");
         equipo1.setCiudad("Santo Domingo");
@@ -33,9 +58,7 @@ public class Main {
         equipo2.getNomina().add(pivot);
         
         Partido partido = new Partido(equipo1, equipo2, new Date(), "Palacio de los Deportes");
-        
         System.out.println("Iniciando partido...");
-        System.out.println(equipo1.getNombre() + " vs " + equipo2.getNombre());
         
         partido.anotarPuntosLocal(25);
         partido.anotarPuntosVisitante(20);
@@ -54,12 +77,10 @@ public class Main {
         
         partido.anotarPuntosLocal(22);
         partido.anotarPuntosVisitante(20);
-        partido.avanzarPeriodo();
-        
         partido.finalizarPartido();
         
         System.out.println("\n=== RESULTADO FINAL ===");
-        System.out.println(partido.generarResumen());
+        System.out.println(generarResumen(partido));
         
         System.out.println("\nEstadísticas de " + equipo1.getNombre());
         System.out.println("Victorias: " + equipo1.getStats().getVictorias());
