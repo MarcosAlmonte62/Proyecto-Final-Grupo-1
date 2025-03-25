@@ -105,7 +105,6 @@ public class Partido {
         this.partidoFinalizado = partidoFinalizado;
     }
 
-    // Constructor
     public Partido(Equipo equipoLocal, Equipo equipoVisit, Date fechaPartido, String ubicacion) {
         this.equipoLocal = equipoLocal;
         this.equipoVisit = equipoVisit;
@@ -173,6 +172,6 @@ public class Partido {
     public Equipo obtenerGanador() {
         if (!partidoFinalizado) return null;
         return marcadorLocal > marcadorVisit ? equipoLocal : 
-               marcadorVisit > marcadorLocal ? equipoVisit : null;
+            marcadorVisit > marcadorLocal ? equipoVisit : null;
     }
 }
