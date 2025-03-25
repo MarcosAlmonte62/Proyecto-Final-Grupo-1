@@ -1,19 +1,19 @@
 package Logico;
 
-public class Atacante extends Jugador{
+public abstract class Atacante extends Jugador{
 	protected int puntos;
 	protected int asistencias;
 	protected int tiros;
 	protected int perdidas;
-	protected int triples;
-	public Atacante(String nombre, int edad, String nacionalidad, Lesion lesion, Equipo equipo, int dorsal, int puntos,
-			int asistencias, int tiros, int perdidas, int triples) {
-		super(nombre, edad, nacionalidad, lesion, equipo, dorsal);
+	protected int robos;
+	public Atacante(String nombre, int edad, String nacionalidad, Lesion lesion, Equipo equipo, int dorsal, int altura, int puntos,
+			int asistencias, int tiros, int perdidas, int robos) {
+		super(nombre, edad, nacionalidad, lesion, equipo, dorsal, altura);
 		this.puntos = puntos;
 		this.asistencias = asistencias;
 		this.tiros = tiros;
 		this.perdidas = perdidas;
-		this.triples = triples;
+		this.robos = robos;
 	}
 	public int getPuntos() {
 		return puntos;
@@ -39,12 +39,17 @@ public class Atacante extends Jugador{
 	public void setPerdidas(int perdidas) {
 		this.perdidas = perdidas;
 	}
-	public int getTriples() {
-		return triples;
+	public int getRobos() {
+		return robos;
 	}
-	public void setTriples(int triples) {
-		this.triples = triples;
+	public void setRobos(int robos) {
+		this.robos = robos;
 	}
+	@Override
+	public abstract float puntosMvp(int minutos);
+	public abstract float eficienciaOf();
+	public abstract int puntosGenerados();
+	public abstract float eFGPercent();
 	
 
 

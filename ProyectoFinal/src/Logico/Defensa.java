@@ -1,19 +1,19 @@
 package Logico;
 
-public class Defensa extends Jugador{
+public abstract class Defensa extends Jugador{
 	protected int rebotes;
 	protected int bloqueos;
-	protected int tapones;
-	protected int tirosCampo;
-	protected int robos;
-	public Defensa(String nombre, int edad, String nacionalidad, Lesion lesion, Equipo equipo, int dorsal, int rebotes,
-			int bloqueos, int tapones, int tirosCampo, int robos) {
-		super(nombre, edad, nacionalidad, lesion, equipo, dorsal);
+	protected int tirosConcedidos;
+	protected int puntosConcedidos;
+	protected int faltas;
+	public Defensa(String nombre, int edad, String nacionalidad, Lesion lesion, Equipo equipo, int dorsal, int altura, int rebotes,
+			int bloqueos, int tirosConcedidos, int puntosConcedidos, int faltas) {
+		super(nombre, edad, nacionalidad, lesion, equipo, dorsal, altura);
 		this.rebotes = rebotes;
 		this.bloqueos = bloqueos;
-		this.tapones = tapones;
-		this.tirosCampo = tirosCampo;
-		this.robos = robos;
+		this.tirosConcedidos = tirosConcedidos;
+		this.puntosConcedidos = puntosConcedidos;
+		this.faltas = faltas;
 	}
 	public int getRebotes() {
 		return rebotes;
@@ -27,25 +27,26 @@ public class Defensa extends Jugador{
 	public void setBloqueos(int bloqueos) {
 		this.bloqueos = bloqueos;
 	}
-	public int getTapones() {
-		return tapones;
-	}
-	public void setTapones(int tapones) {
-		this.tapones = tapones;
-	}
-	public int getTirosCampo() {
-		return tirosCampo;
-	}
-	public void setTirosCampo(int tirosCampo) {
-		this.tirosCampo = tirosCampo;
-	}
-	public int getRobos() {
-		return robos;
-	}
-	public void setRobos(int robos) {
-		this.robos = robos;
-	}
-	
 
+	public int getTirosConcedidos() {
+		return tirosConcedidos;
+	}
+	public void setTirosConcedidos(int tirosConcedidos) {
+		this.tirosConcedidos = tirosConcedidos;
+	}
+	public int getPuntosConcedidos() {
+		return puntosConcedidos;
+	}
+	public void setPuntosConcedidos(int puntosConcedidos) {
+		this.puntosConcedidos = puntosConcedidos;
+	}
+	public int getFaltas() {
+		return faltas;
+	}
+	public void setFaltas(int faltas) {
+		this.faltas = faltas;
+	}
+	public abstract float puntosMvp(int minutos);
+	public abstract float eficienciaDef(int minutos);
 }
 
