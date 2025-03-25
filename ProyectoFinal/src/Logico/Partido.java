@@ -17,7 +17,6 @@ public class Partido {
     private int periodoActual;
     private boolean partidoFinalizado;
 
-    // Getters y Setters
     public int getMarcadorLocal() {
         return marcadorLocal;
     }
