@@ -1,4 +1,5 @@
 
+
 package Logico;
 
 public class StatsEquipo {

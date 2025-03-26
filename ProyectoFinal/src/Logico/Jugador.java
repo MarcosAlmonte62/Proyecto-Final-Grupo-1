@@ -1,15 +1,17 @@
 package Logico;
 
-public abstract class Jugador {
-	protected String nombre;
-	protected int edad;
-	protected String nacionalidad;
-	protected Lesion lesion;
-	protected Equipo equipo;
-	protected int dorsal;
-	protected int altura;
+public class Jugador {
+	private String nombre;
+	private int edad;
+	private String nacionalidad;
+	private Lesion lesion;
+	private Equipo equipo;
+	private int dorsal;
+	private int altura;
+	private String posicion;
 	
-	public Jugador(String nombre, int edad, String nacionalidad, Lesion lesion, Equipo equipo, int dorsal, int altura) {
+	
+	public Jugador(String nombre, int edad, String nacionalidad, Lesion lesion, Equipo equipo, int dorsal, int altura, String posicion) {
 		super();
 		this.nombre = nombre;
 		this.edad = edad;
@@ -18,6 +20,7 @@ public abstract class Jugador {
 		this.equipo = equipo;
 		this.dorsal = dorsal;
 		this.altura = altura;
+		this.setPosicion(posicion);
 	}
 	public String getNombre() {
 		return nombre;
@@ -61,7 +64,12 @@ public abstract class Jugador {
 	public void setAltura(int altura) {
 		this.altura = altura;
 	}
-	public abstract float puntosMvp(int minutos);
+	public String getPosicion() {
+		return posicion;
+	}
+	public void setPosicion(String posicion) {
+		this.posicion = posicion;
+	}
 	
 }
 
