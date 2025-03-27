@@ -49,4 +49,33 @@ public class Equipo {
     public void setStats(StatsEquipo stats) {
         this.stats = stats;
     }
+    
+    public static Equipo equipoConMasPuntos(ArrayList<Equipo> equipos) {
+        if (equipos == null || equipos.isEmpty()) {
+            return null; 
+        }
+        Equipo equipoConMasPuntos = equipos.get(0);
+
+        for (Equipo equipo : equipos) {
+            if (equipo.getStats().getPuntos() > equipoConMasPuntos.getStats().getPuntos()) {
+                equipoConMasPuntos = equipo;
+            }
+        }
+        return equipoConMasPuntos;
+    }
+    
+    public static Equipo equipoConMasRebotes(ArrayList<Equipo> equipos) {
+        if (equipos == null || equipos.isEmpty()) {
+            return null;
+        }
+        Equipo equipoConMasRebotes = equipos.get(0);
+
+        for (Equipo equipo : equipos) {
+            if (equipo.getStats().getRebotes() > equipoConMasRebotes.getStats().getRebotes()) {
+                equipoConMasRebotes = equipo;
+            }
+        }
+        return equipoConMasRebotes;
+    }
+
 }
