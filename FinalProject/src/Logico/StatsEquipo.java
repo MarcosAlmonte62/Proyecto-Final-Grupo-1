@@ -54,7 +54,7 @@ public class StatsEquipo {
 	public void setEmpates(int empates) {
 		this.empates = empates;
 	}
-	
+	 
 	public Equipo getEquipo() {
 		return equipo;
 	}
@@ -71,6 +71,19 @@ public class StatsEquipo {
 			}
 		}
 		return mejor;
+	}
+	public Jugador jugadorMasPuntos() {
+	    Jugador mejor = null;
+	    int maxPuntos = 0;
+	    
+	    for (Jugador aux : equipo.getNomina()) {
+	        int puntosTotales = aux.puntosTotales(); 
+	        if (puntosTotales > maxPuntos) {
+	            maxPuntos = puntosTotales;
+	            mejor = aux;
+	        }
+	    }
+	    return mejor;
 	}
 
 }
