@@ -112,29 +112,20 @@ public class Partido {
         this.ubicacion = ubicacion;
         this.marcadorLocal = 0;
         this.marcadorVisit = 0;
-        this.statsLocal = new StatsEquipo(0, 0, 0, 0, 0, 0);
-        this.statsVisit = new StatsEquipo(0, 0, 0, 0, 0, 0);
+        this.statsLocal = new StatsEquipo(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, equipoLocal);
+        this.statsVisit = new StatsEquipo(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, equipoVisit);
         this.jugadoresDestacados = new ArrayList<Jugador>();
         this.periodoActual = 1;
         this.partidoFinalizado = false;
-    }
-
-    public void anotarPuntosLocal(int puntos) {
-        if (!partidoFinalizado) {
-            this.marcadorLocal += puntos;
-            this.statsLocal.setPuntos(this.statsLocal.getPuntos() + puntos);
-            this.statsVisit.setPuntosContra(this.statsVisit.getPuntosContra() + puntos);
+        for (Jugador j : equipoLocal.getNomina()) {
+            j.setStats(new StatsJugador(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, j));
+            j.getStats().getJugados().add(this); 
+        }
+        for (Jugador j : equipoVisit.getNomina()) {
+            j.setStats(new StatsJugador(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, j));
+            j.getStats().getJugados().add(this);
         }
     }
-
-    public void anotarPuntosVisitante(int puntos) {
-        if (!partidoFinalizado) {
-            this.marcadorVisit += puntos;
-            this.statsVisit.setPuntos(this.statsVisit.getPuntos() + puntos);
-            this.statsLocal.setPuntosContra(this.statsLocal.getPuntosContra() + puntos);
-        }
-    }
-
     public void finalizarPartido() {
         this.partidoFinalizado = true;
         if (marcadorLocal > marcadorVisit) {
@@ -148,24 +139,23 @@ public class Partido {
             statsVisit.setEmpates(statsVisit.getEmpates() + 1);
         }
         
-        equipoLocal.getStats().setPuntos(equipoLocal.getStats().getPuntos() + statsLocal.getPuntos());
-        equipoLocal.getStats().setRebotes(equipoLocal.getStats().getRebotes() + statsLocal.getRebotes());
-        equipoLocal.getStats().setPuntosContra(equipoLocal.getStats().getPuntosContra() + statsLocal.getPuntosContra());
-        
-        equipoVisit.getStats().setPuntos(equipoVisit.getStats().getPuntos() + statsVisit.getPuntos());
-        equipoVisit.getStats().setRebotes(equipoVisit.getStats().getRebotes() + statsVisit.getRebotes());
-        equipoVisit.getStats().setPuntosContra(equipoVisit.getStats().getPuntosContra() + statsVisit.getPuntosContra());
+        for(Jugador aux : equipoLocal.getNomina()) {
+        	StatsJugador stats = aux.getStats();
+        	stats.actualizarStats(stats.getDobles(), stats.getRebotes(), stats.getAsistencias(), stats.getTriples(), stats.getBloqueos(), stats.getTiros(), stats.getTirosLibres(), stats.getTirosLibresAcert(), stats.getTirosAcert(), stats.getRobos(), stats.getPerdidas());
+        }
+        for(Jugador aux : equipoVisit.getNomina()) {
+        	StatsJugador stats = aux.getStats();
+        	stats.actualizarStats(stats.getDobles(), stats.getRebotes(), stats.getAsistencias(), stats.getTriples(), stats.getBloqueos(), stats.getTiros(), stats.getTirosLibres(), stats.getTirosLibresAcert(), stats.getTirosAcert(), stats.getRobos(), stats.getPerdidas());
+        }
+        StatsEquipo stats = equipoLocal.getStats();
+        stats.actualizarStats(stats.getDobles(), stats.getRebotes(), stats.getAsistencias(), stats.getRobos(), stats.getTapones(), stats.getTirosLibres(), stats.getTirosLibresAcert(), stats.getTriples());
+        stats = equipoVisit.getStats();
+        stats.actualizarStats(stats.getDobles(), stats.getRebotes(), stats.getAsistencias(), stats.getRobos(), stats.getTapones(), stats.getTirosLibres(), stats.getTirosLibresAcert(), stats.getTriples());
     }
-
+  
     public void agregarJugadorDestacado(Jugador jugador) {
         if (!jugadoresDestacados.contains(jugador)) {
             jugadoresDestacados.add(jugador);
-        }
-    }
-
-    public void avanzarPeriodo() {
-        if (!partidoFinalizado && periodoActual < 4) {
-            periodoActual++;
         }
     }
 

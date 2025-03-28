@@ -24,4 +24,22 @@ public class SerieNacional {
 	public void setPartidosJugados(ArrayList<Partido> partidosJugados) {
 		this.partidosJugados = partidosJugados;
 	}
+	
+	public Jugador mejorDelTorneo() {
+	    Jugador mejor = null;
+	    float maxPuntos = 0;
+	    
+	    for (Equipo e : clasificacion) {
+	    	for(Jugador j : e.getNomina()) {
+	        float puntosTotales = j.getStats().posesiones(); 
+	        if (puntosTotales > maxPuntos) {
+	            maxPuntos = puntosTotales;
+	            mejor = j;
+	        }
+	    	}
+	    }
+	    return mejor;
+	}
+	
+	
 }

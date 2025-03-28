@@ -1,4 +1,5 @@
 package Logico;
+import java.util.ArrayList;
 
 public class StatsJugador {
 	private int dobles;
@@ -13,6 +14,7 @@ public class StatsJugador {
 	private int robos;
 	private int perdidas;
 	private Jugador jugador;
+	private ArrayList<Partido> jugados;
 	public StatsJugador(int dobles, int rebotes, int asistencias, int triples, int bloqueos, int tiros, int tirosLibres,
 			int tirosLibresAcert, int tirosAcert, int robos, int perdidas, Jugador jugador) {
 		super();
@@ -28,6 +30,7 @@ public class StatsJugador {
 		this.robos = robos;
 		this.perdidas = perdidas;
 		this.jugador = jugador;
+		this.setJugados(new ArrayList<Partido>());
 	}
 	public int getDobles() {
 		return dobles;
@@ -101,6 +104,26 @@ public class StatsJugador {
 	public void setJugador(Jugador jugador) {
 		this.jugador = jugador;
 	}
+	public ArrayList<Partido> getJugados() {
+		return jugados;
+	}
+	public void setJugados(ArrayList<Partido> jugados) {
+		this.jugados = jugados;
+	}
+	public void actualizarStats(int dobles, int rebotes, int asistencias, int triples, int bloqueos, int tiros, int tirosLibres,
+			int tirosLibresAcert, int tirosAcert, int robos, int perdidas) {
+		this.dobles += dobles;
+		this.rebotes += rebotes;
+		this.asistencias += asistencias;
+		this.triples += triples;
+		this.bloqueos += bloqueos;
+		this.tiros += tiros;
+		this.tirosLibres += tirosLibres;
+		this.tirosLibresAcert += tirosLibresAcert;
+		this.tirosAcert += tirosAcert;
+		this.robos += robos;
+		this.perdidas += perdidas;
+	}
 	public int puntosGenerados() {
 		return dobles*2 + triples*3 + tirosLibresAcert;
 	}
@@ -136,7 +159,57 @@ public class StatsJugador {
 	public float posesiones() {
 		return (tiros - rebotes) + perdidas + (0.44f*tirosLibres);
 	}
-	public float efOfensiva() {
-		return (puntosGenerados()/posesiones())*100;
+	public float robosPercent() {
+	    float totalPosesionesRival = 0;
+	    for (Partido partido : jugados) {
+	        float posesionesRival = 0;
+	        if (partido.getEquipoLocal().equals(jugador.getEquipo())) {
+	            posesionesRival = (partido.getStatsVisit().getTiros() - partido.getStatsVisit().getRebotes()) + partido.getStatsVisit().getPerdidas() + (0.44f * partido.getStatsVisit().getTirosLibres());
+	        } else if (partido.getEquipoVisit().equals(jugador.getEquipo())) {
+	            posesionesRival = (partido.getStatsLocal().getTiros() - partido.getStatsLocal().getRebotes()) + partido.getStatsLocal().getPerdidas() + (0.44f * partido.getStatsLocal().getTirosLibres());
+	        }
+	        totalPosesionesRival += posesionesRival;
+	    }
+	    return (robos / totalPosesionesRival) * 100;
 	}
+
+	public float bloqueosPercent() {
+	    int totalTirosRival = 0;
+	    for (Partido partido : jugados) {
+	        if (partido.getEquipoLocal().equals(jugador.getEquipo())) {
+	            totalTirosRival += partido.getStatsVisit().getTiros();
+	        } else if (partido.getEquipoVisit().equals(jugador.getEquipo())) {
+	            totalTirosRival += partido.getStatsLocal().getTiros();
+	        }
+	    }
+	    return (bloqueos / totalTirosRival) * 100;
+	}
+
+	public float efDefensiva() {
+	    int totalPuntosContra = 0;
+	    float totalPosesionesRival = 0;
+
+	    for (Partido partido : jugados) {
+	        int puntosContraRival = 0;
+	        float posesionesRival = 0;
+	        if (partido.getEquipoLocal().equals(jugador.getEquipo())) {
+	            puntosContraRival = partido.getStatsVisit().getPuntos();
+	            posesionesRival = (partido.getStatsVisit().getTiros() - partido.getStatsVisit().getRebotes()) + partido.getStatsVisit().getPerdidas() + (0.44f * partido.getStatsVisit().getTirosLibres());
+	        } else if (partido.getEquipoVisit().equals(jugador.getEquipo())) {
+	            puntosContraRival = partido.getStatsLocal().getPuntos();
+	            posesionesRival = (partido.getStatsLocal().getTiros() - partido.getStatsLocal().getRebotes()) + partido.getStatsLocal().getPerdidas() + (0.44f * partido.getStatsLocal().getTirosLibres());
+	        }
+	        totalPuntosContra += puntosContraRival;
+	        totalPosesionesRival += posesionesRival;
+	    }
+	    return totalPuntosContra / totalPosesionesRival;
+	}
+	
+	public float efOfensiva() {
+		return (puntosGenerados()/posesiones()) * 100;
+	}
+	public void agregarPartido(Partido p) {
+		jugados.add(p);
+	}
+
 }

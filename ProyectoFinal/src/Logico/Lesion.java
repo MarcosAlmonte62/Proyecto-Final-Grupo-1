@@ -5,12 +5,16 @@ public class Lesion {
 	private int duracion;
 	private boolean lesionado;
 	private int gravedad;
-	public Lesion(String tipoLesion, int duracion, boolean lesionado, int gravedad) {
+	private String descripcion;
+	private String tratamiento;
+	public Lesion(String tipoLesion, int duracion, boolean lesionado, int gravedad, String descripcion, String tratamiento) {
 		super();
 		this.tipoLesion = tipoLesion;
 		this.duracion = duracion;
 		this.lesionado = lesionado;
 		this.gravedad = gravedad;
+		this.descripcion = descripcion;
+		this.tratamiento = tratamiento;
 	}
 	public String getTipoLesion() {
 		return tipoLesion;
@@ -37,6 +41,18 @@ public class Lesion {
 	public void setGravedad(int gravedad) {
 		this.gravedad = gravedad;
 	}
+	public String getDescripcion() {
+		return descripcion;
+	}
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+	public String getTratamiento() {
+		return tratamiento;
+	}
+	public void setTratamiento(String tratamiento) {
+		this.tratamiento = tratamiento;
+	}
 	
 	public int duracionLesion(String tipo) {
 		switch(tipo) {
@@ -62,4 +78,5 @@ public class Lesion {
 			lesionado = false;
 		}
 	}
+
 }

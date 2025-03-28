@@ -49,4 +49,10 @@ public class Equipo {
     public void setStats(StatsEquipo stats) {
         this.stats = stats;
     }
+    public void agregarJugador(Jugador j) {
+    	nomina.add(j);
+    }
+    public void agregarAlHistorial(Partido p) {
+    	historial.add(p);
+    }
 }
