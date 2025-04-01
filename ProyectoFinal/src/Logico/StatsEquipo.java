@@ -165,6 +165,10 @@ public class StatsEquipo {
 	public void setTriples(int triples) {
 		this.triples = triples;
 	}
+	public int puntuacion() {
+		return victorias*3 + empates;
+	}
+	
 	public void actualizarStats(int dobles, int rebotes, int asistencias, int robos, int tapones, int tirosLibres, int tirosLibresAcert, int triples) {
         this.dobles += dobles;
         this.rebotes += rebotes;

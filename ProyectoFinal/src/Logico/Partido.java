@@ -1,10 +1,9 @@
 package Logico;
-
-import java.util.ArrayList;
 import java.util.Date;
 
 public class Partido {
 
+	private int id;
     private int marcadorLocal;
     private int marcadorVisit;
     private Equipo equipoLocal;
@@ -13,24 +12,18 @@ public class Partido {
     private StatsEquipo statsVisit;
     private Date fechaPartido;
     private String ubicacion;
-    private ArrayList<Jugador> jugadoresDestacados;
-    private int periodoActual;
-    private boolean partidoFinalizado;
 
-    public int getMarcadorLocal() {
+
+    public int getId() {
+		return id;
+	}
+
+	public int getMarcadorLocal() {
         return marcadorLocal;
-    }
-
-    public void setMarcadorLocal(int marcadorLocal) {
-        this.marcadorLocal = marcadorLocal;
     }
 
     public int getMarcadorVisit() {
         return marcadorVisit;
-    }
-
-    public void setMarcadorVisit(int marcadorVisit) {
-        this.marcadorVisit = marcadorVisit;
     }
 
     public Equipo getEquipoLocal() {
@@ -81,53 +74,20 @@ public class Partido {
         this.ubicacion = ubicacion;
     }
 
-    public ArrayList<Jugador> getJugadoresDestacados() {
-        return jugadoresDestacados;
-    }
-
-    public void setJugadoresDestacados(ArrayList<Jugador> jugadoresDestacados) {
-        this.jugadoresDestacados = jugadoresDestacados;
-    }
-
-    public int getPeriodoActual() {
-        return periodoActual;
-    }
-
-    public void setPeriodoActual(int periodoActual) {
-        this.periodoActual = periodoActual;
-    }
-
-    public boolean isPartidoFinalizado() {
-        return partidoFinalizado;
-    }
-
-    public void setPartidoFinalizado(boolean partidoFinalizado) {
-        this.partidoFinalizado = partidoFinalizado;
-    }
 
     public Partido(Equipo equipoLocal, Equipo equipoVisit, Date fechaPartido, String ubicacion) {
         this.equipoLocal = equipoLocal;
         this.equipoVisit = equipoVisit;
         this.fechaPartido = fechaPartido;
         this.ubicacion = ubicacion;
-        this.marcadorLocal = 0;
-        this.marcadorVisit = 0;
-        this.statsLocal = new StatsEquipo(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, equipoLocal);
-        this.statsVisit = new StatsEquipo(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, equipoVisit);
-        this.jugadoresDestacados = new ArrayList<Jugador>();
-        this.periodoActual = 1;
-        this.partidoFinalizado = false;
         for (Jugador j : equipoLocal.getNomina()) {
-            j.setStats(new StatsJugador(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, j));
-            j.getStats().getJugados().add(this); 
+        	this.marcadorLocal += j.getStats().puntosGenerados();
         }
         for (Jugador j : equipoVisit.getNomina()) {
-            j.setStats(new StatsJugador(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, j));
-            j.getStats().getJugados().add(this);
+        	this.marcadorVisit += j.getStats().puntosGenerados();
         }
     }
     public void finalizarPartido() {
-        this.partidoFinalizado = true;
         if (marcadorLocal > marcadorVisit) {
             statsLocal.setVictorias(statsLocal.getVictorias() + 1);
             statsVisit.setDerrotas(statsVisit.getDerrotas() + 1);
@@ -152,15 +112,8 @@ public class Partido {
         stats = equipoVisit.getStats();
         stats.actualizarStats(stats.getDobles(), stats.getRebotes(), stats.getAsistencias(), stats.getRobos(), stats.getTapones(), stats.getTirosLibres(), stats.getTirosLibresAcert(), stats.getTriples());
     }
-  
-    public void agregarJugadorDestacado(Jugador jugador) {
-        if (!jugadoresDestacados.contains(jugador)) {
-            jugadoresDestacados.add(jugador);
-        }
-    }
 
     public Equipo obtenerGanador() {
-        if (!partidoFinalizado) return null;
         return marcadorLocal > marcadorVisit ? equipoLocal : 
             marcadorVisit > marcadorLocal ? equipoVisit : null;
     }

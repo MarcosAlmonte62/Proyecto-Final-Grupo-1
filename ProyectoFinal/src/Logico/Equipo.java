@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Equipo {
     private String nombre;
     private String ciudad;
+    private String estadio;
     private ArrayList<Jugador> nomina;
     private ArrayList<Partido> historial;
     private StatsEquipo stats;
@@ -55,4 +56,12 @@ public class Equipo {
     public void agregarAlHistorial(Partido p) {
     	historial.add(p);
     }
+
+	public String getEstadio() {
+		return estadio;
+	}
+
+	public void setEstadio(String estadio) {
+		this.estadio = estadio;
+	}
 }
