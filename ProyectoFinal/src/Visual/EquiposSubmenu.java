@@ -2,38 +2,33 @@ package Visual;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.net.URL;
 
 public class EquiposSubmenu extends JFrame {
 
-    private JLabel imagenLabel;
-    private Point initialClick;
-    private JButton agregarEquipo;
-    private JButton listarEquipos;
+    private JButton agregarEquipo, listarEquipos;
 
     public EquiposSubmenu() {
         setTitle("Equipos");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(522, 395);
         setLocationRelativeTo(null);
-        getContentPane().setLayout(new BorderLayout());
+        setResizable(false);
 
-        ImageIcon originalIcon = new ImageIcon("C:/Users/EliteBook/eclipse-workspace/probandovisual/src/images/equipos.png");
-        if (originalIcon.getImageLoadStatus() != MediaTracker.COMPLETE) {
-            JOptionPane.showMessageDialog(this, "Error: Imagen no encontrada en la ruta especificada.");
-            System.exit(1);
-        }
+        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane.setLayout(null);
+        setContentPane(layeredPane);
 
-        int availableWidth = getWidth();
-        int availableHeight = getHeight();
+        // Custom panel that correctly resizes the image
+        BackgroundPanel backgroundPanel = new BackgroundPanel("/images/equipos.png");
+        backgroundPanel.setBounds(0, 0, getWidth(), getHeight());
 
-        Image scaledImage = originalIcon.getImage().getScaledInstance(availableWidth, availableHeight, Image.SCALE_SMOOTH);
-        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        configurarBotones(layeredPane);
 
-        imagenLabel = new JLabel(scaledIcon);
-        imagenLabel.setBounds(0, 0, 504, 348);
+        layeredPane.add(backgroundPanel, Integer.valueOf(1));
+    }
 
+    private void configurarBotones(JLayeredPane layeredPane) {
         agregarEquipo = new JButton();
         listarEquipos = new JButton();
 
@@ -50,18 +45,36 @@ public class EquiposSubmenu extends JFrame {
         agregarEquipo.addActionListener(e -> new AgregarEquipo().setVisible(true));
         listarEquipos.addActionListener(e -> new ListarEquipos().setVisible(true));
 
-        JPanel panel = new JPanel(null);
-        panel.setPreferredSize(new Dimension(availableWidth, availableHeight));
-        panel.add(imagenLabel, Integer.valueOf(1));  
-        panel.add(agregarEquipo, Integer.valueOf(2)); 
-        panel.add(listarEquipos, Integer.valueOf(2)); 
-
-        getContentPane().add(panel, BorderLayout.CENTER);
-        revalidate();
-        repaint();
+        layeredPane.add(agregarEquipo, Integer.valueOf(2));
+        layeredPane.add(listarEquipos, Integer.valueOf(2));
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new EquiposSubmenu().setVisible(true));
+    }
+
+    // Custom panel that scales the background image properly
+    class BackgroundPanel extends JPanel {
+        private Image backgroundImage;
+
+        public BackgroundPanel(String imagePath) {
+            try {
+                URL imageUrl = getClass().getResource(imagePath);
+                if (imageUrl == null) throw new RuntimeException("Image not found in resources!");
+
+                backgroundImage = new ImageIcon(imageUrl).getImage();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error loading image: " + e.getMessage());
+                System.exit(1);
+            }
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            if (backgroundImage != null) {
+                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+            }
+        }
     }
 }

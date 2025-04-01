@@ -25,7 +25,7 @@ public class Principal extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("StatHoops");
         setResizable(false);
-        setSize(952, 564);
+        setSize(952, 565);
         setLocationRelativeTo(null);
 
         layeredPane = new JLayeredPane();
@@ -42,7 +42,7 @@ public class Principal extends JFrame {
         btnJugadores.setBounds(432, 13, 166, 50);
         btnPartidos.setBounds(610, 13, 141, 50);
         btnReportes.setBounds(763, 13, 157, 50);
-        btnButton5.setBounds(636, 403, 243, 64);
+        btnButton5.setBounds(629, 399, 250, 61);
 
         layeredPane.add(btnEquipos, Integer.valueOf(2));
         layeredPane.add(btnJugadores, Integer.valueOf(2));
@@ -53,14 +53,21 @@ public class Principal extends JFrame {
 
     private void setupBackground() {
         try {
-            URL imageUrl = getClass().getResource("/images/principalv.png");
+            URL imageUrl = getClass().getResource("/images/principal.png");
             if (imageUrl == null) {
                 throw new RuntimeException("Image not found in resources!");
             }
 
-            Image image = ImageIO.read(imageUrl);
-            JLabel backgroundLabel = new JLabel(new ImageIcon(image));
-            backgroundLabel.setBounds(0, -19, 952, 575);
+            // Leer y escalar la imagen al tamaño de la ventana
+            Image originalImage = ImageIO.read(imageUrl);
+            Image scaledImage = originalImage.getScaledInstance(946, 529, Image.SCALE_SMOOTH);
+            ImageIcon scaledIcon = new ImageIcon(scaledImage);
+
+            // Configurar el JLabel con la imagen escalada
+            JLabel backgroundLabel = new JLabel(new ImageIcon(Principal.class.getResource("/images/principalv.png")));
+            backgroundLabel.setBounds(0, 0, 946, 529);
+
+            // Añadirlo al fondo
             layeredPane.add(backgroundLabel, Integer.valueOf(1));
 
         } catch (Exception e) {
