@@ -294,5 +294,26 @@ public class StatsEquipo {
     	return (tiros/triples)*100;
     }
     
-    
+ // Puntos recibidos por equipo
+    public float getEficienciaDefensiva() {
+        if (partidosJugados == 0) {
+            return 0;
+        }
+        return puntosContra / partidosJugados;
+    }
+
+    // Eficiencia ofensiva por partido
+    public float getEficienciaOfensiva() {
+        if (partidosJugados == 0) {
+            return 0;
+        }
+        return puntos / partidosJugados;
+    }
+   //para calcular la diferencia de puntos entre los 2 equipos jugadores 
+    public float getDiferenciaPromedioPuntos() {
+        if (partidosJugados == 0) {
+            return 0;
+        }
+        return (puntos - puntosContra) / partidosJugados;
+    }
 }
