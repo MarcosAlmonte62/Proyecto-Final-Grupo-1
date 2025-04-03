@@ -2,72 +2,49 @@ package Visual;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
+import java.net.URL;
 
 public class ReportesSubmenu extends JFrame {
 
-    private JLabel imagenLabel;
-    private Point initialClick;
+    private JButton btnReporteGlobal;
 
     public ReportesSubmenu() {
-        setTitle("Mover Imagen Libremente");
+        setTitle("Reportes");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(522, 395);
+        setSize(541, 431);
         setLocationRelativeTo(null);
-        getContentPane().setLayout(new BorderLayout());
+        getContentPane().setLayout(null); // <- importante para diseño absoluto
 
-        ImageIcon originalIcon = new ImageIcon("C:/Users/EliteBook/eclipse-workspace/probandovisual/src/images/reportes.png");
-        if (originalIcon.getImageLoadStatus() != MediaTracker.COMPLETE) {
-            JOptionPane.showMessageDialog(this, "Error: Imagen no encontrada en la ruta especificada.");
-            System.exit(1);
-        }
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+        panel.setBounds(0, 0, 541, 431);
+        panel.setOpaque(false);
+        getContentPane().add(panel);
 
-        int availableWidth = getWidth();
-        int availableHeight = getHeight();
+        // Botón invisible sobre la imagen
+        btnReporteGlobal = new JButton();
+        btnReporteGlobal.setBounds(147, 190, 233, 35); // Ajustado al botón visible en el PNG
+        hacerInvisible(btnReporteGlobal);
+        panel.add(btnReporteGlobal);
 
-        Image scaledImage = originalIcon.getImage()
-                .getScaledInstance(availableWidth, availableHeight, Image.SCALE_SMOOTH);
-        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        btnReporteGlobal.addActionListener(e -> new ReportesGlobales().setVisible(true));
 
-        imagenLabel = new JLabel(scaledIcon);
-        imagenLabel.setLocation(0, 0);
-        imagenLabel.setSize(504, 348);
+        // Imagen como JLabel para que sea visible en el WindowBuilder
+        JLabel fondo = new JLabel(new ImageIcon(ReportesSubmenu.class.getResource("/images/reportessubmenu - Copy.png")));
+        fondo.setBounds(0, 0, 529, 387);
+        panel.add(fondo);
+        panel.setComponentZOrder(fondo, panel.getComponentCount() - 1); // Mandar al fondo
+    }
 
-        JPanel panel = new JPanel(null);
-        panel.setPreferredSize(new Dimension(availableWidth, availableHeight));
-        panel.add(imagenLabel);
-
-        imagenLabel.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
-                initialClick = e.getPoint();
-            }
-        });
-        
-        imagenLabel.addMouseMotionListener(new MouseAdapter() {
-            public void mouseDragged(MouseEvent e) {
-                Point currentPoint = e.getPoint();
-                int newX = imagenLabel.getX() + (currentPoint.x - initialClick.x);
-                int newY = imagenLabel.getY() + (currentPoint.y - initialClick.y);
-                
-                int maxX = panel.getWidth() - imagenLabel.getWidth();
-                int maxY = panel.getHeight() - imagenLabel.getHeight();
-                
-                newX = Math.max(0, Math.min(newX, maxX));
-                newY = Math.max(0, Math.min(newY, maxY));
-                
-                imagenLabel.setLocation(newX, newY);
-            }
-        });
-
-        getContentPane().add(panel, BorderLayout.CENTER);
-        revalidate();
-        repaint();
+    private void hacerInvisible(JButton b) {
+        b.setOpaque(false);
+        b.setContentAreaFilled(false);
+        b.setBorderPainted(false);
+        b.setFocusPainted(false);
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new ReportesSubmenu().setVisible(true);
-        });
+        SwingUtilities.invokeLater(() -> new ReportesSubmenu().setVisible(true));
     }
 }

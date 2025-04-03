@@ -2,72 +2,71 @@ package Visual;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import javax.imageio.ImageIO;
+import java.net.URL;
 
 public class JugadoresSubmenu extends JFrame {
 
-    private JLabel imagenLabel;
-    private Point initialClick;
+    private JButton agregarJugador;
+    private JButton listarJugadores;
 
     public JugadoresSubmenu() {
         setTitle("Jugadores");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(522, 395);
+        setSize(541, 431);
         setLocationRelativeTo(null);
-        getContentPane().setLayout(new BorderLayout());
 
-        ImageIcon originalIcon = new ImageIcon("C:/Users/EliteBook/eclipse-workspace/probandovisual/src/images/jugadores.png");
-        if (originalIcon.getImageLoadStatus() != MediaTracker.COMPLETE) {
-            JOptionPane.showMessageDialog(this, "Error: Imagen no encontrada en la ruta especificada.");
-            System.exit(1);
+        BackgroundPanel backgroundPanel = new BackgroundPanel("/images/jugadores.png");
+        backgroundPanel.setLayout(null);
+
+        agregarJugador = new JButton();
+        listarJugadores = new JButton();
+
+        agregarJugador.setBounds(137, 175, 230, 32);  
+        listarJugadores.setBounds(137, 213, 230, 32);
+
+        for (JButton button : new JButton[]{agregarJugador, listarJugadores}) {
+            button.setOpaque(false);
+            button.setContentAreaFilled(false);
+            button.setBorderPainted(false);
+            button.setFocusPainted(false);
         }
 
-        int availableWidth = getWidth();
-        int availableHeight = getHeight();
+        agregarJugador.addActionListener(e -> new AgregarJugador().setVisible(true));
+        listarJugadores.addActionListener(e -> new ListarJugadores().setVisible(true));
 
-        Image scaledImage = originalIcon.getImage()
-                .getScaledInstance(availableWidth, availableHeight, Image.SCALE_SMOOTH);
-        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        backgroundPanel.add(agregarJugador);
+        backgroundPanel.add(listarJugadores);
 
-        imagenLabel = new JLabel(scaledIcon);
-        imagenLabel.setLocation(0, 0);
-        imagenLabel.setSize(504, 348);
-
-        JPanel panel = new JPanel(null);
-        panel.setPreferredSize(new Dimension(availableWidth, availableHeight));
-        panel.add(imagenLabel);
-
-        imagenLabel.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
-                initialClick = e.getPoint();
-            }
-        });
-        
-        imagenLabel.addMouseMotionListener(new MouseAdapter() {
-            public void mouseDragged(MouseEvent e) {
-                Point currentPoint = e.getPoint();
-                int newX = imagenLabel.getX() + (currentPoint.x - initialClick.x);
-                int newY = imagenLabel.getY() + (currentPoint.y - initialClick.y);
-                
-                int maxX = panel.getWidth() - imagenLabel.getWidth();
-                int maxY = panel.getHeight() - imagenLabel.getHeight();
-                
-                newX = Math.max(0, Math.min(newX, maxX));
-                newY = Math.max(0, Math.min(newY, maxY));
-                
-                imagenLabel.setLocation(newX, newY);
-            }
-        });
-
-        getContentPane().add(panel, BorderLayout.CENTER);
+        getContentPane().add(backgroundPanel, BorderLayout.CENTER);
         revalidate();
         repaint();
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new JugadoresSubmenu().setVisible(true);
-        });
+        SwingUtilities.invokeLater(() -> new JugadoresSubmenu().setVisible(true));
+    }
+
+    class BackgroundPanel extends JPanel {
+        private Image backgroundImage;
+
+        public BackgroundPanel(String imagePath) {
+            try {
+                URL imageUrl = getClass().getResource(imagePath);
+                if (imageUrl == null) throw new RuntimeException("¡Imagen no encontrada!");
+                backgroundImage = ImageIO.read(imageUrl);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error cargando imagen: " + e.getMessage());
+                System.exit(1);
+            }
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            if (backgroundImage != null) {
+                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+            }
+        }
     }
 }

@@ -163,4 +163,3 @@ public class SeleccionJugadores extends JFrame {
         }).setVisible(true));
     }
 }
-

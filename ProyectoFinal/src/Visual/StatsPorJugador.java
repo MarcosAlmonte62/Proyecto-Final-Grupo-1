@@ -1,42 +1,48 @@
 package Visual;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+import javax.swing.*;
+import java.awt.*;
+import Logico.*;
 
 public class StatsPorJugador extends JFrame {
 
-	private JPanel contentPane;
+    private JComboBox<String> cbJugadores;
+    private JTextArea txtStats;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					StatsPorJugador frame = new StatsPorJugador();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+    public StatsPorJugador() {
+        setTitle("Estadísticas por Jugador");
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setSize(600, 400);
+        setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
 
-	/**
-	 * Create the frame.
-	 */
-	public StatsPorJugador() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
-		setContentPane(contentPane);
-	}
+        cbJugadores = new JComboBox<>();
+        txtStats = new JTextArea();
+        txtStats.setEditable(false);
 
+        for (Jugador j : SerieNacional.getInstance().getTodosLosJugadores()) {
+            cbJugadores.addItem(j.getNombre());
+        }
+
+        cbJugadores.addActionListener(e -> {
+            int index = cbJugadores.getSelectedIndex();
+            if (index >= 0) {
+                Jugador j = SerieNacional.getInstance().getTodosLosJugadores().get(index);
+                StatsJugador s = j.getStats();
+                txtStats.setText(
+                        "Puntos: " + s.getPuntos() + "\n" +
+                        "Asistencias: " + s.getAsistencias() + "\n" +
+                        "Rebotes: " + s.getRebotes() + "\n" +
+                        "Valoración: " + s.valoracion()
+                );
+            }
+        });
+
+        add(cbJugadores, BorderLayout.NORTH);
+        add(new JScrollPane(txtStats), BorderLayout.CENTER);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new StatsPorJugador().setVisible(true));
+    }
 }

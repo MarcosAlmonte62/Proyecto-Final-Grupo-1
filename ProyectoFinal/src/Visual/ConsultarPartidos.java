@@ -1,42 +1,50 @@
 package Visual;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+import javax.swing.*;
+import java.awt.*;
+import Logico.*;
+import java.util.List;
 
 public class ConsultarPartidos extends JFrame {
 
-	private JPanel contentPane;
+    private JComboBox<String> cbPartido;
+    private JTextArea txtDetalle;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ConsultarPartidos frame = new ConsultarPartidos();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+    public ConsultarPartidos() {
+        setTitle("Consultar Partidos");
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setSize(600, 400);
+        setLocationRelativeTo(null);
+        getContentPane().setLayout(new BorderLayout());
 
-	/**
-	 * Create the frame.
-	 */
-	public ConsultarPartidos() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
-		setContentPane(contentPane);
-	}
+        cbPartido = new JComboBox<>();
+        txtDetalle = new JTextArea();
+        txtDetalle.setBackground(Color.DARK_GRAY);
+        txtDetalle.setEditable(false);
 
+        List<Partido> partidos = SerieNacional.getInstance().getCalendario();
+
+        for (Partido p : partidos) {
+            cbPartido.addItem(p.getEquipoLocal().getNombre() + " vs " + p.getEquipoVisitante().getNombre());
+        }
+
+        cbPartido.addActionListener(e -> mostrarDetalle(cbPartido.getSelectedIndex()));
+
+        getContentPane().add(cbPartido, BorderLayout.NORTH);
+        getContentPane().add(new JScrollPane(txtDetalle), BorderLayout.CENTER);
+    }
+
+    private void mostrarDetalle(int index) {
+        if (index >= 0) {
+            Partido p = SerieNacional.getInstance().getCalendario().get(index);
+            String info = "Fecha: " + (p.getFecha() != null ? p.getFecha() : "No registrada") + "\n" +
+                          "Ubicación: " + (p.getUbicacion() != null ? p.getUbicacion() : "Desconocida") + "\n" +
+                          "Resultado: " + p.getPuntosLocal() + " - " + p.getPuntosVisitante();
+            txtDetalle.setText(info);
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new ConsultarPartidos().setVisible(true));
+    }
 }

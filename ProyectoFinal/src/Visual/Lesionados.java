@@ -1,42 +1,39 @@
 package Visual;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import Logico.*;
 
 public class Lesionados extends JFrame {
 
-	private JPanel contentPane;
+    public Lesionados() {
+        setTitle("Jugadores Lesionados");
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setSize(600, 400);
+        setLocationRelativeTo(null);
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Lesionados frame = new Lesionados();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+        String[] columnNames = {"Nombre", "Equipo", "Tipo de Lesión", "Duración"};
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0);
 
-	/**
-	 * Create the frame.
-	 */
-	public Lesionados() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
-		setContentPane(contentPane);
-	}
+        for (Jugador j : SerieNacional.getInstance().getTodosLosJugadores()) {
+            Lesion l = j.getLesion();
+            if (l != null && l.isLesionado()) {
+                model.addRow(new Object[]{
+                    j.getNombre(),
+                    j.getEquipo() != null ? j.getEquipo().getNombre() : "Agente Libre",
+                    l.getTipoLesion(),
+                    l.getDuracion() + " días"
+                });
+            }
+        }
 
+        JTable table = new JTable(model);
+        JScrollPane scroll = new JScrollPane(table);
+        add(scroll);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new Lesionados().setVisible(true));
+    }
 }

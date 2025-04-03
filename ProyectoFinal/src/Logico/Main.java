@@ -1,93 +1,84 @@
 package Logico;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 public class Main {
-    public static String generarResumen(Partido partido) {
-        StringBuilder resumen = new StringBuilder();
-        resumen.append("Partido: ").append(partido.getEquipoLocal().getNombre())
-              .append(" vs ").append(partido.getEquipoVisit().getNombre()).append("\n");
-        resumen.append("Resultado: ").append(partido.getMarcadorLocal())
-              .append(" - ").append(partido.getMarcadorVisit()).append("\n");
-        resumen.append("Ubicaci√≥n: ").append(partido.getUbicacion()).append("\n");
-        resumen.append("Fecha: ").append(partido.getFechaPartido()).append("\n");
-        
-        if (partido.isPartidoFinalizado()) {
-            Equipo ganador = partido.obtenerGanador();
-            resumen.append(ganador != null ? "Ganador: " + ganador.getNombre() : "Empate").append("\n");
-        } else {
-            resumen.append("En progreso - Periodo: ").append(partido.getPeriodoActual()).append("\n");
-        }
-        
-        resumen.append("\nJugadores destacados:\n");
-        for (Jugador jugador : partido.getJugadoresDestacados()) {
-            resumen.append("- ").append(jugador.getNombre())
-                  .append(" (").append(jugador.getEquipo().getNombre()).append(")\n");
-        }
-        return resumen.toString();
-    }
-
     public static void main(String[] args) {
-        // Configuraci√≥n de equipos y jugadores
+        SerieNacional liga = SerieNacional.getInstance();
+
+        // Crear jugadores
+        Jugador j1 = new Jugador("Carlos MÈndez", 24, "Dominicana", null, null,
+                new StatsJugador(10, 5, 3, 2, 1, 0, 2, 1, 0, 0, 0, null),
+                7, 190, 85, "Escolta", new Date(System.currentTimeMillis()));
+        j1.setRating(8.5f);
+
+        Jugador j2 = new Jugador("Luis GÛmez", 26, "Dominicana", null, null,
+                new StatsJugador(20, 2, 6, 1, 0, 3, 4, 2, 0, 0, 0, null),
+                12, 200, 95, "Ala-PÌvot", new Date(System.currentTimeMillis()));
+        j2.setRating(9.2f);
+
+        liga.agregarJugador(j1);
+        liga.agregarJugador(j2);
+
+        // Crear equipo
         Equipo equipo1 = new Equipo();
-        equipo1.setNombre("Leones de Santo Domingo");
-        equipo1.setCiudad("Santo Domingo");
-        equipo1.setNomina(new ArrayList<Jugador>());
-        equipo1.setHistorial(new ArrayList<Partido>());
-        equipo1.setStats(new StatsEquipo(0, 0, 0, 0, 0, 0));
-        
+        equipo1.setNombre("Tigres del Este");
+        equipo1.setCiudad("Santiago");
+        equipo1.setEstadio("Arena del Sol");
+
+        j1.setEquipo(equipo1);
+        j2.setEquipo(equipo1);
+        equipo1.agregarJugador(j1);
+        equipo1.agregarJugador(j2);
+
+        StatsEquipo statsEquipo = new StatsEquipo(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, equipo1);
+        equipo1.setStats(statsEquipo);
+
+        liga.agregarEquipo(equipo1);
+
+        // Crear partido
         Equipo equipo2 = new Equipo();
-        equipo2.setNombre("Tigres del Norte");
-        equipo2.setCiudad("Santiago");
-        equipo2.setNomina(new ArrayList<Jugador>());
-        equipo2.setHistorial(new ArrayList<Partido>());
-        equipo2.setStats(new StatsEquipo(0, 0, 0, 0, 0, 0));
-        
-        Jugador base = new Base("Juan P√©rez", 25, "Dominicano", null, equipo1, 10, 185, 
-                               15, 8, 12, 5, 3, 4, 6, 2);
-        
-        Jugador alero = new Alero("Carlos Rodr√≠guez", 23, "Dominicano", null, equipo1, 7, 195,
-                                20, 5, 18, 3, 2, 4, 2, 5, 3);
-        
-        Jugador pivot = new Pivot("Miguel Garc√≠a", 28, "Dominicano", null, equipo2, 14, 210,
-                                10, 5, 3, 8, 15, 4, 2, 3, 4);
-        
-        equipo1.getNomina().add(base);
-        equipo1.getNomina().add(alero);
-        equipo2.getNomina().add(pivot);
-        
-        Partido partido = new Partido(equipo1, equipo2, new Date(), "Palacio de los Deportes");
-        System.out.println("Iniciando partido...");
-        
-        partido.anotarPuntosLocal(25);
-        partido.anotarPuntosVisitante(20);
-        partido.agregarJugadorDestacado(base);
-        partido.avanzarPeriodo();
-        
-        partido.anotarPuntosLocal(20);
-        partido.anotarPuntosVisitante(22);
-        partido.agregarJugadorDestacado(pivot);
-        partido.avanzarPeriodo();
-        
-        partido.anotarPuntosLocal(28);
-        partido.anotarPuntosVisitante(25);
-        partido.agregarJugadorDestacado(alero);
-        partido.avanzarPeriodo();
-        
-        partido.anotarPuntosLocal(22);
-        partido.anotarPuntosVisitante(20);
-        partido.finalizarPartido();
-        
-        System.out.println("\n=== RESULTADO FINAL ===");
-        System.out.println(generarResumen(partido));
-        
-        System.out.println("\nEstad√≠sticas de " + equipo1.getNombre());
-        System.out.println("Victorias: " + equipo1.getStats().getVictorias());
-        System.out.println("Puntos totales: " + equipo1.getStats().getPuntos());
-        
-        System.out.println("\nEstad√≠sticas de " + equipo2.getNombre());
-        System.out.println("Derrotas: " + equipo2.getStats().getDerrotas());
-        System.out.println("Puntos totales: " + equipo2.getStats().getPuntos());
+        equipo2.setNombre("Panteras FC");
+        equipo2.setCiudad("Santo Domingo");
+        equipo2.setEstadio("Panther Arena");
+        equipo2.setNomina(new java.util.ArrayList<>());
+        equipo2.setStats(new StatsEquipo(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, equipo2));
+
+        liga.agregarEquipo(equipo2);
+
+        Partido p1 = new Partido(equipo1, equipo2);
+        try {
+            p1.setFecha(new SimpleDateFormat("dd/MM/yyyy").parse("15/04/2025"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        p1.setUbicacion("Arena del Sol");
+        p1.setPuntosLocal(87);
+        p1.setPuntosVisitante(78);
+        p1.setJugado(true);
+
+        liga.agregarPartido(p1);
+
+        // Probar MVP
+        Jugador mvp = liga.mejorDelTorneo();
+        if (mvp != null) {
+            System.out.println("MVP del torneo: " + mvp.getNombre() + " con valoraciÛn " + mvp.getStats().valoracion());
+        } else {
+            System.out.println("No hay MVP (a˙n).");
+        }
+
+        // Mostrar clasificaciÛn
+        System.out.println("\nEquipos en la liga:");
+        for (Equipo e : liga.getClasificacion()) {
+            System.out.println("- " + e.getNombre());
+        }
+
+        // Mostrar calendario
+        System.out.println("\nPartidos agendados:");
+        for (Partido p : liga.getCalendario()) {
+            System.out.println(p.getEquipoLocal().getNombre() + " vs " + p.getEquipoVisitante().getNombre() +
+                    " [" + (p.isJugado() ? "Jugado" : "Pendiente") + "]");
+        }
     }
 }

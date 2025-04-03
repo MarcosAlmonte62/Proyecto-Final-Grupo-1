@@ -2,33 +2,23 @@ package Visual;
 
 import javax.swing.*;
 import java.awt.*;
+import javax.imageio.ImageIO;
 import java.net.URL;
 
 public class EquiposSubmenu extends JFrame {
 
-    private JButton agregarEquipo, listarEquipos;
+    private JButton agregarEquipo;
+    private JButton listarEquipos;
 
     public EquiposSubmenu() {
         setTitle("Equipos");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(522, 395);
+        setSize(541, 431);
         setLocationRelativeTo(null);
-        setResizable(false);
 
-        JLayeredPane layeredPane = new JLayeredPane();
-        layeredPane.setLayout(null);
-        setContentPane(layeredPane);
-
-        // Custom panel that correctly resizes the image
         BackgroundPanel backgroundPanel = new BackgroundPanel("/images/equipos.png");
-        backgroundPanel.setBounds(0, 0, getWidth(), getHeight());
+        backgroundPanel.setLayout(null);
 
-        configurarBotones(layeredPane);
-
-        layeredPane.add(backgroundPanel, Integer.valueOf(1));
-    }
-
-    private void configurarBotones(JLayeredPane layeredPane) {
         agregarEquipo = new JButton();
         listarEquipos = new JButton();
 
@@ -45,26 +35,28 @@ public class EquiposSubmenu extends JFrame {
         agregarEquipo.addActionListener(e -> new AgregarEquipo().setVisible(true));
         listarEquipos.addActionListener(e -> new ListarEquipos().setVisible(true));
 
-        layeredPane.add(agregarEquipo, Integer.valueOf(2));
-        layeredPane.add(listarEquipos, Integer.valueOf(2));
+        backgroundPanel.add(agregarEquipo);
+        backgroundPanel.add(listarEquipos);
+
+        getContentPane().add(backgroundPanel, BorderLayout.CENTER);
+        revalidate();
+        repaint();
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new EquiposSubmenu().setVisible(true));
     }
 
-    // Custom panel that scales the background image properly
     class BackgroundPanel extends JPanel {
         private Image backgroundImage;
 
         public BackgroundPanel(String imagePath) {
             try {
                 URL imageUrl = getClass().getResource(imagePath);
-                if (imageUrl == null) throw new RuntimeException("Image not found in resources!");
-
-                backgroundImage = new ImageIcon(imageUrl).getImage();
+                if (imageUrl == null) throw new RuntimeException("¡Imagen no encontrada en recursos!");
+                backgroundImage = ImageIO.read(imageUrl);
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Error loading image: " + e.getMessage());
+                JOptionPane.showMessageDialog(this, "Error cargando la imagen: " + e.getMessage());
                 System.exit(1);
             }
         }

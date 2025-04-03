@@ -2,72 +2,57 @@ package Visual;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 
 public class PartidosSubmenu extends JFrame {
 
-    private JLabel imagenLabel;
-    private Point initialClick;
+    private JButton btnAgendar, btnRegistrar, btnConsultar;
 
     public PartidosSubmenu() {
-        setTitle("Mover Imagen Libremente");
+        setTitle("Submenú Partidos");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(522, 395);
+        setSize(541, 431);
         setLocationRelativeTo(null);
-        getContentPane().setLayout(new BorderLayout());
-
-        ImageIcon originalIcon = new ImageIcon("C:/Users/EliteBook/eclipse-workspace/probandovisual/src/images/partidos.png");
-        if (originalIcon.getImageLoadStatus() != MediaTracker.COMPLETE) {
-            JOptionPane.showMessageDialog(this, "Error: Imagen no encontrada en la ruta especificada.");
-            System.exit(1);
-        }
-
-        int availableWidth = getWidth();
-        int availableHeight = getHeight();
-
-        Image scaledImage = originalIcon.getImage()
-                .getScaledInstance(availableWidth, availableHeight, Image.SCALE_SMOOTH);
-        ImageIcon scaledIcon = new ImageIcon(scaledImage);
-
-        imagenLabel = new JLabel(scaledIcon);
-        imagenLabel.setLocation(0, 0);
-        imagenLabel.setSize(504, 348);
+        getContentPane().setLayout(null);
 
         JPanel panel = new JPanel(null);
-        panel.setPreferredSize(new Dimension(availableWidth, availableHeight));
-        panel.add(imagenLabel);
+        panel.setBounds(0, 0, 541, 431);
+        panel.setOpaque(false);
+        getContentPane().add(panel);
 
-        imagenLabel.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
-                initialClick = e.getPoint();
-            }
-        });
-        
-        imagenLabel.addMouseMotionListener(new MouseAdapter() {
-            public void mouseDragged(MouseEvent e) {
-                Point currentPoint = e.getPoint();
-                int newX = imagenLabel.getX() + (currentPoint.x - initialClick.x);
-                int newY = imagenLabel.getY() + (currentPoint.y - initialClick.y);
-                
-                int maxX = panel.getWidth() - imagenLabel.getWidth();
-                int maxY = panel.getHeight() - imagenLabel.getHeight();
-                
-                newX = Math.max(0, Math.min(newX, maxX));
-                newY = Math.max(0, Math.min(newY, maxY));
-                
-                imagenLabel.setLocation(newX, newY);
-            }
-        });
+        btnAgendar = new JButton();
+        btnAgendar.setBounds(95, 195, 335, 46);
+        hacerInvisible(btnAgendar);
+        btnAgendar.addActionListener(e -> new AgregarPartido().setVisible(true));
+        panel.add(btnAgendar);
 
-        getContentPane().add(panel, BorderLayout.CENTER);
-        revalidate();
-        repaint();
+        btnRegistrar = new JButton();
+        btnRegistrar.setBounds(92, 254, 338, 46);
+        hacerInvisible(btnRegistrar);
+        btnRegistrar.addActionListener(e -> new RegistrarResultado().setVisible(true));
+        panel.add(btnRegistrar);
+
+        btnConsultar = new JButton();
+        btnConsultar.setBounds(95, 313, 338, 46);
+        hacerInvisible(btnConsultar);
+        btnConsultar.addActionListener(e -> new ConsultarPartidos().setVisible(true));
+        panel.add(btnConsultar);
+
+        JLabel fondo = new JLabel(new ImageIcon(PartidosSubmenu.class.getResource("/images/partidos11 - Copy.png")));
+        fondo.setBounds(0, 0, 529, 385);
+        panel.add(fondo);
+        panel.setComponentZOrder(fondo, panel.getComponentCount() - 1); // Enviar al fondo
+    }
+
+    private void hacerInvisible(JButton b) {
+        b.setOpaque(false);
+        b.setContentAreaFilled(false);
+        b.setBorderPainted(false);
+        b.setFocusPainted(false);
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new PartidosSubmenu().setVisible(true);
-        });
+        SwingUtilities.invokeLater(() -> new PartidosSubmenu().setVisible(true));
     }
 }
+

@@ -1,42 +1,79 @@
 package Visual;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.net.URL;
+import Logico.*;
 
 public class ListarJugadores extends JFrame {
 
-	private JPanel contentPane;
+    private JTable tablaJugadores;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ListarJugadores frame = new ListarJugadores();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+    public ListarJugadores() {
+        setTitle("Listar Jugadores");
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setSize(917, 600);
+        setLocationRelativeTo(null);
+        getContentPane().setLayout(null);
 
-	/**
-	 * Create the frame.
-	 */
-	public ListarJugadores() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
-		setContentPane(contentPane);
-	}
+        JPanel panel = new JPanel(null);
+        panel.setBounds(0, 0, 917, 600);
+        panel.setOpaque(false);
+        getContentPane().add(panel);
 
+        JPanel tablaPanel = new JPanel(new BorderLayout());
+        tablaPanel.setBounds(76, 138, 760, 290);
+        tablaPanel.setBackground(Color.WHITE);
+        panel.add(tablaPanel);
+
+        tablaJugadores = new JTable();
+        JScrollPane scroll = new JScrollPane(tablaJugadores);
+        tablaPanel.add(scroll, BorderLayout.CENTER);
+
+        JButton btnRegresar = new JButton();
+        btnRegresar.setBounds(688, 488, 173, 40);
+        hacerInvisible(btnRegresar);
+        btnRegresar.addActionListener((ActionEvent e) -> dispose());
+        panel.add(btnRegresar);
+
+        cargarJugadores();
+
+        JLabel fondo = new JLabel(new ImageIcon(getClass().getResource("/images/listarjugadores.png")));
+        fondo.setBounds(0, 0, 917, 565);
+        panel.add(fondo);
+        panel.setComponentZOrder(fondo, panel.getComponentCount() - 1);
+    }
+
+    private void cargarJugadores() {
+        String[] columnas = {"Nombre", "Edad", "Nacionalidad", "Equipo", "Posición", "Estado"};
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+
+        for (Jugador j : SerieNacional.getInstance().getTodosLosJugadores()) {
+            String equipo = (j.getEquipo() != null) ? j.getEquipo().getNombre() : "Sin equipo";
+            String estado = (j.getLesion() != null && j.getLesion().isLesionado()) ? "Lesionado" : "Activo";
+            modelo.addRow(new Object[]{
+                    j.getNombre(),
+                    j.getEdad(),
+                    j.getNacionalidad(),
+                    equipo,
+                    j.getPosicion(),
+                    estado
+            });
+        }
+
+        tablaJugadores.setModel(modelo);
+    }
+
+    private void hacerInvisible(JButton b) {
+        b.setOpaque(false);
+        b.setContentAreaFilled(false);
+        b.setBorderPainted(false);
+        b.setFocusPainted(false);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new ListarJugadores().setVisible(true));
+    }
 }
