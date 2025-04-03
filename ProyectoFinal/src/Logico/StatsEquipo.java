@@ -1,6 +1,11 @@
 package Logico;
 
-public class StatsEquipo {
+import java.io.Serializable;
+
+public class StatsEquipo implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     private int puntos;
     private int dobles;
     private int rebotes;
@@ -19,8 +24,9 @@ public class StatsEquipo {
     private int partidosJugados;
     private Equipo equipo;
 
-    public StatsEquipo(int puntos, int dobles, int rebotes, int tiros, int puntosContra, int victorias, int derrotas, int empates, 
-                       int asistencias, int robos, int tapones, int perdidas, int tirosLibres, int tirosLibresAcert, int triples, int partidosJugados, Equipo equipo) {
+    public StatsEquipo(int puntos, int dobles, int rebotes, int tiros, int puntosContra, int victorias, int derrotas,
+                       int empates, int asistencias, int robos, int tapones, int perdidas, int tirosLibres,
+                       int tirosLibresAcert, int triples, int partidosJugados, Equipo equipo) {
         this.puntos = puntos;
         this.dobles = dobles;
         this.rebotes = rebotes;
@@ -40,136 +46,140 @@ public class StatsEquipo {
         this.equipo = equipo;
     }
 
-	public int getPuntos() {
-		return puntos;
-	}
+    public int getPuntos() {
+        return puntos;
+    }
 
-	public void setDobles(int dobles) {
-		this.dobles = dobles;
-	}
-	public int getDobles() {
-		return dobles;
-	}
+    public void setPuntos(int puntos) {
+        this.puntos = puntos;
+    }
 
-	public void setPuntos(int puntos) {
-		this.puntos = puntos;
-	}
+    public int getDobles() {
+        return dobles;
+    }
 
-	public int getRebotes() {
-		return rebotes;
-	}
+    public void setDobles(int dobles) {
+        this.dobles = dobles;
+    }
 
-	public void setRebotes(int rebotes) {
-		this.rebotes = rebotes;
-	}
+    public int getRebotes() {
+        return rebotes;
+    }
 
-	public int getTiros() {
-		return tiros;
-	}
+    public void setRebotes(int rebotes) {
+        this.rebotes = rebotes;
+    }
 
-	public void setTiros(int tiros) {
-		this.tiros = tiros;
-	}
+    public int getTiros() {
+        return tiros;
+    }
 
-	public int getPuntosContra() {
-		return puntosContra;
-	}
+    public void setTiros(int tiros) {
+        this.tiros = tiros;
+    }
 
-	public void setPuntosContra(int puntosContra) {
-		this.puntosContra = puntosContra;
-	}
+    public int getPuntosContra() {
+        return puntosContra;
+    }
 
-	public int getVictorias() {
-		return victorias;
-	}
+    public void setPuntosContra(int puntosContra) {
+        this.puntosContra = puntosContra;
+    }
 
-	public void setVictorias(int victorias) {
-		this.victorias = victorias;
-	}
+    public int getVictorias() {
+        return victorias;
+    }
 
-	public int getDerrotas() {
-		return derrotas;
-	}
+    public void setVictorias(int victorias) {
+        this.victorias = victorias;
+    }
 
-	public void setDerrotas(int derrotas) {
-		this.derrotas = derrotas;
-	}
+    public int getDerrotas() {
+        return derrotas;
+    }
 
-	public int getEmpates() {
-		return empates;
-	}
+    public void setDerrotas(int derrotas) {
+        this.derrotas = derrotas;
+    }
 
-	public void setEmpates(int empates) {
-		this.empates = empates;
-	}
+    public int getEmpates() {
+        return empates;
+    }
 
-	public int getAsistencias() {
-		return asistencias;
-	}
+    public void setEmpates(int empates) {
+        this.empates = empates;
+    }
 
-	public void setAsistencias(int asistencias) {
-		this.asistencias = asistencias;
-	}
+    public int getAsistencias() {
+        return asistencias;
+    }
 
-	public int getRobos() {
-		return robos;
-	}
+    public void setAsistencias(int asistencias) {
+        this.asistencias = asistencias;
+    }
 
-	public void setRobos(int robos) {
-		this.robos = robos;
-	}
+    public int getRobos() {
+        return robos;
+    }
 
-	public int getTapones() {
-		return tapones;
-	}
+    public void setRobos(int robos) {
+        this.robos = robos;
+    }
 
-	public void setTapones(int tapones) {
-		this.tapones = tapones;
-	}
+    public int getTapones() {
+        return tapones;
+    }
 
-	public int getPartidosJugados() {
-		return partidosJugados;
-	}
+    public void setTapones(int tapones) {
+        this.tapones = tapones;
+    }
 
-	public void setPartidosJugados(int partidosJugados) {
-		this.partidosJugados = partidosJugados;
-	}
-	public int getPerdidas() {
-		return perdidas;
-	}
+    public int getPerdidas() {
+        return perdidas;
+    }
 
-	public void setPerdidas(int perdidas) {
-		this.perdidas = perdidas;
-	}
+    public void setPerdidas(int perdidas) {
+        this.perdidas = perdidas;
+    }
 
-	public int getTirosLibres() {
-		return tirosLibres;
-	}
+    public int getTirosLibres() {
+        return tirosLibres;
+    }
 
-	public void setTirosLibres(int tirosLibres) {
-		this.tirosLibres = tirosLibres;
-	}
+    public void setTirosLibres(int tirosLibres) {
+        this.tirosLibres = tirosLibres;
+    }
 
-	public int getTirosLibresAcert() {
-		return tirosLibresAcert;
-	}
+    public int getTirosLibresAcert() {
+        return tirosLibresAcert;
+    }
 
-	public void setTirosLibresAcert(int tirosLibresAcert) {
-		this.tirosLibresAcert = tirosLibresAcert;
-	}
+    public void setTirosLibresAcert(int tirosLibresAcert) {
+        this.tirosLibresAcert = tirosLibresAcert;
+    }
 
-	public int getTriples() {
-		return triples;
-	}
+    public int getTriples() {
+        return triples;
+    }
 
-	public void setTriples(int triples) {
-		this.triples = triples;
-	}
-	public int puntuacion() {
-		return victorias*3 + empates;
-	}
-	
-	public void actualizarStats(int dobles, int rebotes, int asistencias, int robos, int tapones, int tirosLibres, int tirosLibresAcert, int triples) {
+    public void setTriples(int triples) {
+        this.triples = triples;
+    }
+
+    public int getPartidosJugados() {
+        return partidosJugados;
+    }
+
+    public void setPartidosJugados(int partidosJugados) {
+        this.partidosJugados = partidosJugados;
+    }
+
+    public int puntuacion() {
+        return victorias * 3 + empates;
+    }
+
+    public void actualizarStats(int dobles, int rebotes, int asistencias, int robos, int tapones,
+                                int tirosLibres, int tirosLibresAcert, int triples) {
         this.dobles += dobles;
         this.rebotes += rebotes;
         this.asistencias += asistencias;
@@ -178,142 +188,93 @@ public class StatsEquipo {
         this.tirosLibres += tirosLibres;
         this.tirosLibresAcert += tirosLibresAcert;
         this.triples += triples;
-	}
-	
-	public int puntosGenerados() {
-		return dobles*2 + triples*3 + tirosLibresAcert;
-	}
+    }
 
-	public float getPromedioPuntos() {
-        return puntos / partidosJugados;
+    public int puntosGenerados() {
+        return dobles * 2 + triples * 3 + tirosLibresAcert;
+    }
+
+    public float getPromedioPuntos() {
+        return partidosJugados > 0 ? (float) puntos / partidosJugados : 0;
     }
 
     public float getPorcentajeVictorias() {
-        return victorias / partidosJugados * 100;
+        return partidosJugados > 0 ? (float) victorias / partidosJugados * 100 : 0;
     }
 
     public float getDiferenciaPuntos() {
         return puntos - puntosContra;
     }
-    public Jugador mejorDelEquipo() {
-	    Jugador mejor = null;
-	    float maxPuntos = 0;
-	    
-	    for (Jugador aux : equipo.getNomina()) {
-	        float puntosTotales = aux.getStats().puntosMvp(); 
-	        if (puntosTotales > maxPuntos) {
-	            maxPuntos = puntosTotales;
-	            mejor = aux;
-	        }
-	    }
-	    return mejor;
-    }
+
     public Jugador jugadorMasPuntos() {
-	    Jugador mejor = null;
-	    int maxPuntos = 0;
-	    
-	    for (Jugador aux : equipo.getNomina()) {
-	        int puntosTotales = aux.getStats().puntosGenerados(); 
-	        if (puntosTotales > maxPuntos) {
-	            maxPuntos = puntosTotales;
-	            mejor = aux;
-	        }
-	    }
-	    return mejor;
-	}
-    public Jugador mejorTirador() {
-	    Jugador mejor = null;
-	    float maxPuntos = 0;
-	    
-	    for (Jugador aux : equipo.getNomina()) {
-	        float puntosTotales = aux.getStats().eTSPercent(); 
-	        if (puntosTotales > maxPuntos) {
-	            maxPuntos = puntosTotales;
-	            mejor = aux;
-	        }
-	    }
-	    return mejor;
-    }
-    public Jugador maxAsistidor() {
-	    Jugador mejor = null;
-	    int maxPuntos = 0;
-	    
-	    for (Jugador aux : equipo.getNomina()) {
-	        int puntosTotales = aux.getStats().getAsistencias(); 
-	        if (puntosTotales > maxPuntos) {
-	            maxPuntos = puntosTotales;
-	            mejor = aux;
-	        }
-	    }
-	    return mejor;
-    }
-    public Jugador mejorAtacante() {
-	    Jugador mejor = null;
-	    float maxPuntos = 0;
-	    
-	    for (Jugador aux : equipo.getNomina()) {
-	        float puntosTotales = aux.getStats().efOfensiva(); 
-	        if (puntosTotales > maxPuntos) {
-	            maxPuntos = puntosTotales;
-	            mejor = aux;
-	        }
-	    }
-	    return mejor;
-    }
-    public Jugador mejorDefensa() {
-	    Jugador mejor = null;
-	    float maxPuntos = 0;
-	    
-	    for (Jugador aux : equipo.getNomina()) {
-	        float puntosTotales = aux.getStats().efDefensiva(); 
-	        if (puntosTotales > maxPuntos) {
-	            maxPuntos = puntosTotales;
-	            mejor = aux;
-	        }
-	    }
-	    return mejor;
-    }
-    public Jugador jugMayorPosesion() {
-	    Jugador mejor = null;
-	    float maxPuntos = 0;
-	    
-	    for (Jugador aux : equipo.getNomina()) {
-	        float puntosTotales = aux.getStats().posesiones(); 
-	        if (puntosTotales > maxPuntos) {
-	            maxPuntos = puntosTotales;
-	            mejor = aux;
-	        }
-	    }
-	    return mejor;
-    }
-    public float eTSTeam() {
-		float valoracion = (puntosGenerados() + 0.5f*triples)/tiros;
-		return valoracion*100;
-    }
-    public float tripleRateTeam() {
-    	return (tiros/triples)*100;
-    }
-    
- // Puntos recibidos por equipo
-    public float getEficienciaDefensiva() {
-        if (partidosJugados == 0) {
-            return 0;
+        Jugador mejor = null;
+        int maxPuntos = 0;
+
+        for (Jugador aux : equipo.getNomina()) {
+            int puntosTotales = aux.getStats().getPuntos();
+            if (puntosTotales > maxPuntos) {
+                maxPuntos = puntosTotales;
+                mejor = aux;
+            }
         }
-        return puntosContra / partidosJugados;
+
+        return mejor;
     }
 
-    // Eficiencia ofensiva por partido
-    public float getEficienciaOfensiva() {
-        if (partidosJugados == 0) {
-            return 0;
+    public Jugador maxAsistidor() {
+        Jugador mejor = null;
+        int maxAsist = 0;
+
+        for (Jugador aux : equipo.getNomina()) {
+            int asist = aux.getStats().getAsistencias();
+            if (asist > maxAsist) {
+                maxAsist = asist;
+                mejor = aux;
+            }
         }
-        return puntos / partidosJugados;
+
+        return mejor;
     }
-   //para calcular la diferencia de puntos entre los 2 equipos jugadores 
-    public float getDiferenciaPromedioPuntos() {
-        if (partidosJugados == 0) {
-            return 0;
+
+
+    public Jugador mejorDelEquipo() {
+        Jugador mejor = null;
+        double max = 0;
+        for (Jugador j : equipo.getNomina()) {
+            double val = j.getStats().valoracion();
+            if (val > max) {
+                max = val;
+                mejor = j;
+            }
         }
-        return (puntos - puntosContra) / partidosJugados;
+        return mejor;
+    }
+
+    public float eTSTeam() {
+        if (tiros == 0) return 0;
+        return ((float) puntosGenerados() + 0.5f * triples) / tiros * 100;
+    }
+
+    public float tripleRateTeam() {
+        return triples == 0 ? 0 : (float) triples / tiros * 100;
+    }
+
+    public Jugador getJugadorMayorPosesion() {
+      
+        return null;
+    }
+
+    public Jugador mejorTirador() {
+        return null;
+    }
+
+    public Jugador mejorAtacante() {
+      
+        return null;
+    }
+
+    public Jugador mejorDefensa() {
+        
+        return null;
     }
 }
