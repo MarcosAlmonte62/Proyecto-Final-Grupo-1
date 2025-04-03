@@ -12,7 +12,7 @@ public class Partido {
     private StatsEquipo statsVisit;
     private Date fechaPartido;
     private String ubicacion;
-
+    private boolean finalizado = false;
 
     public int getId() {
 		return id;
@@ -111,10 +111,24 @@ public class Partido {
         stats.actualizarStats(stats.getDobles(), stats.getRebotes(), stats.getAsistencias(), stats.getRobos(), stats.getTapones(), stats.getTirosLibres(), stats.getTirosLibresAcert(), stats.getTriples());
         stats = equipoVisit.getStats();
         stats.actualizarStats(stats.getDobles(), stats.getRebotes(), stats.getAsistencias(), stats.getRobos(), stats.getTapones(), stats.getTirosLibres(), stats.getTirosLibresAcert(), stats.getTriples());
+        this.finalizado = true;
+    }
+    
+    public void setMarcador(int marcadorLocal, int marcadorVisit) {
+        this.marcadorLocal = marcadorLocal;
+        this.marcadorVisit = marcadorVisit;
     }
 
     public Equipo obtenerGanador() {
         return marcadorLocal > marcadorVisit ? equipoLocal : 
             marcadorVisit > marcadorLocal ? equipoVisit : null;
     }
+    public boolean isFinalizado() {
+        return finalizado;
+    }
+    
+    public boolean esEmpate() {
+        return marcadorLocal == marcadorVisit;
+    }
+
 }
