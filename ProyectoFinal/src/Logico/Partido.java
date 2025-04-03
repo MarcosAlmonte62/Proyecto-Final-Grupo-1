@@ -1,29 +1,27 @@
 package Logico;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 
-public class Partido {
+public class Partido implements Serializable {
 
-	private int id;
-    private int marcadorLocal;
-    private int marcadorVisit;
+    private static final long serialVersionUID = 1L;
+
     private Equipo equipoLocal;
-    private Equipo equipoVisit;
-    private StatsEquipo statsLocal;
-    private StatsEquipo statsVisit;
-    private Date fechaPartido;
+    private Equipo equipoVisitante;
+    private int puntosLocal;
+    private int puntosVisitante;
+    private Date fecha;
     private String ubicacion;
-    private boolean finalizado = false;
+    private boolean jugado = false;
 
-    public int getId() {
-		return id;
-	}
+    private ArrayList<StatsJugador> statsJugadores;
 
-	public int getMarcadorLocal() {
-        return marcadorLocal;
-    }
-
-    public int getMarcadorVisit() {
-        return marcadorVisit;
+    public Partido(Equipo equipoLocal, Equipo equipoVisitante) {
+        this.equipoLocal = equipoLocal;
+        this.equipoVisitante = equipoVisitante;
+        this.statsJugadores = new ArrayList<>();
     }
 
     public Equipo getEquipoLocal() {
@@ -34,36 +32,36 @@ public class Partido {
         this.equipoLocal = equipoLocal;
     }
 
-    public Equipo getEquipoVisit() {
-        return equipoVisit;
+    public Equipo getEquipoVisitante() {
+        return equipoVisitante;
     }
 
-    public void setEquipoVisit(Equipo equipoVisit) {
-        this.equipoVisit = equipoVisit;
+    public void setEquipoVisitante(Equipo equipoVisitante) {
+        this.equipoVisitante = equipoVisitante;
     }
 
-    public StatsEquipo getStatsLocal() {
-        return statsLocal;
+    public int getPuntosLocal() {
+        return puntosLocal;
     }
 
-    public void setStatsLocal(StatsEquipo statsLocal) {
-        this.statsLocal = statsLocal;
+    public void setPuntosLocal(int puntosLocal) {
+        this.puntosLocal = puntosLocal;
     }
 
-    public StatsEquipo getStatsVisit() {
-        return statsVisit;
+    public int getPuntosVisitante() {
+        return puntosVisitante;
     }
 
-    public void setStatsVisit(StatsEquipo statsVisit) {
-        this.statsVisit = statsVisit;
+    public void setPuntosVisitante(int puntosVisitante) {
+        this.puntosVisitante = puntosVisitante;
     }
 
-    public Date getFechaPartido() {
-        return fechaPartido;
+    public Date getFecha() {
+        return fecha;
     }
 
-    public void setFechaPartido(Date fechaPartido) {
-        this.fechaPartido = fechaPartido;
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
     public String getUbicacion() {
@@ -74,61 +72,19 @@ public class Partido {
         this.ubicacion = ubicacion;
     }
 
-
-    public Partido(Equipo equipoLocal, Equipo equipoVisit, Date fechaPartido, String ubicacion) {
-        this.equipoLocal = equipoLocal;
-        this.equipoVisit = equipoVisit;
-        this.fechaPartido = fechaPartido;
-        this.ubicacion = ubicacion;
-        for (Jugador j : equipoLocal.getNomina()) {
-        	this.marcadorLocal += j.getStats().puntosGenerados();
-        }
-        for (Jugador j : equipoVisit.getNomina()) {
-        	this.marcadorVisit += j.getStats().puntosGenerados();
-        }
-    }
-    public void finalizarPartido() {
-        if (marcadorLocal > marcadorVisit) {
-            statsLocal.setVictorias(statsLocal.getVictorias() + 1);
-            statsVisit.setDerrotas(statsVisit.getDerrotas() + 1);
-        } else if (marcadorVisit > marcadorLocal) {
-            statsVisit.setVictorias(statsVisit.getVictorias() + 1);
-            statsLocal.setDerrotas(statsLocal.getDerrotas() + 1);
-        } else {
-            statsLocal.setEmpates(statsLocal.getEmpates() + 1);
-            statsVisit.setEmpates(statsVisit.getEmpates() + 1);
-        }
-        
-        for(Jugador aux : equipoLocal.getNomina()) {
-        	StatsJugador stats = aux.getStats();
-        	stats.actualizarStats(stats.getDobles(), stats.getRebotes(), stats.getAsistencias(), stats.getTriples(), stats.getBloqueos(), stats.getTiros(), stats.getTirosLibres(), stats.getTirosLibresAcert(), stats.getTirosAcert(), stats.getRobos(), stats.getPerdidas());
-        }
-        for(Jugador aux : equipoVisit.getNomina()) {
-        	StatsJugador stats = aux.getStats();
-        	stats.actualizarStats(stats.getDobles(), stats.getRebotes(), stats.getAsistencias(), stats.getTriples(), stats.getBloqueos(), stats.getTiros(), stats.getTirosLibres(), stats.getTirosLibresAcert(), stats.getTirosAcert(), stats.getRobos(), stats.getPerdidas());
-        }
-        StatsEquipo stats = equipoLocal.getStats();
-        stats.actualizarStats(stats.getDobles(), stats.getRebotes(), stats.getAsistencias(), stats.getRobos(), stats.getTapones(), stats.getTirosLibres(), stats.getTirosLibresAcert(), stats.getTriples());
-        stats = equipoVisit.getStats();
-        stats.actualizarStats(stats.getDobles(), stats.getRebotes(), stats.getAsistencias(), stats.getRobos(), stats.getTapones(), stats.getTirosLibres(), stats.getTirosLibresAcert(), stats.getTriples());
-        this.finalizado = true;
-    }
-    
-    public void setMarcador(int marcadorLocal, int marcadorVisit) {
-        this.marcadorLocal = marcadorLocal;
-        this.marcadorVisit = marcadorVisit;
+    public ArrayList<StatsJugador> getStatsJugadores() {
+        return statsJugadores;
     }
 
-    public Equipo obtenerGanador() {
-        return marcadorLocal > marcadorVisit ? equipoLocal : 
-            marcadorVisit > marcadorLocal ? equipoVisit : null;
-    }
-    public boolean isFinalizado() {
-        return finalizado;
-    }
-    
-    public boolean esEmpate() {
-        return marcadorLocal == marcadorVisit;
+    public void setStatsJugadores(ArrayList<StatsJugador> statsJugadores) {
+        this.statsJugadores = statsJugadores;
     }
 
+    public boolean isJugado() {
+        return jugado;
+    }
+
+    public void setJugado(boolean jugado) {
+        this.jugado = jugado;
+    }
 }
