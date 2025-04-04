@@ -6,7 +6,7 @@ public class StatsJugador implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private int partidosJugados;
+    private int partidosJugados = 0;
     private int puntos;
     private int asistencias;
     private int rebotes;
@@ -20,19 +20,18 @@ public class StatsJugador implements Serializable {
     private int minutos;
     private Jugador jugador;
 
-    public StatsJugador(int partidosJugados, int puntos, int asistencias, int rebotes, int robos, int bloqueos,
-                        int perdidas, int dobles, int triples, int tirosLibres, int faltas, Jugador jugador) {
-        this.partidosJugados = partidosJugados;
-        this.puntos = puntos;
-        this.asistencias = asistencias;
-        this.rebotes = rebotes;
-        this.robos = robos;
-        this.bloqueos = bloqueos;
-        this.perdidas = perdidas;
-        this.dobles = dobles;
-        this.triples = triples;
-        this.tirosLibres = tirosLibres;
-        this.faltas = faltas;
+    public StatsJugador(Jugador jugador) {
+        this.partidosJugados = 0;
+        this.puntos  = 0;
+        this.asistencias = 0;
+        this.rebotes = 0;
+        this.robos = 0;
+        this.bloqueos = 0;
+        this.perdidas = 0;
+        this.dobles = 0;
+        this.triples = 0;
+        this.tirosLibres = 0;
+        this.faltas = 0;
         this.jugador = jugador;
     }
 
@@ -45,7 +44,7 @@ public class StatsJugador implements Serializable {
     }
 
     public void setPartidosJugados(int partidosJugados) {
-        this.partidosJugados = partidosJugados;
+        this.partidosJugados += partidosJugados;
     }
 
     public int getPuntos() {
@@ -53,7 +52,7 @@ public class StatsJugador implements Serializable {
     }
 
     public void setPuntos(int puntos) {
-        this.puntos = puntos;
+        this.puntos += puntos;
     }
 
     public int getAsistencias() {
@@ -61,7 +60,7 @@ public class StatsJugador implements Serializable {
     }
 
     public void setAsistencias(int asistencias) {
-        this.asistencias = asistencias;
+        this.asistencias += asistencias;
     }
 
     public int getRebotes() {
@@ -69,7 +68,7 @@ public class StatsJugador implements Serializable {
     }
 
     public void setRebotes(int rebotes) {
-        this.rebotes = rebotes;
+        this.rebotes += rebotes;
     }
 
     public int getRobos() {
@@ -77,7 +76,7 @@ public class StatsJugador implements Serializable {
     }
 
     public void setRobos(int robos) {
-        this.robos = robos;
+        this.robos += robos;
     }
 
     public int getBloqueos() {
@@ -85,7 +84,7 @@ public class StatsJugador implements Serializable {
     }
 
     public void setBloqueos(int bloqueos) {
-        this.bloqueos = bloqueos;
+        this.bloqueos += bloqueos;
     }
 
     public int getPerdidas() {
@@ -93,7 +92,7 @@ public class StatsJugador implements Serializable {
     }
 
     public void setPerdidas(int perdidas) {
-        this.perdidas = perdidas;
+        this.perdidas += perdidas;
     }
 
     public int getDobles() {
@@ -101,7 +100,7 @@ public class StatsJugador implements Serializable {
     }
 
     public void setDobles(int dobles) {
-        this.dobles = dobles;
+        this.dobles += dobles;
     }
 
     public int getTriples() {
@@ -109,7 +108,7 @@ public class StatsJugador implements Serializable {
     }
 
     public void setTriples(int triples) {
-        this.triples = triples;
+        this.triples += triples;
     }
 
     public int getTirosLibres() {
@@ -117,7 +116,7 @@ public class StatsJugador implements Serializable {
     }
 
     public void setTirosLibres(int tirosLibres) {
-        this.tirosLibres = tirosLibres;
+        this.tirosLibres += tirosLibres;
     }
 
     public int getFaltas() {
@@ -125,7 +124,7 @@ public class StatsJugador implements Serializable {
     }
 
     public void setFaltas(int faltas) {
-        this.faltas = faltas;
+        this.faltas += faltas;
     }
 
     public int getMinutos() {
@@ -133,7 +132,7 @@ public class StatsJugador implements Serializable {
     }
 
     public void setMinutos(int minutos) {
-        this.minutos = minutos;
+        this.minutos += minutos;
     }
 
     public Jugador getJugador() {

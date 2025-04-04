@@ -24,25 +24,23 @@ public class StatsEquipo implements Serializable {
     private int partidosJugados;
     private Equipo equipo;
 
-    public StatsEquipo(int puntos, int dobles, int rebotes, int tiros, int puntosContra, int victorias, int derrotas,
-                       int empates, int asistencias, int robos, int tapones, int perdidas, int tirosLibres,
-                       int tirosLibresAcert, int triples, int partidosJugados, Equipo equipo) {
-        this.puntos = puntos;
-        this.dobles = dobles;
-        this.rebotes = rebotes;
-        this.tiros = tiros;
-        this.puntosContra = puntosContra;
-        this.victorias = victorias;
-        this.derrotas = derrotas;
-        this.empates = empates;
-        this.asistencias = asistencias;
-        this.robos = robos;
-        this.tapones = tapones;
-        this.perdidas = perdidas;
-        this.tirosLibres = tirosLibres;
-        this.tirosLibresAcert = tirosLibresAcert;
-        this.triples = triples;
-        this.partidosJugados = partidosJugados;
+    public StatsEquipo(Equipo equipo) {
+        this.puntos = 0;
+        this.dobles = 0;
+        this.rebotes = 0;
+        this.tiros = 0;
+        this.puntosContra = 0;
+        this.victorias = 0;
+        this.derrotas = 0;
+        this.empates = 0;
+        this.asistencias = 0;
+        this.robos = 0;
+        this.tapones = 0;
+        this.perdidas = 0;
+        this.tirosLibres = 0;
+        this.tirosLibresAcert = 0;
+        this.triples = 0;
+        this.partidosJugados = 0;
         this.equipo = equipo;
     }
 
@@ -51,7 +49,7 @@ public class StatsEquipo implements Serializable {
     }
 
     public void setPuntos(int puntos) {
-        this.puntos = puntos;
+        this.puntos += puntos;
     }
 
     public int getDobles() {
@@ -59,7 +57,7 @@ public class StatsEquipo implements Serializable {
     }
 
     public void setDobles(int dobles) {
-        this.dobles = dobles;
+        this.dobles += dobles;
     }
 
     public int getRebotes() {
@@ -67,7 +65,7 @@ public class StatsEquipo implements Serializable {
     }
 
     public void setRebotes(int rebotes) {
-        this.rebotes = rebotes;
+        this.rebotes += rebotes;
     }
 
     public int getTiros() {
@@ -75,7 +73,7 @@ public class StatsEquipo implements Serializable {
     }
 
     public void setTiros(int tiros) {
-        this.tiros = tiros;
+        this.tiros += tiros;
     }
 
     public int getPuntosContra() {
@@ -83,7 +81,7 @@ public class StatsEquipo implements Serializable {
     }
 
     public void setPuntosContra(int puntosContra) {
-        this.puntosContra = puntosContra;
+        this.puntosContra += puntosContra;
     }
 
     public int getVictorias() {
@@ -91,7 +89,7 @@ public class StatsEquipo implements Serializable {
     }
 
     public void setVictorias(int victorias) {
-        this.victorias = victorias;
+        this.victorias += victorias;
     }
 
     public int getDerrotas() {
@@ -99,7 +97,7 @@ public class StatsEquipo implements Serializable {
     }
 
     public void setDerrotas(int derrotas) {
-        this.derrotas = derrotas;
+        this.derrotas += derrotas;
     }
 
     public int getEmpates() {
@@ -107,7 +105,7 @@ public class StatsEquipo implements Serializable {
     }
 
     public void setEmpates(int empates) {
-        this.empates = empates;
+        this.empates += empates;
     }
 
     public int getAsistencias() {
@@ -115,7 +113,7 @@ public class StatsEquipo implements Serializable {
     }
 
     public void setAsistencias(int asistencias) {
-        this.asistencias = asistencias;
+        this.asistencias += asistencias;
     }
 
     public int getRobos() {
@@ -123,7 +121,7 @@ public class StatsEquipo implements Serializable {
     }
 
     public void setRobos(int robos) {
-        this.robos = robos;
+        this.robos += robos;
     }
 
     public int getTapones() {
@@ -131,7 +129,7 @@ public class StatsEquipo implements Serializable {
     }
 
     public void setTapones(int tapones) {
-        this.tapones = tapones;
+        this.tapones += tapones;
     }
 
     public int getPerdidas() {
@@ -139,7 +137,7 @@ public class StatsEquipo implements Serializable {
     }
 
     public void setPerdidas(int perdidas) {
-        this.perdidas = perdidas;
+        this.perdidas += perdidas;
     }
 
     public int getTirosLibres() {
@@ -147,7 +145,7 @@ public class StatsEquipo implements Serializable {
     }
 
     public void setTirosLibres(int tirosLibres) {
-        this.tirosLibres = tirosLibres;
+        this.tirosLibres += tirosLibres;
     }
 
     public int getTirosLibresAcert() {
@@ -155,7 +153,7 @@ public class StatsEquipo implements Serializable {
     }
 
     public void setTirosLibresAcert(int tirosLibresAcert) {
-        this.tirosLibresAcert = tirosLibresAcert;
+        this.tirosLibresAcert += tirosLibresAcert;
     }
 
     public int getTriples() {
@@ -163,7 +161,7 @@ public class StatsEquipo implements Serializable {
     }
 
     public void setTriples(int triples) {
-        this.triples = triples;
+        this.triples += triples;
     }
 
     public int getPartidosJugados() {
@@ -171,7 +169,7 @@ public class StatsEquipo implements Serializable {
     }
 
     public void setPartidosJugados(int partidosJugados) {
-        this.partidosJugados = partidosJugados;
+        this.partidosJugados += partidosJugados;
     }
 
     public int puntuacion() {
@@ -207,7 +205,7 @@ public class StatsEquipo implements Serializable {
     }
 
     public Jugador jugadorMasPuntos() {
-        Jugador mejor = null;
+    	Jugador mejor = null;
         int maxPuntos = 0;
 
         for (Jugador aux : equipo.getNomina()) {
@@ -222,7 +220,7 @@ public class StatsEquipo implements Serializable {
     }
 
     public Jugador maxAsistidor() {
-        Jugador mejor = null;
+    	Jugador mejor = null;
         int maxAsist = 0;
 
         for (Jugador aux : equipo.getNomina()) {
@@ -238,7 +236,7 @@ public class StatsEquipo implements Serializable {
 
 
     public Jugador mejorDelEquipo() {
-        Jugador mejor = null;
+    	Jugador mejor = null;
         double max = 0;
         for (Jugador j : equipo.getNomina()) {
             double val = j.getStats().valoracion();
