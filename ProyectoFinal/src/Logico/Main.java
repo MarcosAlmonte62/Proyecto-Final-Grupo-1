@@ -1,84 +1,123 @@
 package Logico;
-
 import java.sql.Date;
-import java.text.SimpleDateFormat;
 
 public class Main {
     public static void main(String[] args) {
-        SerieNacional liga = SerieNacional.getInstance();
-
-        // Crear jugadores
-        Jugador j1 = new Jugador("Carlos Méndez", 24, "Dominicana", null, null,
-                new StatsJugador(10, 5, 3, 2, 1, 0, 2, 1, 0, 0, 0, null),
-                7, 190, 85, "Escolta", new Date(System.currentTimeMillis()));
-        j1.setRating(8.5f);
-
-        Jugador j2 = new Jugador("Luis Gómez", 26, "Dominicana", null, null,
-                new StatsJugador(20, 2, 6, 1, 0, 3, 4, 2, 0, 0, 0, null),
-                12, 200, 95, "Ala-Pívot", new Date(System.currentTimeMillis()));
-        j2.setRating(9.2f);
-
-        liga.agregarJugador(j1);
-        liga.agregarJugador(j2);
-
-        // Crear equipo
-        Equipo equipo1 = new Equipo();
-        equipo1.setNombre("Tigres del Este");
-        equipo1.setCiudad("Santiago");
-        equipo1.setEstadio("Arena del Sol");
-
-        j1.setEquipo(equipo1);
-        j2.setEquipo(equipo1);
-        equipo1.agregarJugador(j1);
-        equipo1.agregarJugador(j2);
-
-        StatsEquipo statsEquipo = new StatsEquipo(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, equipo1);
-        equipo1.setStats(statsEquipo);
-
-        liga.agregarEquipo(equipo1);
-
-        // Crear partido
-        Equipo equipo2 = new Equipo();
-        equipo2.setNombre("Panteras FC");
-        equipo2.setCiudad("Santo Domingo");
-        equipo2.setEstadio("Panther Arena");
-        equipo2.setNomina(new java.util.ArrayList<>());
-        equipo2.setStats(new StatsEquipo(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, equipo2));
-
-        liga.agregarEquipo(equipo2);
-
-        Partido p1 = new Partido(equipo1, equipo2);
-        try {
-            p1.setFecha(new SimpleDateFormat("dd/MM/yyyy").parse("15/04/2025"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        p1.setUbicacion("Arena del Sol");
-        p1.setPuntosLocal(87);
-        p1.setPuntosVisitante(78);
-        p1.setJugado(true);
-
-        liga.agregarPartido(p1);
-
-        // Probar MVP
-        Jugador mvp = liga.mejorDelTorneo();
-        if (mvp != null) {
-            System.out.println("MVP del torneo: " + mvp.getNombre() + " con valoración " + mvp.getStats().valoracion());
-        } else {
-            System.out.println("No hay MVP (aún).");
-        }
-
-        // Mostrar clasificación
-        System.out.println("\nEquipos en la liga:");
-        for (Equipo e : liga.getClasificacion()) {
-            System.out.println("- " + e.getNombre());
-        }
-
-        // Mostrar calendario
-        System.out.println("\nPartidos agendados:");
-        for (Partido p : liga.getCalendario()) {
-            System.out.println(p.getEquipoLocal().getNombre() + " vs " + p.getEquipoVisitante().getNombre() +
-                    " [" + (p.isJugado() ? "Jugado" : "Pendiente") + "]");
-        }
+    	/**
+        // Crear equipos
+        Equipo lakers = new Equipo(
+            "Los Angeles Lakers", 
+            "Los Angeles", 
+            "Crypto.com Arena", 
+            "Darvin Ham", 
+            "Jeanie Buss", 
+            17, 
+            Date.valueOf("1947-01-01")
+        );
+        
+        Equipo celtics = new Equipo(
+            "Boston Celtics", 
+            "Boston", 
+            "TD Garden", 
+            "Joe Mazzulla", 
+            "Boston Basketball Partners", 
+            17, 
+            Date.valueOf("1946-06-06")
+        );
+        
+        // Añadir jugadores a los Lakers
+        agregarJugador(lakers, "LeBron James", 38, "Estados Unidos", null, 23, 206, 113, "Alero");
+        agregarJugador(lakers, "Anthony Davis", 30, "Estados Unidos", null, 3, 208, 115, "Ala-Pívot");
+        agregarJugador(lakers, "D'Angelo Russell", 27, "Estados Unidos", null, 1, 193, 88, "Base");
+        agregarJugador(lakers, "Austin Reaves", 25, "Estados Unidos", null, 15, 196, 89, "Escolta");
+        agregarJugador(lakers, "Rui Hachimura", 25, "Japón", null, 28, 203, 104, "Alero");
+        
+        // Añadir jugadores a los Celtics
+        agregarJugador(celtics, "Jayson Tatum", 25, "Estados Unidos", null, 0, 203, 95, "Alero");
+        agregarJugador(celtics, "Jaylen Brown", 27, "Estados Unidos", null, 7, 198, 101, "Escolta");
+        agregarJugador(celtics, "Kristaps Porzingis", 28, "Letonia", null, 8, 221, 109, "Pívot");
+        agregarJugador(celtics, "Derrick White", 29, "Estados Unidos", null, 9, 193, 86, "Base");
+        agregarJugador(celtics, "Al Horford", 37, "República Dominicana", null, 42, 206, 109, "Ala-Pívot");
+        
+        // Crear y configurar partido
+        Partido partido = new Partido(lakers, celtics);
+        partido.setFecha(new Date(System.currentTimeMillis()));
+        partido.setUbicacion(lakers.getEstadio());
+        partido.setDuracion(30000); // 30 segundos de simulación (ajustable)
+        
+        // Simular partido
+        System.out.println("=== SIMULACIÓN DE PARTIDO ===");
+        System.out.println(lakers.getNombre() + " vs " + celtics.getNombre());
+        System.out.println("Ubicación: " + partido.getUbicacion());
+        System.out.println("Fecha: " + partido.getFecha());
+        System.out.println("Entrenadores: " + lakers.getEntrenador() + " vs " + celtics.getEntrenador());
+        
+        partido.simularPartido();
+        
+        // Mostrar resultados detallados
+        mostrarEstadisticas(partido);
+        
+        // Añadir partido al historial de los equipos
+        lakers.agregarAlHistorial(partido);
+        celtics.agregarAlHistorial(partido);
     }
-}
+    
+    private static void agregarJugador(Equipo equipo, String nombre, int edad, String nacionalidad, 
+                                     Lesion lesion, int dorsal, int altura, int peso, String posicion) {
+        Jugador jugador = new Jugador(
+            nombre, 
+            edad, 
+            nacionalidad, 
+            lesion, 
+            equipo, 
+            new StatsJugador(null), // Se inicializará en el partido
+            dorsal, 
+            altura, 
+            peso, 
+            posicion, 
+            new Date(System.currentTimeMillis())
+        );
+        jugador.getStats().setJugador(jugador); // Asignar el jugador a sus stats
+        equipo.agregarJugador(jugador);
+    }
+    
+    public static void mostrarEstadisticas(Partido partido) {
+        System.out.println("\n=== ESTADÍSTICAS FINALES ===");
+        System.out.printf("Resultado: %s %d - %d %s\n", 
+            partido.getEquipoLocal().getNombre(), 
+            partido.getPuntosLocal(), 
+            partido.getPuntosVisitante(), 
+            partido.getEquipoVisitante().getNombre());
+        
+        System.out.println("\nEstadísticas por jugador:");
+        for (Logico.StatsJugador stats : partido.getStatsJugadoresLocal()) {
+            Jugador jugador = stats.getJugador();
+            System.out.printf("\n%s #%d (%s) - %s\n", 
+                jugador.getNombre(), 
+                jugador.getDorsal(),
+                jugador.getPosicion(), 
+                jugador.getEquipo().getNombre());
+            
+            System.out.printf("Puntos: %d (Dobles: %d/%d, Triples: %d/%d, TL: %d/%d)\n", 
+                stats.puntosGenerados(), 
+                stats.getDobles(), stats.getDobles() + (stats.getTirosAcert() - stats.getDobles() - stats.getTriples()),
+                stats.getTriples(), stats.getTriples() + (stats.getTiros() - stats.getTirosAcert()),
+                stats.getTirosLibresAcert(), stats.getTirosLibres());
+            
+            System.out.printf("Rebotes: %d (Of: %d, Def: %d) | Asistencias: %d\n", 
+                stats.getRebotes() + stats.getRebotesDef(), 
+                stats.getRebotes(), stats.getRebotesDef(),
+                stats.getAsistencias());
+            
+            System.out.printf("Robos: %d | Bloqueos: %d | Faltas: %d | Pérdidas: %d\n", 
+                stats.getRobos(), stats.getBloqueos(), 
+                stats.getFaltas(), stats.getPerdidas());
+            
+            System.out.printf("Valoración: %.1f | Eficiencia: %.1f%%\n", 
+                stats.valoracion(), stats.eFGPercent());
+            
+        }
+        **/
+    }
+    
+} 

@@ -4,19 +4,19 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Partido extends Thread implements Serializable {
+public class Partido implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private Equipo equipoLocal;
     private Equipo equipoVisitante;
+    private Equipo equipoConPosesion;
     private int puntosLocal;
     private int puntosVisitante;
     private Date fecha;
     private String ubicacion;
     private long duracion;
     private boolean jugado = false;
-
     private ArrayList<StatsJugador> statsJugadores;
 
     public Partido(Equipo equipoLocal, Equipo equipoVisitante) {
@@ -91,114 +91,342 @@ public class Partido extends Thread implements Serializable {
     public long getDuracion() {
     	return duracion;
     }
-    public void setJugado(long duracion) {
+    public void setDuracion(long duracion) {
         this.duracion = duracion;
     }
-    
+
     public void inicializarStats() {
-        
-        StatsEquipo statsLocal = new StatsEquipo(equipoLocal);
-        StatsEquipo statsVisitante = new StatsEquipo(equipoVisitante);
-        
         for (Jugador jugador : equipoLocal.getNomina()) {
             statsJugadores.add(new StatsJugador(jugador));
         }
-
         for (Jugador jugador : equipoVisitante.getNomina()) {
             statsJugadores.add(new StatsJugador(jugador));
         }
     }
 
-    
     public int generarRandom(int minimoValor, int maximoValor) {
-    	return (int)(Math.random()*(maximoValor - minimoValor+1) + minimoValor);
+        return (int)(Math.random()*(maximoValor - minimoValor+1) + minimoValor);
     }
-    
-    public Equipo simularPartido(Equipo local, Equipo visit) {
-    	int marcadorLocal = 0;
-    	int marcadorVisit = 0;
-    	Equipo ganador = null;
-    	Equipo posesion = null;
-    	Equipo contra = null;
-    	Jugador poseedor = null;
-    	Jugador antecesor = null;
-    	int accion = 1;
-    	if(generarRandom(1,50) >= 49) {
-    		posesion = local;
-    		contra = visit;
+
+    public void simularPartido() {
+        inicializarStats();
+        this.puntosLocal = 0;
+        this.puntosVisitante = 0;
+        if (generarRandom(1,50) >= 49) {
+            this.equipoConPosesion = equipoLocal;
+        } else {
+            this.equipoConPosesion = equipoVisitante;
+        }
+        
+        System.out.println("\n=== INICIO DEL PARTIDO ===");
+        System.out.println("Saque inicial para: " + equipoConPosesion.getNombre());
+
+        long inicio = System.currentTimeMillis();
+        int posesionCount = 0;
+        int accion = 1;
+        Jugador antecesor = null;
+
+        while ((System.currentTimeMillis() - inicio) < duracion) {
+            posesionCount++;
+            Jugador poseedor = obtenerJugador(equipoConPosesion);
+            switch (accion) {
+                case 1: // Pase exitoso
+                    Jugador receptor = obtenerJugador(equipoConPosesion);
+                    registrarPase(poseedor, receptor);
+                    break;
+
+                case 2: // Falta en defensa
+                	Jugador defensor;
+                	if (equipoConPosesion == equipoLocal) {
+                	    defensor = obtenerJugador(equipoVisitante);
+                	} else {
+                	    defensor = obtenerJugador(equipoLocal);
+                	}
+                	registrarFalta(defensor, poseedor);
+                    break;
+                case 3: // Falta en ataque
+                    registrarFaltaAtaque(poseedor);
+                    break;
+
+                case 4: // Anotación
+                	int puntos;
+                	if (generarRandom(1, 100) <= 65) {
+                	    puntos = 2;
+                	} else {
+                	    puntos = 3;
+                	}
+                    registrarAnotacion(poseedor, antecesor, puntos);
+                    break;
+
+                case 5: // Tiro fallado
+                    registrarTiroFallado(poseedor);
+                    break;
+
+                case 6: // Robo de balón
+                    registrarRobo(poseedor);
+                    break;
+
+                case 7: // Balón fuera
+                    registrarBalonFuera();
+                    break;
+
+                case 8: // Bloqueo
+                    registrarBloqueo(poseedor);
+                    break;
+
+                default: // Pérdida común
+                    registrarPerdida(poseedor);
+                    break;
+            }
+            pausa(1000);
+            antecesor = poseedor;
+            accion = determinarAccion();
+        }
+        finalizarPartido();
+    }
+
+    private void registrarPase(Jugador emisor, Jugador receptor) {
+        StatsJugador statsEmisor = buscarJugador(emisor);
+        StatsJugador statsReceptor = buscarJugador(receptor);
+        
+        System.out.printf("\n[Pase] %s -> %s (%s)", 
+            emisor.getNombre(), receptor.getNombre(), equipoConPosesion.getNombre());
+    }
+
+    private void registrarFalta(Jugador defensor, Jugador atacante) {
+        StatsJugador statsDefensor = buscarJugador(defensor);
+        StatsJugador statsAtacante = buscarJugador(atacante);
+        
+        statsDefensor.setFaltas(1);
+        statsAtacante.setTirosLibres(1);
+        
+        System.out.printf("\n[Falta] %s comete falta sobre %s", 
+            defensor.getNombre(), atacante.getNombre());
+
+        if (generarRandom(1, 100) <= 65) {
+            statsAtacante.setTirosLibresAcert(1);
+            if (equipoConPosesion == equipoLocal) puntosLocal++;
+            else puntosVisitante++;
+            System.out.printf("\n[Tiros libres] %s anota 1 punto", atacante.getNombre());
+        }
+        
+        cambiarPosesion();
+    }
+
+    private void registrarFaltaAtaque(Jugador atacante) {
+        StatsJugador stats = buscarJugador(atacante);
+        stats.setFaltas(1);
+        stats.setPerdidas(1);
+        
+        System.out.printf("\n[Falta en ataque] %s pierde la posesión", atacante.getNombre());
+        cambiarPosesion();
+    }
+
+    private void registrarAnotacion(Jugador anotador, Jugador asistente, int puntos) {
+        StatsJugador stats = buscarJugador(anotador);
+        StatsJugador asistidor = buscarJugador(asistente);
+        
+        String tipoTiro;
+        if (puntos == 2) {
+            tipoTiro = "doble";
+        } else {
+            tipoTiro = "triple";
+        }
+        stats.setTiros(1);
+        stats.setTirosAcert(1);
+        if (puntos == 2) stats.setDobles(1);
+        else stats.setTriples(1);
+        asistidor.setAsistencias(1);
+        
+        if (equipoConPosesion == equipoLocal) puntosLocal += puntos;
+        else puntosVisitante += puntos;
+        
+        System.out.printf("\n[Anotación] %s anota un %s (%d pts) para %s", 
+            anotador.getNombre(), tipoTiro, puntos, equipoConPosesion.getNombre());
+        
+        cambiarPosesion();
+        siguienteAccionPase();
+    }
+
+    private void registrarTiroFallado(Jugador tirador) {
+        StatsJugador stats = buscarJugador(tirador);
+        stats.setTiros(1);
+        
+        System.out.printf("\n[Tiro fallado] %s erra el tiro", tirador.getNombre());
+        
+        if (generarRandom(1, 100) <= 30) {
+            Jugador reboteador = obtenerJugador(equipoConPosesion);
+            StatsJugador statsReboteador = buscarJugador(reboteador);
+            statsReboteador.setRebotes(1);
+            System.out.printf("\n[Rebote ofensivo] %s lo recupera", reboteador.getNombre());
+        } else {
+            cambiarPosesion();
+            Jugador reboteador = obtenerJugador(equipoConPosesion);
+            StatsJugador statsReboteador = buscarJugador(reboteador);
+            statsReboteador.setRebotesDef(1);
+            System.out.printf("\n[Rebote defensivo] %s lo toma para %s", 
+                reboteador.getNombre(), equipoConPosesion.getNombre());
+        }
+    }
+
+    private void registrarRobo(Jugador victima) {
+    	Equipo equipoDefensor;
+    	if (equipoConPosesion == equipoLocal) {
+    	    equipoDefensor = equipoVisitante;
     	} else {
-    		posesion = visit;
-    		contra = local;
+    	    equipoDefensor = equipoLocal;
     	}
-    	poseedor = obtenerJugador(posesion);
-    	
-    	while((System.currentTimeMillis() - duracion) / 1000 < duracion){
-    		switch(determinarAccion()) {
-    		case 1:
-    			antecesor = poseedor;
-    			poseedor = obtenerJugador(posesion);
-    			break;
-    		case 2:
-    			if(posesion.equals(local)) {
-    				buscarJugador(obtenerJugador(visit)).setFaltas(1);
-    			}
-    			else {
-    				buscarJugador(obtenerJugador(local)).setFaltas(1);
-    			}
-    			break;
-    		case 3:
-    			buscarJugador(poseedor).setPuntos(1);
-    			buscarJugador(antecesor).setAsistencias(1);
-    			break;
-    			default:
-    			antecesor = poseedor;
-    			buscarJugador(poseedor).setPerdidas(1);	
-    			poseedor = obtenerJugador(contra);
-    			
-    			if(poseedor.equals(local)) {
-    				local = posesion;
-    				visit = contra;
-    			}else {
-    				visit = posesion;
-    				local = contra;
-    			}
-    			break;
-    		}
-    		
-    			
-    	}
-    	
-    	return ganador;
+    	Jugador ladron = obtenerJugador(equipoDefensor);
+    	StatsJugador statsLadron = buscarJugador(ladron);
+    	StatsJugador statsVictima = buscarJugador(victima);
+        
+        statsLadron.setRobos(1);
+        statsVictima.setPerdidas(1);
+        
+        System.out.printf("\n[Robo] %s le roba el balón a %s", 
+            ladron.getNombre(), victima.getNombre());
+        
+        cambiarPosesion();
     }
-    
+
+    private void registrarBalonFuera() {
+        System.out.printf("\n[Balón fuera] %s pierde la posesión", equipoConPosesion.getNombre());
+        cambiarPosesion();
+        siguienteAccionPase();
+    }
+
+    private void registrarBloqueo(Jugador tirador) {
+    	Equipo equipoBloqueador;
+    	if (equipoConPosesion == equipoLocal) {
+    	    equipoBloqueador = equipoVisitante;
+    	} else {
+    	    equipoBloqueador = equipoLocal;
+    	}
+
+    	Jugador bloqueador = obtenerJugador(equipoBloqueador);
+        StatsJugador statsBloqueador = buscarJugador(bloqueador);
+        StatsJugador statsTirador = buscarJugador(tirador);
+        
+        statsBloqueador.setBloqueos(1);
+        
+        System.out.printf("\n[Bloqueo] %s bloquea a %s", 
+            bloqueador.getNombre(), tirador.getNombre());
+        
+        if (generarRandom(1, 100) <= 50) {
+            Jugador reboteador = obtenerJugador(equipoConPosesion);
+            StatsJugador statsReboteador = buscarJugador(reboteador);
+            statsReboteador.setRebotes(1);
+            System.out.printf("\n[Recuperación] %s mantiene la posesión", reboteador.getNombre());
+        } else {
+            cambiarPosesion();
+            Jugador reboteador = obtenerJugador(equipoConPosesion);
+            StatsJugador statsReboteador = buscarJugador(reboteador);
+            statsReboteador.setRebotesDef(1);
+            System.out.printf("\n[Recuperación] %s gana la posesión", reboteador.getNombre());
+        }
+    }
+
+    private void registrarPerdida(Jugador perdedor) {
+        StatsJugador stats = buscarJugador(perdedor);
+        stats.setPerdidas(1);
+        
+        System.out.printf("\n[Pérdida] %s pierde el balón", perdedor.getNombre());
+        cambiarPosesion();
+    }
+
+    private void siguienteAccionPase() {
+        Jugador poseedor = obtenerJugador(equipoConPosesion);
+        Jugador receptor = obtenerJugador(equipoConPosesion);
+        registrarPase(poseedor, receptor);
+    }
+
+    private void finalizarPartido() {
+        this.jugado = true;
+        System.out.println("\n\n=== FINAL DEL PARTIDO ===");
+        System.out.printf("Resultado: %s %d - %d %s\n", 
+            equipoLocal.getNombre(), puntosLocal, puntosVisitante, equipoVisitante.getNombre());
+        
+        actualizarStatsEquipo();
+    }
+
+    private void actualizarStatsEquipo() {
+        StatsEquipo statsLocal = new StatsEquipo(equipoLocal);
+        StatsEquipo statsVisitante = new StatsEquipo(equipoVisitante);
+        
+        for (StatsJugador stats : statsJugadores) {
+            if (stats.getJugador().getEquipo() == equipoLocal) {
+                statsLocal.actualizarStats(
+                    stats.getDobles(), stats.getRebotes(), stats.getAsistencias(),
+                    stats.getRobos(), stats.getBloqueos(), stats.getTirosLibres(),
+                    stats.getTirosLibresAcert(), stats.getTriples()
+                );
+            } else {
+                statsVisitante.actualizarStats(
+                    stats.getDobles(), stats.getRebotes(), stats.getAsistencias(),
+                    stats.getRobos(), stats.getBloqueos(), stats.getTirosLibres(),
+                    stats.getTirosLibresAcert(), stats.getTriples()
+                );
+            }
+        }
+        
+        if (puntosLocal > puntosVisitante) {
+            statsLocal.setVictorias(1);
+            statsVisitante.setDerrotas(1);
+        } else if (puntosVisitante > puntosLocal) {
+            statsVisitante.setVictorias(1);
+            statsLocal.setDerrotas(1);
+        }
+    }
+
     public int determinarAccion() {
-    	int num = generarRandom(1,100);
-    	int accion;
-    	if(num>=1 && num<=20) {
-    		return 1; //pasar la pelota
-    	}
-    	else if(num>=21 && num<=30) {
-    		return 2; //falta a favor
-    	}
-    	else if(num>=31 && num<=50) {
-    		return 3; //tirar
-    	}
-    	else {
-    		return 0; //perder posesion
-    	}
-    	
+        int num = generarRandom(1, 100);
+        if (num >= 1 && num <= 15) 
+        	return 1;   // Pase
+        else if (num >= 16 && num <= 20) 
+        	return 2;  // Falta en defensa
+        else if (num >= 21 && num <= 25) 
+        	return 3;  // Falta en ataque
+        else if (num >= 26 && num <= 45) 
+        	return 4;  // Anotación
+        else if (num >= 46 && num <= 65) 
+        	return 5;  // Tiro fallado
+        else if (num >= 66 && num <= 75) 
+        	return 6;  // Robo
+        else if (num >= 76 && num <= 85) 
+        	return 7;  // Balón fuera
+        else if (num >= 86 && num <= 95) 
+        	return 8;  // Bloqueo
+        else 
+        	return 0;  // Pérdida común
     }
-    public Jugador obtenerJugador(Equipo posesion) {
-        int indice = generarRandom(0, posesion.getNomina().size() - 1);
-        return posesion.getNomina().get(indice);
+
+    public Jugador obtenerJugador(Equipo equipo) {
+        int indice = generarRandom(0, equipo.getNomina().size() - 1);
+        return equipo.getNomina().get(indice);
     }
     
-    public StatsJugador buscarJugador(Jugador juga) {
-    	for(StatsJugador j : statsJugadores) {
-    		if(j.equals(juga.getStats())) {
-    			return j;
-    		}	
+    public StatsJugador buscarJugador(Jugador jugador) {
+        for (StatsJugador stats : statsJugadores) {
+            if (stats.getJugador().equals(jugador)) {
+                return stats;
+            }
+        }
+        return null;
+    }
+    
+    private void cambiarPosesion() {
+    	if (equipoConPosesion == equipoLocal) {
+    	    equipoConPosesion = equipoVisitante;
+    	} else {
+    	    equipoConPosesion = equipoLocal;
     	}
-    	return null;
+    }
+    
+    private void pausa(int milisegundos) {
+        try {
+            Thread.sleep(milisegundos); 
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 }

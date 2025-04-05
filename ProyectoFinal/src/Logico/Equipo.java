@@ -1,14 +1,31 @@
 package Logico;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 public class Equipo {
     private String nombre;
     private String ciudad;
     private String estadio;
+    private String entrenador;
+    private String propietario;
+    private int palmares; //cantidad de trofeos
+    private Date fundacion;
     private ArrayList<Jugador> nomina;
     private ArrayList<Partido> historial;
     private StatsEquipo stats;
+    
+    public Equipo(String nombre, String ciudad, String estadio, String entrenador, String propietario, int palmares, Date fundacion) {
+        this.nombre = nombre;
+        this.ciudad = ciudad;
+        this.estadio = estadio;
+        this.entrenador = entrenador;
+        this.propietario = propietario;
+        this.palmares = palmares;
+        this.fundacion = fundacion;
+        this.nomina = new ArrayList<>();
+        this.stats = new StatsEquipo(this);
+    }
 
     // Getters y Setters necesarios
     public String getNombre() {
@@ -27,7 +44,39 @@ public class Equipo {
         this.ciudad = ciudad;
     }
 
-    public ArrayList<Jugador> getNomina() {
+    public String getEntrenador() {
+		return entrenador;
+	}
+
+	public void setEntrenador(String entrenador) {
+		this.entrenador = entrenador;
+	}
+
+	public String getPropietario() {
+		return propietario;
+	}
+
+	public void setPropietario(String propietario) {
+		this.propietario = propietario;
+	}
+
+	public int getPalmares() {
+		return palmares;
+	}
+
+	public void setPalmares(int palmares) {
+		this.palmares = palmares;
+	}
+
+	public Date getFundacion() {
+		return fundacion;
+	}
+
+	public void setFundacion(Date fundacion) {
+		this.fundacion = fundacion;
+	}
+
+	public ArrayList<Jugador> getNomina() {
         return nomina;
     }
 

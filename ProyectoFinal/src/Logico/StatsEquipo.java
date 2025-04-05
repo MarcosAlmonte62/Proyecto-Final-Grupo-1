@@ -209,7 +209,7 @@ public class StatsEquipo implements Serializable {
         int maxPuntos = 0;
 
         for (Jugador aux : equipo.getNomina()) {
-            int puntosTotales = aux.getStats().getPuntos();
+            int puntosTotales = aux.getStats().puntosGenerados();
             if (puntosTotales > maxPuntos) {
                 maxPuntos = puntosTotales;
                 mejor = aux;
