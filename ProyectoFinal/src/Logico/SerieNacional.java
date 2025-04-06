@@ -77,10 +77,30 @@ public class SerieNacional implements Serializable {
 
         return mejor;
     }
+    
+    public Equipo liderClasificacion() {
+    	int mayor = 0;
+    	Equipo lider = null;
+    	for(Equipo e : clasificacion) {
+    		if(mayor < e.getStats().puntuacion()) {
+    			mayor = e.getStats().puntuacion();
+    			lider = e;
+    		}
+    	}
+    	return lider;
+    }
+    
+    public Jugador buscarJugadorPorNombre(String nombre) {
+        for (Jugador jugador : todosLosJugadores) {
+            if (jugador.getNombre().equalsIgnoreCase(nombre)) {
+                return jugador;
+            }
+        }
+        return null;
+    }
 
     public void generarCalendario() {
         calendario.clear();
-
         for (int i = 0; i < clasificacion.size(); i++) {
             for (int j = i + 1; j < clasificacion.size(); j++) {
                 Partido ida = new Partido(clasificacion.get(i), clasificacion.get(j));
@@ -90,4 +110,7 @@ public class SerieNacional implements Serializable {
             }
         }
     }
+    
+    
+    
 }

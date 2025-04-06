@@ -98,14 +98,17 @@ public class Partido implements Serializable {
     public void inicializarStats() {
         for (Jugador jugador : equipoLocal.getNomina()) {
             statsJugadores.add(new StatsJugador(jugador));
+            buscarJugador(jugador).setMinutos(duracion/100);
         }
         for (Jugador jugador : equipoVisitante.getNomina()) {
             statsJugadores.add(new StatsJugador(jugador));
+            buscarJugador(jugador).setMinutos(duracion/100);
         }
+        
     }
 
     public int generarRandom(int minimoValor, int maximoValor) {
-        return (int)(Math.random()*(maximoValor - minimoValor+1) + minimoValor);
+        return (int)(Math.random()*(maximoValor - minimoValor + 1) + minimoValor);
     }
 
     public void simularPartido() {
@@ -178,7 +181,7 @@ public class Partido implements Serializable {
                     registrarPerdida(poseedor);
                     break;
             }
-            pausa(1000);
+            pausa(1500);
             antecesor = poseedor;
             accion = determinarAccion();
         }
@@ -203,7 +206,7 @@ public class Partido implements Serializable {
         System.out.printf("\n[Falta] %s comete falta sobre %s", 
             defensor.getNombre(), atacante.getNombre());
 
-        if (generarRandom(1, 100) <= 65) {
+        if (generarRandom(1, 100) <= 75) {
             statsAtacante.setTirosLibresAcert(1);
             if (equipoConPosesion == equipoLocal) puntosLocal++;
             else puntosVisitante++;
@@ -291,6 +294,8 @@ public class Partido implements Serializable {
 
     private void registrarBalonFuera() {
         System.out.printf("\n[Balón fuera] %s pierde la posesión", equipoConPosesion.getNombre());
+        pausa(1000);
+        System.out.printf("\n[Balón fuera] Recuperando el balón...");
         cambiarPosesion();
         siguienteAccionPase();
     }
@@ -342,10 +347,6 @@ public class Partido implements Serializable {
 
     private void finalizarPartido() {
         this.jugado = true;
-        System.out.println("\n\n=== FINAL DEL PARTIDO ===");
-        System.out.printf("Resultado: %s %d - %d %s\n", 
-            equipoLocal.getNombre(), puntosLocal, puntosVisitante, equipoVisitante.getNombre());
-        
         actualizarStatsEquipo();
     }
 
@@ -381,24 +382,25 @@ public class Partido implements Serializable {
     public int determinarAccion() {
         int num = generarRandom(1, 100);
         if (num >= 1 && num <= 15) 
-        	return 1;   // Pase
-        else if (num >= 16 && num <= 20) 
-        	return 2;  // Falta en defensa
-        else if (num >= 21 && num <= 25) 
-        	return 3;  // Falta en ataque
-        else if (num >= 26 && num <= 45) 
-        	return 4;  // Anotación
-        else if (num >= 46 && num <= 65) 
-        	return 5;  // Tiro fallado
-        else if (num >= 66 && num <= 75) 
-        	return 6;  // Robo
-        else if (num >= 76 && num <= 85) 
-        	return 7;  // Balón fuera
-        else if (num >= 86 && num <= 95) 
-        	return 8;  // Bloqueo
+            return 1;  // Pase (15%)
+        else if (num >= 16 && num <= 22) 
+            return 2;  // Falta en defensa (7%)
+        else if (num >= 23 && num <= 27) 
+            return 3;  // Falta en ataque (5%)
+        else if (num >= 28 && num <= 47) 
+            return 4;  // Anotación (20%)
+        else if (num >= 48 && num <= 77) 
+            return 5;  // Tiro fallado (30%)
+        else if (num >= 78 && num <= 87) 
+            return 6;  // Robo (10%)
+        else if (num >= 88 && num <= 92) 
+            return 7;  // Balón fuera (5%)
+        else if (num >= 93 && num <= 96) 
+            return 8;  // Bloqueo (4%)
         else 
-        	return 0;  // Pérdida común
+            return 0;  // Pérdida común (4%)
     }
+
 
     public Jugador obtenerJugador(Equipo equipo) {
         int indice = generarRandom(0, equipo.getNomina().size() - 1);
@@ -428,5 +430,16 @@ public class Partido implements Serializable {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
+    }
+    public Jugador mvpPartido() {
+    	Jugador mvp = null;
+    	float mayor = 0;
+    	for(StatsJugador j : statsJugadores) {
+    	if(j.puntosMvp() > mayor) {
+    		mayor = j.puntosMvp();
+    		mvp = j.getJugador();
+    	}
+    }
+    	return mvp;
     }
 }

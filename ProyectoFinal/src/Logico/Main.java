@@ -1,8 +1,11 @@
 package Logico;
 import java.sql.Date;
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
+    	
+    	ArrayList<Equipo> jugando = new ArrayList<>();
     	
         // Crear equipos
         Equipo lakers = new Equipo(
@@ -52,11 +55,14 @@ public class Main {
         System.out.println("Fecha: " + partido.getFecha());
         System.out.println("Entrenadores: " + lakers.getEntrenador() + " vs " + celtics.getEntrenador());
         
+        
         partido.simularPartido();
         
         // Mostrar resultados detallados
         mostrarEstadisticas(partido);
-        
+        for(Equipo aux : jugando) {
+        	System.out.println(aux);
+        }
         // Añadir partido al historial de los equipos
         lakers.agregarAlHistorial(partido);
         celtics.agregarAlHistorial(partido);
@@ -88,6 +94,8 @@ public class Main {
             partido.getPuntosLocal(), 
             partido.getPuntosVisitante(), 
             partido.getEquipoVisitante().getNombre());
+        System.out.printf("\nMejor Jugador del Partido: %s de %s",partido.mvpPartido().getNombre(), partido.mvpPartido().getEquipo().getNombre());
+            
         
         System.out.println("\nEstadísticas por jugador:");
         for (Logico.StatsJugador stats : partido.getStatsJugadoresLocal()) {
@@ -114,7 +122,7 @@ public class Main {
                 stats.getFaltas(), stats.getPerdidas());
             
             System.out.printf("Valoración: %.1f | Eficiencia: %.1f%%\n", 
-                stats.valoracion(), stats.eFGPercent());
+                stats.puntosMvp(), stats.eFGPercent());
             
         }
         

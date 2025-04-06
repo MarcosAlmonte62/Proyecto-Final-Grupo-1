@@ -20,7 +20,7 @@ public class StatsJugador implements Serializable {
     private int tirosAcert;
     private int tirosLibresAcert;
     private int faltas;
-    private int minutos;
+    private float minutos;
     private Jugador jugador;
 
     public StatsJugador(Jugador jugador) {
@@ -36,6 +36,7 @@ public class StatsJugador implements Serializable {
         this.triples = 0;
         this.tirosLibres = 0;
         this.faltas = 0;
+        this.minutos = 0;
         this.jugador = jugador;
     }
 
@@ -138,7 +139,7 @@ public class StatsJugador implements Serializable {
     	this.tirosAcert += tirosAcert;
     }
     public int getTirosLibresAcert() {
-    	return tirosAcert;
+    	return tirosLibresAcert;
     }
     public void setTirosLibresAcert(int tirosLibresAcert) {
     	this.tirosLibresAcert += tirosLibresAcert;
@@ -152,11 +153,11 @@ public class StatsJugador implements Serializable {
         this.faltas += faltas;
     }
 
-    public int getMinutos() {
+    public float getMinutos() {
         return minutos;
     }
 
-    public void setMinutos(int minutos) {
+    public void setMinutos(float minutos) {
         this.minutos += minutos;
     }
 
@@ -178,30 +179,56 @@ public class StatsJugador implements Serializable {
 		return tirosLibres - tirosLibresAcert;
 	}
 	public float puntosMvp() {
-		float valoracion = (puntosGenerados() + asistencias + robos + bloqueos) - (tirosFallados() + perdidas + tirosLibresFallados());
+		float valoracion = (puntosGenerados() + asistencias + robos + bloqueos + rebotes + rebotesDef) - (tirosFallados() + perdidas + tirosLibresFallados() + faltas);
+		if(valoracion < 0)
+			return 0;
 		return valoracion;
 	}
 	public float eFGPercent() {
-		float valoracion = (puntosGenerados() + 0.5f*triples)/tiros;
-		return valoracion*100;
+	    if(tiros == 0) 
+	    	return 0;
+	    float valoracion = (puntosGenerados() + 0.5f * triples) / tiros;
+	    return valoracion * 100;
 	}
+
 	public float eTSPercent() {
-		float valoracion = puntosGenerados() / 2*(tiros + 0.5f*tirosLibres);
-		return valoracion*100;
+	    float lanzados = 2 * (tiros + 0.5f * tirosLibres);
+	    if(lanzados == 0) 
+	    	return 0;
+	    float valoracion = puntosGenerados() / lanzados;
+	    return valoracion * 100;
 	}
+
 	public float assistPerLost() {
-		return (asistencias/perdidas)*100;
+	    if(perdidas == 0) 
+	    	return 0;
+	    return (asistencias / perdidas) * 100;
 	}
+
 	public float eFTARate() {
-		return (tiros/tirosLibres)*100;
+	    if(tiros == 0) 
+	    	return 0;
+	    return (tirosLibres / tiros) * 100;
 	}
+
 	public float tripleRate() {
-		return (tiros/triples)*100;
+	    return (triples / tiros) * 100;
 	}
+
 	public float posesiones() {
-		return (tiros - rebotes) + perdidas + (0.44f*tirosLibres);
+		float valoracion = tiros - rebotes + perdidas + (0.44f*tirosLibres);
+		if(valoracion < 0)
+		return 0;
+		
+		return valoracion;
 	}
 	public float efOfensiva() {
+		if(posesiones() != 0)
 		return (puntosGenerados()/posesiones())*100;
+		return 0;
 	}
+	public float impactoDefensivo() {
+		return robos + bloqueos + rebotesDef - (faltas * 0.5f);
+	}
+	
 }
