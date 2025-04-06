@@ -3,7 +3,7 @@ import java.sql.Date;
 
 public class Main {
     public static void main(String[] args) {
-    	/**
+    	
         // Crear equipos
         Equipo lakers = new Equipo(
             "Los Angeles Lakers", 
@@ -117,7 +117,7 @@ public class Main {
                 stats.valoracion(), stats.eFGPercent());
             
         }
-        **/
+        
     }
     
 } 
