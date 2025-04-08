@@ -88,4 +88,13 @@ public class Control implements Serializable {
             e.printStackTrace();
         }
     }
+    public boolean existeUsuario(String nombreUsuario) {
+        for (User u : usuarios) {
+            if (u.getUserName().equalsIgnoreCase(nombreUsuario)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
