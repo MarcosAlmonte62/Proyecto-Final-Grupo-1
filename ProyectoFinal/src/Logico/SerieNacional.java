@@ -1,8 +1,11 @@
 package Logico;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -116,38 +119,35 @@ public class SerieNacional implements Serializable {
     }
 
     public void cargarUsuariosDesdeArchivo() {
-        File archivoUsuarios = new File("admin.dat");
+        File archivoUsuarios = new File("usuarios.dat");
         if (!archivoUsuarios.exists()) {
             try {
                 archivoUsuarios.createNewFile();
-                System.out.println("Se ha creado un nuevo archivo 'admin.dat'");
+                System.out.println("Se ha creado un nuevo archivo 'usuarios.dat'");
             } catch (IOException e) {
-                System.out.println("Error al crear el archivo 'admin.dat'");
+                System.out.println("Error al crear el archivo 'usuarios.dat'");
                 e.printStackTrace();
-                return;
+                return; // Terminar el mï¿½todo si ocurre un error al crear el archivo
             }
         }
 
         if (archivoUsuarios.length() == 0) {
-            System.out.println("El archivo 'admin.dat' está vacío. Se agregará un usuario administrador por defecto.");
+            System.out.println("El archivo 'usuarios.dat' estï¿½ vacï¿½o.");
+            return; // Terminar el mï¿½todo si el archivo estï¿½ vacï¿½o
+        }
 
-            ArrayList<User> usuarios = new ArrayList<>();
-            usuarios.add(new User("admin", "admin123", "Administrador", false));
-
-            try (FileOutputStream fileOut = new FileOutputStream(archivoUsuarios);
-                 ObjectOutputStream objectOut = new ObjectOutputStream(fileOut)) {
-                objectOut.writeObject(usuarios);
-                Control.getInstance().setUsuarios(usuarios);
-                System.out.println("Usuario administrador agregado al archivo.");
-            } catch (IOException e) {
-                System.out.println("Error al guardar el usuario por defecto en 'admin.dat'");
-                e.printStackTrace();
-            }
-
-            return;
+        try (FileInputStream fileIn = new FileInputStream(archivoUsuarios);
+             ObjectInputStream objectIn = new ObjectInputStream(fileIn)) {
+            ArrayList<User> usuarios = (ArrayList<User>) objectIn.readObject();
+            Control.getInstance().setUsuarios(usuarios);
+        } catch (FileNotFoundException e) {
+            // Manejar la excepciï¿½n si el archivo no existe
+            System.out.println("El archivo 'usuarios.dat' no se encontrï¿½.");
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Error al leer los usuarios desde el archivo 'usuarios.dat'");
+            e.printStackTrace();
         }
     }
-
     public List<Equipo> getEquipos() {
         return getClasificacion();
     }
