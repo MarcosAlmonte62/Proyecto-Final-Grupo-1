@@ -1,5 +1,9 @@
 package Logico;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -110,7 +114,39 @@ public class SerieNacional implements Serializable {
             }
         }
     }
-    
+    public void cargarUsuariosDesdeArchivo() {
+        File archivoUsuarios = new File("admin.dat");
+        if (!archivoUsuarios.exists()) {
+            try {
+                archivoUsuarios.createNewFile();
+                System.out.println("Se ha creado un nuevo archivo 'admin.dat'");
+            } catch (IOException e) {
+                System.out.println("Error al crear el archivo 'admin.dat'");
+                e.printStackTrace();
+                return;
+            }
+        }
+
+        if (archivoUsuarios.length() == 0) {
+            System.out.println("El archivo 'admin.dat' está vacío. Se agregará un usuario administrador por defecto.");
+            
+            ArrayList<User> usuarios = new ArrayList<>();
+            usuarios.add(new User("admin", "admin123", "Administrador", false)); 
+
+            try (FileOutputStream fileOut = new FileOutputStream(archivoUsuarios);
+                 ObjectOutputStream objectOut = new ObjectOutputStream(fileOut)) {
+                objectOut.writeObject(usuarios);
+                Control.getInstance().setUsuarios(usuarios); 
+                System.out.println("Usuario administrador agregado al archivo.");
+            } catch (IOException e) {
+                System.out.println("Error al guardar el usuario por defecto en 'admin.dat'");
+                e.printStackTrace();
+            }
+
+            return;
+        }
+
+    }
     
     
 }

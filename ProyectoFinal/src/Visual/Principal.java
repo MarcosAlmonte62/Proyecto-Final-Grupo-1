@@ -1,9 +1,13 @@
 package Visual;
 
 import javax.swing.*;
+
+import Logico.User;
+
 import java.awt.*;
 import javax.imageio.ImageIO;
 import java.net.URL;
+import java.util.ResourceBundle.Control;
 
 public class Principal extends JFrame {
 
@@ -14,8 +18,10 @@ public class Principal extends JFrame {
         initComponents();
         setupActions();
     }
+    
 
     private void initComponents() {
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("StatHoops");
         setResizable(false);
