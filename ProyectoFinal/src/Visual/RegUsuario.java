@@ -89,6 +89,11 @@ public class RegUsuario extends JFrame {
             JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden");
             return;
         }
+        if (Control.getInstance().existeUsuario(nombreUsuario)) {
+            JOptionPane.showMessageDialog(this, "Ese nombre de usuario ya está en uso. Por favor, elige otro.");
+            txtNombre.requestFocus(); // Coloca el foco en el campo de usuario
+            return;
+        }
 
         boolean isAdmin = tipo.equalsIgnoreCase("Administrador");
 
