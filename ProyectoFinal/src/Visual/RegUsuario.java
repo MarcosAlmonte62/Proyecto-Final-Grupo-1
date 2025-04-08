@@ -1,5 +1,5 @@
-package Visual;
-
+ package Visual;
+ 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -95,7 +95,7 @@ public class RegUsuario extends JFrame {
         User user = new User(tipo, nombreUsuario, contrasena, isAdmin);
         Control.getInstance().registrarUsuario(user);
 
-        try (FileOutputStream fos = new FileOutputStream("admin.dat");
+        try (FileOutputStream fos = new FileOutputStream("usuarios.dat");
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
             oos.writeObject(Control.getInstance().getUsuarios());
         } catch (Exception e) {
@@ -125,4 +125,4 @@ public class RegUsuario extends JFrame {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new RegUsuario().setVisible(true));
     }
-}
+} 

@@ -3,8 +3,7 @@ package Visual;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.net.URL;
 import java.util.Optional;
 import Logico.*;
 
@@ -20,14 +19,6 @@ public class Login extends JFrame {
         setSize(540, 578);
         setLocationRelativeTo(null);
         getContentPane().setLayout(null);
-
-        // Guardar usuarios al cerrar ventana
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                SerieNacional.getInstance().cargarUsuariosDesdeArchivo();
-            }
-        });
 
         JPanel panel = new JPanel(null);
         panel.setBounds(0, 0, 540, 540);
@@ -77,10 +68,7 @@ public class Login extends JFrame {
             }
         });
 
-        btnSalir.addActionListener(e -> {
-            SerieNacional.getInstance().cargarUsuariosDesdeArchivo();
-            System.exit(0);
-        });
+        btnSalir.addActionListener(e -> System.exit(0));
 
         JLabel fondo = new JLabel(new ImageIcon(getClass().getResource("/images/login.png")));
         fondo.setBounds(0, 0, 528, 540);
@@ -104,7 +92,7 @@ public class Login extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            SerieNacional.getInstance().cargarUsuariosDesdeArchivo();
+            Control.getInstance().cargarUsuariosDesdeArchivo();
             new Login().setVisible(true);
         });
     }
