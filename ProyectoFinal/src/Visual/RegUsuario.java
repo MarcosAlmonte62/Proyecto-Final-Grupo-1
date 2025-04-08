@@ -1,165 +1,128 @@
 package Visual;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
-
-import Logico.Control;
-import Logico.User;
-
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.Font;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectOutputStream;
+import Logico.*;
 
-public class RegUsuario extends JDialog {
+public class RegUsuario extends JFrame {
 
-    private final JPanel contentPanel = new JPanel();
-    private JTextField nombreUsuarioField;
-    private JPasswordField contrasenaField;
-    private JPasswordField confirmarContrasenaField;
-    private JComboBox<String> tipoUsuarioComboBox;
+    private JTextField txtNombre;
+    private JPasswordField txtContrasena, txtConfirmar;
+    private JComboBox cbTipoUsuario;
+    private JButton btnRegistrar, btnCancelar;
 
-    /**
-     * Launch the application.
-     */
-    public static void main(String[] args) {
-        try {
-            RegUsuario dialog = new RegUsuario();
-            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            dialog.setVisible(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Create the dialog.
-     */
     public RegUsuario() {
         setTitle("Registro de Usuario");
-        setBounds(100, 100, 400, 300);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setSize(540, 578);
         setLocationRelativeTo(null);
-        getContentPane().setLayout(new BorderLayout());
-        contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-        getContentPane().add(contentPanel, BorderLayout.CENTER);
-        contentPanel.setLayout(null);
+        getContentPane().setLayout(null);
 
-        JLabel tituloLabel = new JLabel("Registro de Usuario");
-        tituloLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
-        tituloLabel.setBounds(105, 11, 176, 30);
-        contentPanel.add(tituloLabel);
+        JPanel panel = new JPanel(null);
+        panel.setBounds(0, 0, 540, 578);
+        panel.setOpaque(false);
+        getContentPane().add(panel);
 
-        JLabel nombreUsuarioLabel = new JLabel("Nombre de Usuario:");
-        nombreUsuarioLabel.setBounds(30, 60, 120, 14);
-        contentPanel.add(nombreUsuarioLabel);
+        txtNombre = new JTextField();
+        txtNombre.setBounds(152, 189, 234, 25);
+        estilizarInput(txtNombre);
+        panel.add(txtNombre);
 
-        nombreUsuarioField = new JTextField();
-        nombreUsuarioField.setBounds(170, 57, 160, 20);
-        contentPanel.add(nombreUsuarioField);
-        nombreUsuarioField.setColumns(10);
+        txtContrasena = new JPasswordField();
+        txtContrasena.setBounds(152, 241, 234, 25);
+        estilizarInput(txtContrasena);
+        panel.add(txtContrasena);
 
-        JLabel contrasenaLabel = new JLabel("Contrasena:");
-        contrasenaLabel.setBounds(30, 100, 80, 14);
-        contentPanel.add(contrasenaLabel);
+        txtConfirmar = new JPasswordField();
+        txtConfirmar.setBounds(152, 295, 234, 25);
+        estilizarInput(txtConfirmar);
+        panel.add(txtConfirmar);
 
-        contrasenaField = new JPasswordField();
-        contrasenaField.setBounds(170, 97, 160, 20);
-        contentPanel.add(contrasenaField);
-        contrasenaField.setColumns(10);
+        cbTipoUsuario = new JComboBox();
+        cbTipoUsuario.setBounds(152, 349, 234, 25);
+        cbTipoUsuario.addItem("Administrador");
+        cbTipoUsuario.addItem("Usuario");
+        cbTipoUsuario.setFont(new Font("Arial", Font.PLAIN, 14));
+        cbTipoUsuario.setFocusable(false);
+        cbTipoUsuario.setBackground(Color.WHITE);
+        cbTipoUsuario.setForeground(Color.BLACK);
+        panel.add(cbTipoUsuario);
 
-        JLabel confirmarContrasenaLabel = new JLabel("Confirmar Contrasena:");
-        confirmarContrasenaLabel.setBounds(30, 140, 140, 14);
-        contentPanel.add(confirmarContrasenaLabel);
+        btnRegistrar = new JButton();
+        btnRegistrar.setBounds(128, 387, 270, 37);
+        hacerInvisible(btnRegistrar);
+        panel.add(btnRegistrar);
 
-        confirmarContrasenaField = new JPasswordField();
-        confirmarContrasenaField.setBounds(170, 137, 160, 20);
-        contentPanel.add(confirmarContrasenaField);
-        confirmarContrasenaField.setColumns(10);
+        btnCancelar = new JButton();
+        btnCancelar.setBounds(384, 469, 122, 44);
+        hacerInvisible(btnCancelar);
+        panel.add(btnCancelar);
 
-        JLabel tipoUsuarioLabel = new JLabel("Tipo de Usuario:");
-        tipoUsuarioLabel.setBounds(30, 180, 100, 14);
-        contentPanel.add(tipoUsuarioLabel);
-
-        tipoUsuarioComboBox = new JComboBox<>();
-        tipoUsuarioComboBox.setBounds(169, 177, 160, 20);
-        tipoUsuarioComboBox.addItem("<Seleccione>");
-        tipoUsuarioComboBox.addItem("Administrador");
-        tipoUsuarioComboBox.addItem("Usuario");
-        contentPanel.add(tipoUsuarioComboBox);
-
-        JPanel botonesPanel = new JPanel();
-        botonesPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        getContentPane().add(botonesPanel, BorderLayout.SOUTH);
-
-        JButton registrarButton = new JButton("Registrar");
-        registrarButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                registrarUsuario();
-            }
+        btnCancelar.addActionListener(e -> {
+            dispose();
+            new Login().setVisible(true);
         });
-        botonesPanel.add(registrarButton);
-        getRootPane().setDefaultButton(registrarButton);
 
-        JButton cancelarButton = new JButton("Cancelar");
-        cancelarButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                Login frame = new Login();
-                frame.setLocationRelativeTo(null); 
-                frame.setVisible(true);
-            }
-        });
-        botonesPanel.add(cancelarButton);
+        btnRegistrar.addActionListener((ActionEvent e) -> registrarUsuario());
+
+        JLabel fondo = new JLabel(new ImageIcon(RegUsuario.class.getResource("/images/registrousuario.png")));
+        fondo.setBounds(0, 0, 528, 540);
+        panel.add(fondo);
+        panel.setComponentZOrder(fondo, panel.getComponentCount() - 1);
     }
 
     private void registrarUsuario() {
-        String nombreUsuario = nombreUsuarioField.getText();
-        String contrasena = new String(contrasenaField.getPassword());
-        String confirmarContrasena = new String(confirmarContrasenaField.getPassword());
-        String tipoUsuario = tipoUsuarioComboBox.getSelectedItem().toString();
+        String nombreUsuario = txtNombre.getText().trim();
+        String contrasena = new String(txtContrasena.getPassword()).trim();
+        String confirmar = new String(txtConfirmar.getPassword()).trim();
+        String tipo = cbTipoUsuario.getSelectedItem().toString();
 
-        if (nombreUsuario.isEmpty() || contrasena.isEmpty() || confirmarContrasena.isEmpty() || tipoUsuario.equals("<Seleccione>")) {
-            JOptionPane.showMessageDialog(this, "Por favor complete todos los campos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        if (nombreUsuario.isEmpty() || contrasena.isEmpty() || confirmar.isEmpty() || tipo.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Completa todos los campos");
             return;
         }
 
-        if (!contrasena.equals(confirmarContrasena)) {
-            JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        if (!contrasena.equals(confirmar)) {
+            JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden");
             return;
         }
 
-        boolean isAdmin = tipoUsuario.equals("Administrador");
+        boolean isAdmin = tipo.equalsIgnoreCase("Administrador");
 
-        User user = new User(tipoUsuario, nombreUsuario, contrasena, isAdmin);
+        User user = new User(tipo, nombreUsuario, contrasena, isAdmin);
         Control.getInstance().registrarUsuario(user);
 
-        try (FileOutputStream fileOut = new FileOutputStream("admin .dat");
-             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut)) {
-            objectOut.writeObject(Control.getInstance().getUsuarios());
-            JOptionPane.showMessageDialog(this, "Usuario registrado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-        } catch (IOException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error al registrar el usuario.", "Error", JOptionPane.ERROR_MESSAGE);
+        try (FileOutputStream fos = new FileOutputStream("admin.dat");
+             ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+            oos.writeObject(Control.getInstance().getUsuarios());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error guardando el usuario");
+            return;
         }
 
+        JOptionPane.showMessageDialog(this, "Usuario registrado correctamente");
         dispose();
-        mostrarVentanaLogin();
+        new Login().setVisible(true);
     }
 
-    private void mostrarVentanaLogin() {
-        Login loginWindow = new Login();
-        loginWindow.setLocationRelativeTo(null);
-        loginWindow.setVisible(true);
+    private void hacerInvisible(JButton b) {
+        b.setOpaque(false);
+        b.setContentAreaFilled(false);
+        b.setBorderPainted(false);
+        b.setFocusPainted(false);
+    }
+
+    private void estilizarInput(JTextField txt) {
+        txt.setOpaque(false);
+        txt.setBorder(null);
+        txt.setForeground(Color.BLACK);
+        txt.setFont(new Font("Arial", Font.PLAIN, 14));
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new RegUsuario().setVisible(true));
     }
 }

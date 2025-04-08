@@ -10,7 +10,8 @@ import Logico.*;
 
 public class AgregarEquipo extends JFrame {
 
-    private JTextField txtNombre, txtCiudad, txtEstadio;
+    private JTextField txtNombre, txtEstadio;
+    private JComboBox<String> cbCiudad;
     private JButton btnVerJugadores, btnCancelar, btnAgregar;
     private List<Jugador> jugadoresSeleccionados = new ArrayList<>();
 
@@ -32,10 +33,12 @@ public class AgregarEquipo extends JFrame {
         estilizarInput(txtNombre);
         controlPanel.add(txtNombre);
 
-        txtCiudad = new JTextField();
-        txtCiudad.setBounds(146, 310, 248, 25);
-        estilizarInput(txtCiudad);
-        controlPanel.add(txtCiudad);
+        cbCiudad = new JComboBox<>(getProvinciasDominicanas());
+        cbCiudad.setBounds(146, 310, 248, 25);
+        cbCiudad.setFont(new Font("Arial", Font.PLAIN, 14));
+        cbCiudad.setOpaque(false);
+        cbCiudad.setFocusable(false);
+        controlPanel.add(cbCiudad);
 
         txtEstadio = new JTextField();
         txtEstadio.setBounds(146, 376, 248, 25);
@@ -68,7 +71,7 @@ public class AgregarEquipo extends JFrame {
 
         btnAgregar.addActionListener(e -> {
             String nombre = txtNombre.getText().trim();
-            String ciudad = txtCiudad.getText().trim();
+            String ciudad = cbCiudad.getSelectedItem().toString().trim();
             String estadio = txtEstadio.getText().trim();
 
             if (nombre.isEmpty() || ciudad.isEmpty() || estadio.isEmpty()) {
@@ -86,13 +89,10 @@ public class AgregarEquipo extends JFrame {
                 return;
             }
 
-            Equipo nuevoEquipo = new Equipo();
-            nuevoEquipo.setNombre(nombre);
-            nuevoEquipo.setCiudad(ciudad);
-            nuevoEquipo.setEstadio(estadio);
+            Equipo nuevoEquipo = new Equipo(nombre, ciudad, estadio, "", "", 0, null);
             nuevoEquipo.setNomina(new ArrayList<>(jugadoresSeleccionados));
             nuevoEquipo.setHistorial(new ArrayList<>());
-            nuevoEquipo.setStats(new StatsEquipo(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, nuevoEquipo));
+            nuevoEquipo.setStats(new StatsEquipo(nuevoEquipo));
 
             for (Jugador j : jugadoresSeleccionados) {
                 j.setEquipo(nuevoEquipo);
@@ -102,13 +102,12 @@ public class AgregarEquipo extends JFrame {
             JOptionPane.showMessageDialog(this, "Equipo registrado correctamente.");
 
             txtNombre.setText("");
-            txtCiudad.setText("");
             txtEstadio.setText("");
+            cbCiudad.setSelectedIndex(0);
             jugadoresSeleccionados.clear();
         });
 
-        URL bgUrl = getClass().getResource("/images/agregarnuevoequipo.png");
-        JLabel fondo = new JLabel(bgUrl != null ? new ImageIcon(bgUrl) : null);
+        JLabel fondo = new JLabel(new ImageIcon(AgregarEquipo.class.getResource("/images/agregarnuevoequipo.png")));
         fondo.setBounds(0, 0, 893, 566);
         controlPanel.add(fondo);
     }
@@ -125,6 +124,17 @@ public class AgregarEquipo extends JFrame {
         b.setContentAreaFilled(false);
         b.setBorderPainted(false);
         b.setFocusPainted(false);
+    }
+
+    private String[] getProvinciasDominicanas() {
+        return new String[]{
+            "Azua", "Bahoruco", "Barahona", "Dajabón", "Distrito Nacional", "Duarte", "Elías Piña",
+            "El Seibo", "Espaillat", "Hato Mayor", "Hermanas Mirabal", "Independencia", "La Altagracia",
+            "La Romana", "La Vega", "María Trinidad Sánchez", "Monseñor Nouel", "Monte Cristi", 
+            "Monte Plata", "Pedernales", "Peravia", "Puerto Plata", "Samaná", "San Cristóbal", 
+            "San José de Ocoa", "San Juan", "San Pedro de Macorís", "Sánchez Ramírez", 
+            "Santiago", "Santiago Rodríguez", "Santo Domingo", "Valverde"
+        };
     }
 
     public static void main(String[] args) {

@@ -8,9 +8,17 @@ import Logico.*;
 
 public class AgregarJugador extends JFrame {
 
-    private JTextField txtNombre, txtEdad, txtAltura, txtPeso, txtDorsal, txtRating;
-    private JComboBox<String> cbNacionalidad, cbPosicion, cbEstado;
-    private JButton btnAgregar, btnCancelar;
+    private JTextField txtNombre;
+    private JTextField txtEdad;
+    private JTextField txtAltura;
+    private JTextField txtPeso;
+    private JTextField txtDorsal;
+    private JTextField txtRating;
+    private JComboBox<String> cbNacionalidad;
+    private JComboBox<String> cbPosicion;
+    private JComboBox<String> cbEstado;
+    private JButton btnAgregar;
+    private JButton btnCancelar;
 
     public AgregarJugador() {
         setTitle("Agregar Jugador");
@@ -25,15 +33,57 @@ public class AgregarJugador extends JFrame {
         panel.setOpaque(false);
         getContentPane().add(panel);
 
-        txtNombre = crearCampo(panel, 96, 218, 197, 25);
-        cbPosicion = crearCombo(panel, new String[]{"Base", "Escolta", "Alero", "Ala-Pívot", "Pívot"}, 344, 218, 202, 25);
-        txtEdad = crearCampo(panel, 96, 281, 197, 25);
-        txtAltura = crearCampo(panel, 349, 281, 197, 25);
-        cbNacionalidad = crearCombo(panel, new String[]{"Dominicana", "Estadounidense", "Española", "Argentina", "Brasilera",
-                "Francesa", "Alemana", "Italiana", "Canadiense", "Portuguesa"}, 96, 348, 185, 25);
-        txtPeso = crearCampo(panel, 349, 348, 197, 25);
-        cbEstado = crearCombo(panel, new String[]{"Activo", "Lesionado"}, 96, 417, 197, 25);
-        txtRating = crearCampo(panel, 349, 417, 197, 25);
+        txtNombre = new JTextField();
+        txtNombre.setBounds(96, 218, 197, 25);
+        estilizarInput(txtNombre);
+        panel.add(txtNombre);
+
+        cbPosicion = new JComboBox<>();
+        cbPosicion.setBounds(344, 218, 202, 25);
+        cbPosicion.setFont(new Font("Arial", Font.PLAIN, 14));
+        cbPosicion.addItem("Base");
+        cbPosicion.addItem("Escolta");
+        cbPosicion.addItem("Alero");
+        cbPosicion.addItem("Ala-Pívot");
+        cbPosicion.addItem("Pívot");
+        panel.add(cbPosicion);
+
+        txtEdad = new JTextField();
+        txtEdad.setBounds(96, 284, 197, 22);
+        estilizarInput(txtEdad);
+        panel.add(txtEdad);
+
+        txtAltura = new JTextField();
+        txtAltura.setBounds(349, 283, 197, 24);
+        estilizarInput(txtAltura);
+        panel.add(txtAltura);
+
+        cbNacionalidad = new JComboBox<>();
+        cbNacionalidad.setBounds(96, 351, 197, 23);
+        cbNacionalidad.setFont(new Font("Arial", Font.PLAIN, 14));
+        String[] paises = {"Dominicana", "Estadounidense", "Española", "Argentina", "Brasilera",
+                "Francesa", "Alemana", "Italiana", "Canadiense", "Portuguesa"};
+        for (String pais : paises) {
+            cbNacionalidad.addItem(pais);
+        }
+        panel.add(cbNacionalidad);
+
+        txtPeso = new JTextField();
+        txtPeso.setBounds(344, 352, 197, 22);
+        estilizarInput(txtPeso);
+        panel.add(txtPeso);
+
+        cbEstado = new JComboBox<>();
+        cbEstado.setBounds(96, 417, 197, 25);
+        cbEstado.setFont(new Font("Arial", Font.PLAIN, 14));
+        cbEstado.addItem("Activo");
+        cbEstado.addItem("Lesionado");
+        panel.add(cbEstado);
+
+        txtRating = new JTextField();
+        txtRating.setBounds(349, 417, 197, 25);
+        estilizarInput(txtRating);
+        panel.add(txtRating);
 
         txtDorsal = new JTextField("0");
         txtDorsal.setVisible(false);
@@ -54,28 +104,14 @@ public class AgregarJugador extends JFrame {
         JLabel fondo = new JLabel(new ImageIcon(getClass().getResource("/images/agregarjugador11.png")));
         fondo.setBounds(0, 0, 894, 569);
         panel.add(fondo);
+        panel.setComponentZOrder(fondo, panel.getComponentCount() - 1);
     }
 
-    private JTextField crearCampo(JPanel panel, int x, int y, int w, int h) {
-        JTextField txt = new JTextField();
-        txt.setBounds(x, y, w, h);
+    private void estilizarInput(JTextField txt) {
         txt.setFont(new Font("Arial", Font.PLAIN, 14));
         txt.setOpaque(false);
         txt.setBorder(null);
         txt.setForeground(Color.BLACK);
-        panel.add(txt);
-        return txt;
-    }
-
-    private JComboBox<String> crearCombo(JPanel panel, String[] items, int x, int y, int w, int h) {
-        JComboBox<String> cb = new JComboBox<>();
-        for (String item : items) cb.addItem(item);
-        cb.setBounds(x, y, w, h);
-        cb.setFont(new Font("Arial", Font.PLAIN, 14));
-        cb.setOpaque(false);
-        cb.setForeground(Color.BLACK);
-        panel.add(cb);
-        return cb;
     }
 
     private void hacerInvisible(JButton b) {
@@ -97,18 +133,16 @@ public class AgregarJugador extends JFrame {
             String estado = cbEstado.getSelectedItem().toString();
             float rating = Float.parseFloat(txtRating.getText().trim());
 
-            Lesion lesion = estado.equals("Lesionado") ? new Lesion("Esguince", 1, true, 1, "Inicial", "Reposo") : null;
-            StatsJugador stats = new StatsJugador(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null);
+            Lesion lesion = estado.equals("Lesionado") ?
+                    new Lesion("Esguince", 1, true, 1, "Inicial", "Reposo") : null;
 
-            Jugador jugador = new Jugador(
-                nombre, edad, nacionalidad, lesion, null, stats,
-                dorsal, altura, peso, posicion, new Date(System.currentTimeMillis())
-            );
+            StatsJugador stats = new StatsJugador(null);
+            Jugador jugador = new Jugador(nombre, edad, nacionalidad, lesion, null, stats,
+                    dorsal, altura, peso, posicion, new Date(System.currentTimeMillis()));
             jugador.setRating(rating);
             stats.setJugador(jugador);
 
             SerieNacional.getInstance().agregarJugador(jugador);
-
             JOptionPane.showMessageDialog(this, "Jugador creado como agente libre (sin equipo).");
             limpiarCampos();
 
