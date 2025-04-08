@@ -30,7 +30,7 @@ public class StatsPorJugador extends JFrame {
                 Jugador j = SerieNacional.getInstance().getTodosLosJugadores().get(index);
                 StatsJugador s = j.getStats();
                 txtStats.setText(
-                        "Puntos: " + s.getPuntos() + "\n" +
+                        "Puntos: " + s.puntosGenerados() + "\n" +
                         "Asistencias: " + s.getAsistencias() + "\n" +
                         "Rebotes: " + s.getRebotes() + "\n" +
                         "Valoración: " + s.valoracion()

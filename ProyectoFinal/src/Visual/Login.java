@@ -1,142 +1,99 @@
 package Visual;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.Optional;
 
-import Logico.Control;
-import Logico.SerieNacional;
-import Logico.User;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.net.URL;
+import java.util.Optional;
+import Logico.*;
 
 public class Login extends JFrame {
 
-    private JPanel contentPane;
-    private JTextField textField_user;
-    private JPasswordField textField_pass;
-    
+    private JTextField txtUsuario;
+    private JPasswordField txtContrasena;
+    private JButton btnLogin, btnSalir;
 
-    /**
-     * Launch the application.
-     */
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                	SerieNacional.getInstance().cargarUsuariosDesdeArchivo();
-
-                    Login frame = new Login();
-                    frame.setLocationRelativeTo(null);
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    
-    /**
-     * Create the frame.
-     */
     public Login() {
-        setTitle("Inicio de Sesion");
+        setTitle("Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 300, 281);
-        contentPane = new JPanel();
-        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-        setContentPane(contentPane);
-        contentPane.setLayout(new BorderLayout(0, 0));
+        setSize(540, 578);
+        setLocationRelativeTo(null);
+        getContentPane().setLayout(null);
 
-        JPanel panel = new JPanel();
-        contentPane.add(panel, BorderLayout.CENTER);
-        panel.setLayout(null);
+        JPanel panel = new JPanel(null);
+        panel.setBounds(0, 0, 540, 540);
+        panel.setOpaque(false);
+        getContentPane().add(panel);
 
-        JLabel lblLogin = new JLabel("LOGIN");
-        lblLogin.setFont(new Font("Tahoma", Font.BOLD, 18));
-        lblLogin.setBounds(108, 20, 60, 30);
-        panel.add(lblLogin);
+        txtUsuario = new JTextField();
+        txtUsuario.setBounds(150, 202, 231, 25);
+        estilizarInput(txtUsuario);
+        panel.add(txtUsuario);
 
-        JLabel lblUsuario = new JLabel("Usuario:");
-        lblUsuario.setBounds(39, 52, 191, 14);
-        panel.add(lblUsuario);
+        txtContrasena = new JPasswordField();
+        txtContrasena.setBounds(150, 289, 231, 25);
+        estilizarInput(txtContrasena);
+        panel.add(txtContrasena);
 
-        JLabel lblContrasea = new JLabel("Contrasena:");
-        lblContrasea.setBounds(39, 111, 191, 14);
-        panel.add(lblContrasea);
-
-        textField_user = new JTextField();
-        textField_user.setBounds(39, 77, 191, 20);
-        panel.add(textField_user);
-        textField_user.setColumns(10);
-
-        textField_pass = new JPasswordField();
-        textField_pass.setBounds(39, 141, 191, 20);
-        panel.add(textField_pass);
-        textField_pass.setColumns(10);
-
-        JButton btnLogin = new JButton("OK");
-        btnLogin.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String usuario = textField_user.getText();
-                String contrasena = textField_pass.getText();
-                if (usuario.isEmpty() || contrasena.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
-                } else {
-                    Optional<User> usuarioValido = Control.getInstance().confirmarLogin(usuario, contrasena);
-                    if (usuarioValido.isPresent()) {
-                        Principal frame;
-                        if (usuarioValido.get().isAdmin()) {
-                            frame = new Principal(); //AGRREGAR TRUE PARA LA PARTE DE ADMIN
-                        } else {
-                            frame = new Principal(); //FALSE PARA LAS OPCIONES LIMITADAS DE USER
-                        }
-                        Control.setUsuarioLogueado(usuarioValido.get());
-                        dispose();
-                        frame.setVisible(true);
-                    } else {
-                        int opcion = JOptionPane.showConfirmDialog(null, "Usuario no encontrado. Â¿Desea registrarse?", "Advertencia", JOptionPane.YES_NO_OPTION);
-                        if (opcion == JOptionPane.YES_OPTION) {
-                            RegUsuario registroUsuario = new RegUsuario(); // Pasar la referencia de la ventana de inicio de sesion al registro
-                            registroUsuario.setVisible(true);
-                            dispose(); // Cerrar la ventana de inicio de sesion
-                        }
-                    }
-                }
-            }
-        });
-
-        btnLogin.setBounds(39, 187, 89, 23);
+        btnLogin = new JButton();
+        btnLogin.setBounds(132, 347, 268, 35);
+        hacerInvisible(btnLogin);
         panel.add(btnLogin);
 
-        JButton btnRegistro = new JButton("Registro");
-        btnRegistro.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                RegUsuario registroUsuario = new RegUsuario(); 
-                registroUsuario.setVisible(true);
-                dispose(); 
+        btnSalir = new JButton();
+        btnSalir.setBounds(382, 470, 122, 35);
+        hacerInvisible(btnSalir);
+        panel.add(btnSalir);
+
+        btnLogin.addActionListener((ActionEvent e) -> {
+            String usuario = txtUsuario.getText().trim();
+            String clave = new String(txtContrasena.getPassword()).trim();
+
+            if (usuario.isEmpty() || clave.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Complete los campos para ingresar.");
+                return;
+            }
+
+            Optional<User> user = Control.getInstance().confirmarLogin(usuario, clave);
+            if (user.isPresent()) {
+                Control.setUsuarioLogueado(user.get());
+                new Principal().setVisible(true);
+                dispose();
+            } else {
+                int opcion = JOptionPane.showConfirmDialog(this, "Usuario no encontrado. ¿Desea registrarse?", "Login", JOptionPane.YES_NO_OPTION);
+                if (opcion == JOptionPane.YES_OPTION) {
+                    new RegUsuario().setVisible(true);
+                    dispose();
+                }
             }
         });
-        btnRegistro.setBounds(141, 187, 89, 23);
-        panel.add(btnRegistro);
-        
-        setLocationRelativeTo(null);
+
+        btnSalir.addActionListener(e -> System.exit(0));
+
+        JLabel fondo = new JLabel(new ImageIcon(getClass().getResource("/images/login.png")));
+        fondo.setBounds(0, 0, 528, 540);
+        panel.add(fondo);
+        panel.setComponentZOrder(fondo, panel.getComponentCount() - 1);
+    }
+
+    private void hacerInvisible(JButton b) {
+        b.setOpaque(false);
+        b.setContentAreaFilled(false);
+        b.setBorderPainted(false);
+        b.setFocusPainted(false);
+    }
+
+    private void estilizarInput(JTextField txt) {
+        txt.setOpaque(false);
+        txt.setBorder(null);
+        txt.setForeground(Color.BLACK);
+        txt.setFont(new Font("Arial", Font.PLAIN, 14));
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            SerieNacional.getInstance().cargarUsuariosDesdeArchivo();
+            new Login().setVisible(true);
+        });
     }
 }

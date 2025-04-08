@@ -1,27 +1,23 @@
 package Visual;
 
 import javax.swing.*;
-
-import Logico.User;
-
+import Logico.Partido;
+import Logico.SerieNacional;
 import java.awt.*;
 import javax.imageio.ImageIO;
 import java.net.URL;
-import java.util.ResourceBundle.Control;
 
 public class Principal extends JFrame {
 
     private JLayeredPane layeredPane;
-    private JButton btnEquipos, btnJugadores, btnPartidos, btnReportes, btnButton5;
+    private JButton btnEquipos, btnJugadores, btnPartidos, btnReportes, btnSimularPartido;
 
     public Principal() {
         initComponents();
         setupActions();
     }
-    
 
     private void initComponents() {
-
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("StatHoops");
         setResizable(false);
@@ -40,23 +36,23 @@ public class Principal extends JFrame {
         btnJugadores = new JButton();
         btnPartidos = new JButton();
         btnReportes = new JButton();
-        btnButton5 = new JButton();
+        btnSimularPartido = new JButton();
 
         btnEquipos.setBounds(275, 13, 148, 50);
         btnJugadores.setBounds(432, 13, 166, 50);
         btnPartidos.setBounds(610, 13, 141, 50);
         btnReportes.setBounds(763, 13, 157, 50);
-        btnButton5.setBounds(636, 403, 243, 64);
+        btnSimularPartido.setBounds(636, 403, 243, 64);
 
         layeredPane.add(btnEquipos, Integer.valueOf(2));
         layeredPane.add(btnJugadores, Integer.valueOf(2));
         layeredPane.add(btnPartidos, Integer.valueOf(2));
         layeredPane.add(btnReportes, Integer.valueOf(2));
-        layeredPane.add(btnButton5, Integer.valueOf(2));
+        layeredPane.add(btnSimularPartido, Integer.valueOf(2));
     }
 
     private void setupActions() {
-        JButton[] botones = {btnEquipos, btnJugadores, btnPartidos, btnReportes, btnButton5};
+        JButton[] botones = {btnEquipos, btnJugadores, btnPartidos, btnReportes, btnSimularPartido};
         for (JButton b : botones) {
             b.setOpaque(false);
             b.setContentAreaFilled(false);
@@ -68,7 +64,18 @@ public class Principal extends JFrame {
         btnJugadores.addActionListener(e -> new JugadoresSubmenu().setVisible(true));
         btnPartidos.addActionListener(e -> new PartidosSubmenu().setVisible(true));
         btnReportes.addActionListener(e -> new ReportesSubmenu().setVisible(true));
-        btnButton5.addActionListener(e -> JOptionPane.showMessageDialog(this, "Button 5"));
+        btnSimularPartido.addActionListener(e -> {
+            if (SerieNacional.getInstance().getEquipos().size() >= 2) {
+                Partido p = new Partido(
+                    SerieNacional.getInstance().getEquipos().get(0),
+                    SerieNacional.getInstance().getEquipos().get(1)
+                );
+                p.setDuracion(15000);
+                new SimulacionVisual(p).setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(this, "Se necesitan al menos 2 equipos para simular.");
+            }
+        });
     }
 
     public static void main(String[] args) {
