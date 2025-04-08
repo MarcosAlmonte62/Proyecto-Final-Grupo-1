@@ -81,19 +81,19 @@ public class SerieNacional implements Serializable {
 
         return mejor;
     }
-    
+
     public Equipo liderClasificacion() {
-    	int mayor = 0;
-    	Equipo lider = null;
-    	for(Equipo e : clasificacion) {
-    		if(mayor < e.getStats().puntuacion()) {
-    			mayor = e.getStats().puntuacion();
-    			lider = e;
-    		}
-    	}
-    	return lider;
+        int mayor = 0;
+        Equipo lider = null;
+        for (Equipo e : clasificacion) {
+            if (mayor < e.getStats().puntuacion()) {
+                mayor = e.getStats().puntuacion();
+                lider = e;
+            }
+        }
+        return lider;
     }
-    
+
     public Jugador buscarJugadorPorNombre(String nombre) {
         for (Jugador jugador : todosLosJugadores) {
             if (jugador.getNombre().equalsIgnoreCase(nombre)) {
@@ -114,6 +114,7 @@ public class SerieNacional implements Serializable {
             }
         }
     }
+
     public void cargarUsuariosDesdeArchivo() {
         File archivoUsuarios = new File("admin.dat");
         if (!archivoUsuarios.exists()) {
@@ -128,15 +129,15 @@ public class SerieNacional implements Serializable {
         }
 
         if (archivoUsuarios.length() == 0) {
-            System.out.println("El archivo 'admin.dat' está vacío. Se agregará un usuario administrador por defecto.");
-            
+            System.out.println("El archivo 'admin.dat' estÃ¡ vacÃ­o. Se agregarÃ¡ un usuario administrador por defecto.");
+
             ArrayList<User> usuarios = new ArrayList<>();
-            usuarios.add(new User("admin", "admin123", "Administrador", false)); 
+            usuarios.add(new User("admin", "admin123", "Administrador", false));
 
             try (FileOutputStream fileOut = new FileOutputStream(archivoUsuarios);
                  ObjectOutputStream objectOut = new ObjectOutputStream(fileOut)) {
                 objectOut.writeObject(usuarios);
-                Control.getInstance().setUsuarios(usuarios); 
+                Control.getInstance().setUsuarios(usuarios);
                 System.out.println("Usuario administrador agregado al archivo.");
             } catch (IOException e) {
                 System.out.println("Error al guardar el usuario por defecto en 'admin.dat'");
@@ -145,8 +146,9 @@ public class SerieNacional implements Serializable {
 
             return;
         }
-
     }
-    
-    
+
+    public List<Equipo> getEquipos() {
+        return getClasificacion();
+    }
 }

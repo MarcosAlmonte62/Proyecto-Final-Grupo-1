@@ -3,18 +3,20 @@ package Logico;
 import java.sql.Date;
 import java.util.ArrayList;
 
-public class Equipo{
+public class Equipo {
+
     private String nombre;
     private String ciudad;
     private String estadio;
     private String entrenador;
     private String propietario;
-    private int palmares; //cantidad de trofeos
+    private int palmares; // cantidad de trofeos
     private Date fundacion;
     private ArrayList<Jugador> nomina;
     private ArrayList<Partido> historial;
     private StatsEquipo stats;
-    
+
+    // Constructor completo
     public Equipo(String nombre, String ciudad, String estadio, String entrenador, String propietario, int palmares, Date fundacion) {
         this.nombre = nombre;
         this.ciudad = ciudad;
@@ -26,6 +28,13 @@ public class Equipo{
         this.nomina = new ArrayList<>();
         this.historial = new ArrayList<>();
         this.stats = new StatsEquipo(this);
+    }
+
+    // Constructor vacío para flexibilidad con setters
+    public Equipo() {
+        this.nomina = new ArrayList<>();
+        this.historial = new ArrayList<>();
+        this.stats = null; // Se puede setear luego con setStats()
     }
 
     // Getters y Setters necesarios
@@ -45,39 +54,47 @@ public class Equipo{
         this.ciudad = ciudad;
     }
 
+    public String getEstadio() {
+        return estadio;
+    }
+
+    public void setEstadio(String estadio) {
+        this.estadio = estadio;
+    }
+
     public String getEntrenador() {
-		return entrenador;
-	}
+        return entrenador;
+    }
 
-	public void setEntrenador(String entrenador) {
-		this.entrenador = entrenador;
-	}
+    public void setEntrenador(String entrenador) {
+        this.entrenador = entrenador;
+    }
 
-	public String getPropietario() {
-		return propietario;
-	}
+    public String getPropietario() {
+        return propietario;
+    }
 
-	public void setPropietario(String propietario) {
-		this.propietario = propietario;
-	}
+    public void setPropietario(String propietario) {
+        this.propietario = propietario;
+    }
 
-	public int getPalmares() {
-		return palmares;
-	}
+    public int getPalmares() {
+        return palmares;
+    }
 
-	public void setPalmares(int palmares) {
-		this.palmares = palmares;
-	}
+    public void setPalmares(int palmares) {
+        this.palmares = palmares;
+    }
 
-	public Date getFundacion() {
-		return fundacion;
-	}
+    public Date getFundacion() {
+        return fundacion;
+    }
 
-	public void setFundacion(Date fundacion) {
-		this.fundacion = fundacion;
-	}
+    public void setFundacion(Date fundacion) {
+        this.fundacion = fundacion;
+    }
 
-	public ArrayList<Jugador> getNomina() {
+    public ArrayList<Jugador> getNomina() {
         return nomina;
     }
 
@@ -101,18 +118,11 @@ public class Equipo{
         this.stats = stats;
     }
 
-	public void agregarJugador(Jugador j) {
-    	nomina.add(j);
+    public void agregarJugador(Jugador j) {
+        nomina.add(j);
     }
+
     public void agregarAlHistorial(Partido p) {
-    	historial.add(p);
+        historial.add(p);
     }
-
-	public String getEstadio() {
-		return estadio;
-	}
-
-	public void setEstadio(String estadio) {
-		this.estadio = estadio;
-	}
 }
