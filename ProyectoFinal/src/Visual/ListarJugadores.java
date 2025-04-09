@@ -53,14 +53,14 @@ public class ListarJugadores extends JFrame {
         tablaPanel.add(scroll, BorderLayout.CENTER);
 
         JButton btnRegresar = new JButton();
-        btnRegresar.setBounds(688, 488, 173, 40);
+        btnRegresar.setBounds(695, 494, 173, 40);
         hacerInvisible(btnRegresar);
         btnRegresar.addActionListener(e -> dispose());
         panel.add(btnRegresar);
 
         cargarJugadores();
 
-        JLabel fondo = new JLabel(new ImageIcon(getClass().getResource("/images/listarjugadores.png")));
+        JLabel fondo = new JLabel(new ImageIcon(ListarJugadores.class.getResource("/images/listarjugadores1.png")));
         fondo.setBounds(0, 0, 917, 565);
         panel.add(fondo);
         panel.setComponentZOrder(fondo, panel.getComponentCount() - 1);

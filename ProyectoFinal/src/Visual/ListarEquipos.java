@@ -53,14 +53,14 @@ public class ListarEquipos extends JFrame {
         tablaPanel.add(scroll, BorderLayout.CENTER);
 
         JButton btnRegresar = new JButton();
-        btnRegresar.setBounds(688, 488, 173, 40);
+        btnRegresar.setBounds(698, 496, 173, 40);
         hacerInvisible(btnRegresar);
         btnRegresar.addActionListener(e -> dispose());
         panel.add(btnRegresar);
 
         cargarEquipos();
 
-        JLabel fondo = new JLabel(new ImageIcon(getClass().getResource("/images/listarequipos.png")));
+        JLabel fondo = new JLabel(new ImageIcon(ListarEquipos.class.getResource("/images/listarequipos1.png")));
         fondo.setBounds(0, 0, 917, 565);
         panel.add(fondo);
         panel.setComponentZOrder(fondo, panel.getComponentCount() - 1);
