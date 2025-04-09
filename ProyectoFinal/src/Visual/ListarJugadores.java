@@ -35,16 +35,7 @@ public class ListarJugadores extends JFrame {
         tablaJugadores.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2 && tablaJugadores.getSelectedRow() != -1) {
-                    int index = tablaJugadores.getSelectedRow();
-                    Jugador jugador = SerieNacional.getInstance().getTodosLosJugadores().get(index);
-                    ModificarJugador mod = new ModificarJugador(jugador);
-                    mod.addWindowListener(new WindowAdapter() {
-                        @Override
-                        public void windowClosed(WindowEvent e) {
-                            cargarJugadores();
-                        }
-                    });
-                    mod.setVisible(true);
+                    abrirModificarJugador();
                 }
             }
         });
@@ -52,8 +43,14 @@ public class ListarJugadores extends JFrame {
         JScrollPane scroll = new JScrollPane(tablaJugadores);
         tablaPanel.add(scroll, BorderLayout.CENTER);
 
+        JButton btnModificar = new JButton();
+        btnModificar.setBounds(48, 498, 173, 40); 
+        hacerInvisible(btnModificar);
+        btnModificar.addActionListener(e -> abrirModificarJugador());
+        panel.add(btnModificar);
+
         JButton btnRegresar = new JButton();
-        btnRegresar.setBounds(695, 494, 173, 40);
+        btnRegresar.setBounds(701, 498, 173, 40);
         hacerInvisible(btnRegresar);
         btnRegresar.addActionListener(e -> dispose());
         panel.add(btnRegresar);
@@ -84,6 +81,23 @@ public class ListarJugadores extends JFrame {
         }
 
         tablaJugadores.setModel(modelo);
+    }
+
+    private void abrirModificarJugador() {
+        int fila = tablaJugadores.getSelectedRow();
+        if (fila != -1) {
+            Jugador jugador = SerieNacional.getInstance().getTodosLosJugadores().get(fila);
+            ModificarJugador mod = new ModificarJugador(jugador);
+            mod.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    cargarJugadores();
+                }
+            });
+            mod.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecciona un jugador para modificar.");
+        }
     }
 
     private void hacerInvisible(JButton b) {

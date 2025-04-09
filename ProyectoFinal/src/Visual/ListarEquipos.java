@@ -52,8 +52,30 @@ public class ListarEquipos extends JFrame {
         JScrollPane scroll = new JScrollPane(tablaEquipos);
         tablaPanel.add(scroll, BorderLayout.CENTER);
 
+       
+        JButton btnModificar = new JButton();
+        btnModificar.setBounds(49, 498, 173, 40); 
+        hacerInvisible(btnModificar);
+        btnModificar.addActionListener(e -> {
+            int index = tablaEquipos.getSelectedRow();
+            if (index != -1) {
+                Equipo equipo = SerieNacional.getInstance().getClasificacion().get(index);
+                ModificarEquipo mod = new ModificarEquipo(equipo);
+                mod.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        cargarEquipos();
+                    }
+                });
+                mod.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(this, "Selecciona un equipo para modificar.");
+            }
+        });
+        panel.add(btnModificar);
+
         JButton btnRegresar = new JButton();
-        btnRegresar.setBounds(698, 496, 173, 40);
+        btnRegresar.setBounds(698, 498, 173, 40);
         hacerInvisible(btnRegresar);
         btnRegresar.addActionListener(e -> dispose());
         panel.add(btnRegresar);
@@ -72,10 +94,10 @@ public class ListarEquipos extends JFrame {
 
         for (Equipo e : SerieNacional.getInstance().getClasificacion()) {
             modelo.addRow(new Object[]{
-                    e.getNombre(),
-                    e.getCiudad(),
-                    e.getEstadio(),
-                    e.getNomina().size()
+                e.getNombre(),
+                e.getCiudad(),
+                e.getEstadio(),
+                e.getNomina().size()
             });
         }
 
