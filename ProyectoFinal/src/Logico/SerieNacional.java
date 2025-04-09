@@ -120,4 +120,26 @@ public class SerieNacional implements Serializable {
     public List<Equipo> getEquipos() {
         return getClasificacion();
     }
+ // GUARDAR DATOS
+    public void guardarDatos(String rutaArchivo) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(rutaArchivo))) {
+            oos.writeObject(instance); // Guarda la instancia única
+            System.out.println("Datos guardados exitosamente.");
+        } catch (IOException e) {
+            System.out.println("Error al guardar datos: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // CARGAR DATOS
+    public static void cargarDatos(String rutaArchivo) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(rutaArchivo))) {
+            instance = (SerieNacional) ois.readObject(); // Reemplaza la instancia actual
+            System.out.println("Datos cargados exitosamente.");
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Error al cargar datos: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
 }
