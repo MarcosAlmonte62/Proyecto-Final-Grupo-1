@@ -13,8 +13,15 @@ public class Principal extends JFrame {
     private JButton btnEquipos, btnJugadores, btnPartidos, btnReportes, btnSimularPartido;
 
     public Principal() {
-        initComponents();
+    	SerieNacional.getInstance().cargarDatos();
+    	initComponents();
         setupActions();
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                SerieNacional.getInstance().guardarDatos();
+            }
+        });
     }
 
     private void initComponents() {

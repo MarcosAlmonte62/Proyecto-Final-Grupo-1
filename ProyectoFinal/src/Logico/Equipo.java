@@ -1,9 +1,11 @@
 package Logico;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
 
-public class Equipo {
+public class Equipo implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private String nombre;
     private String ciudad;
@@ -37,7 +39,6 @@ public class Equipo {
         this.stats = null; // Se puede setear luego con setStats()
     }
 
-    // Getters y Setters necesarios
     public String getNombre() {
         return nombre;
     }

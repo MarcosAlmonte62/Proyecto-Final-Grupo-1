@@ -14,7 +14,7 @@ import java.util.List;
 public class SerieNacional implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    private static final String FILE_NAME = "datos.dat";
     private List<Equipo> clasificacion;
     private List<Partido> calendario;
     private List<Jugador> todosLosJugadores;
@@ -120,26 +120,49 @@ public class SerieNacional implements Serializable {
     public List<Equipo> getEquipos() {
         return getClasificacion();
     }
- // GUARDAR DATOS
-    public void guardarDatos(String rutaArchivo) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(rutaArchivo))) {
-            oos.writeObject(instance); // Guarda la instancia única
-            System.out.println("Datos guardados exitosamente.");
+    public void guardarDatos() {
+        try (FileOutputStream fileOut = new FileOutputStream(FILE_NAME);
+             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut)) {
+            objectOut.writeObject(this);
+            System.out.println("Datos guardados exitosamente en '" + FILE_NAME + "'");
         } catch (IOException e) {
-            System.out.println("Error al guardar datos: " + e.getMessage());
+            System.out.println("Error al guardar datos.");
             e.printStackTrace();
         }
     }
+    public void cargarDatos() {
+        File archivoDatos = new File(FILE_NAME);
+        
+        // Si no existe se crea
+        if (!archivoDatos.exists()) {
+            try {
+                archivoDatos.createNewFile();
+                System.out.println("El archivo '" + FILE_NAME + "' no existía, pero se ha creado.");
+            } catch (IOException e) {
+                System.out.println("Error al crear el archivo '" + FILE_NAME + "'.");
+                e.printStackTrace();
+                return;
+            }
+        }
 
-    // CARGAR DATOS
-    public static void cargarDatos(String rutaArchivo) {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(rutaArchivo))) {
-            instance = (SerieNacional) ois.readObject(); // Reemplaza la instancia actual
-            System.out.println("Datos cargados exitosamente.");
+        // Si existe carga los datos
+        try (FileInputStream fileIn = new FileInputStream(archivoDatos);
+             ObjectInputStream objectIn = new ObjectInputStream(fileIn)) {
+            // Lee datos
+            SerieNacional instanciaCargada = (SerieNacional) objectIn.readObject();
+            // Copia los datos a la instancia actual
+            this.clasificacion = instanciaCargada.clasificacion;
+            this.calendario = instanciaCargada.calendario;
+            this.todosLosJugadores = instanciaCargada.todosLosJugadores;
+            //mensajes para saber si todo esta okay
+            System.out.println("Datos cargados exitosamente desde '" + FILE_NAME + "'");
+        } catch (FileNotFoundException e) {
+            System.out.println("El archivo '" + FILE_NAME + "' no se encontró.");
         } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Error al cargar datos: " + e.getMessage());
+            System.out.println("Error al leer los datos desde el archivo '" + FILE_NAME + "'");
             e.printStackTrace();
         }
     }
+   
 
 }
