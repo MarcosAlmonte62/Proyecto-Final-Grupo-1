@@ -3,13 +3,13 @@ package Visual;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.net.URL;
+import java.awt.event.*;
 import Logico.*;
 
 public class ListarEquipos extends JFrame {
 
     private JTable tablaEquipos;
+    private DefaultTableModel modelo;
 
     public ListarEquipos() {
         setTitle("Listar Equipos");
@@ -30,35 +30,53 @@ public class ListarEquipos extends JFrame {
         panel.add(tablaPanel);
 
         tablaEquipos = new JTable();
+        tablaEquipos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tablaEquipos.setFont(new Font("Arial", Font.PLAIN, 13));
+        tablaEquipos.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2 && tablaEquipos.getSelectedRow() != -1) {
+                    int index = tablaEquipos.getSelectedRow();
+                    Equipo equipo = SerieNacional.getInstance().getClasificacion().get(index);
+                    ModificarEquipo mod = new ModificarEquipo(equipo);
+                    mod.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosed(WindowEvent e) {
+                            cargarEquipos();
+                        }
+                    });
+                    mod.setVisible(true);
+                }
+            }
+        });
+
         JScrollPane scroll = new JScrollPane(tablaEquipos);
         tablaPanel.add(scroll, BorderLayout.CENTER);
 
         JButton btnRegresar = new JButton();
         btnRegresar.setBounds(688, 488, 173, 40);
         hacerInvisible(btnRegresar);
-        btnRegresar.addActionListener((ActionEvent e) -> dispose());
+        btnRegresar.addActionListener(e -> dispose());
         panel.add(btnRegresar);
 
         cargarEquipos();
 
         JLabel fondo = new JLabel(new ImageIcon(getClass().getResource("/images/listarequipos.png")));
-        fondo.setBounds(0, 0, 905, 559);
+        fondo.setBounds(0, 0, 917, 565);
         panel.add(fondo);
         panel.setComponentZOrder(fondo, panel.getComponentCount() - 1);
     }
 
     private void cargarEquipos() {
         String[] columnas = {"Nombre", "Ciudad", "Estadio", "Jugadores"};
-        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+        modelo = new DefaultTableModel(columnas, 0);
 
-        for (Equipo eq : SerieNacional.getInstance().getClasificacion()) {
-            Object[] fila = {
-                eq.getNombre(),
-                eq.getCiudad(),
-                eq.getEstadio(),
-                eq.getNomina() != null ? eq.getNomina().size() : 0
-            };
-            modelo.addRow(fila);
+        for (Equipo e : SerieNacional.getInstance().getClasificacion()) {
+            modelo.addRow(new Object[]{
+                    e.getNombre(),
+                    e.getCiudad(),
+                    e.getEstadio(),
+                    e.getNomina().size()
+            });
         }
 
         tablaEquipos.setModel(modelo);

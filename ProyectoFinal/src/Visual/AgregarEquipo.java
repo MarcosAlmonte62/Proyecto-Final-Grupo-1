@@ -3,7 +3,6 @@ package Visual;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import Logico.*;
@@ -11,7 +10,7 @@ import Logico.*;
 public class AgregarEquipo extends JFrame {
 
     private JTextField txtNombre, txtEstadio;
-    private JComboBox<String> cbCiudad;
+    private JComboBox cbCiudad;
     private JButton btnVerJugadores, btnCancelar, btnAgregar;
     private List<Jugador> jugadoresSeleccionados = new ArrayList<>();
 
@@ -34,11 +33,18 @@ public class AgregarEquipo extends JFrame {
         estilizarInput(txtNombre);
         controlPanel.add(txtNombre);
 
-        cbCiudad = new JComboBox<>(getProvinciasDominicanas());
+        String[] provincias = {
+            "Azua", "Bahoruco", "Barahona", "Dajabón", "Distrito Nacional", "Duarte", "Elías Piña",
+            "El Seibo", "Espaillat", "Hato Mayor", "Hermanas Mirabal", "Independencia", "La Altagracia",
+            "La Romana", "La Vega", "María Trinidad Sánchez", "Monseñor Nouel", "Monte Cristi",
+            "Monte Plata", "Pedernales", "Peravia", "Puerto Plata", "Samaná", "San Cristóbal",
+            "San José de Ocoa", "San Juan", "San Pedro de Macorís", "Sánchez Ramírez",
+            "Santiago", "Santiago Rodríguez", "Santo Domingo", "Valverde"
+        };
+
+        cbCiudad = new JComboBox(provincias);
         cbCiudad.setBounds(146, 310, 248, 25);
         cbCiudad.setFont(new Font("Arial", Font.PLAIN, 14));
-        cbCiudad.setOpaque(false);
-        cbCiudad.setFocusable(false);
         controlPanel.add(cbCiudad);
 
         txtEstadio = new JTextField();
@@ -91,12 +97,12 @@ public class AgregarEquipo extends JFrame {
             }
 
             Equipo nuevoEquipo = new Equipo(nombre, ciudad, estadio, "", "", 0, null);
-            nuevoEquipo.setNomina(new ArrayList<>(jugadoresSeleccionados));
-            nuevoEquipo.setHistorial(new ArrayList<>());
+            nuevoEquipo.setNomina(new ArrayList(jugadoresSeleccionados));
+            nuevoEquipo.setHistorial(new ArrayList());
             nuevoEquipo.setStats(new StatsEquipo(nuevoEquipo));
 
-            for (Jugador j : jugadoresSeleccionados) {
-                j.setEquipo(nuevoEquipo);
+            for (int i = 0; i < jugadoresSeleccionados.size(); i++) {
+                jugadoresSeleccionados.get(i).setEquipo(nuevoEquipo);
             }
 
             SerieNacional.getInstance().agregarEquipo(nuevoEquipo);
@@ -127,18 +133,11 @@ public class AgregarEquipo extends JFrame {
         b.setFocusPainted(false);
     }
 
-    private String[] getProvinciasDominicanas() {
-        return new String[]{
-            "Azua", "Bahoruco", "Barahona", "Dajabón", "Distrito Nacional", "Duarte", "Elías Piña",
-            "El Seibo", "Espaillat", "Hato Mayor", "Hermanas Mirabal", "Independencia", "La Altagracia",
-            "La Romana", "La Vega", "María Trinidad Sánchez", "Monseñor Nouel", "Monte Cristi", 
-            "Monte Plata", "Pedernales", "Peravia", "Puerto Plata", "Samaná", "San Cristóbal", 
-            "San José de Ocoa", "San Juan", "San Pedro de Macorís", "Sánchez Ramírez", 
-            "Santiago", "Santiago Rodríguez", "Santo Domingo", "Valverde"
-        };
-    }
-
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new AgregarEquipo().setVisible(true));
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                new AgregarEquipo().setVisible(true);
+            }
+        });
     }
 }

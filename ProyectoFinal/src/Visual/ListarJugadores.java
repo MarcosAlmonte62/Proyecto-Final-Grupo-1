@@ -3,13 +3,13 @@ package Visual;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.net.URL;
+import java.awt.event.*;
 import Logico.*;
 
 public class ListarJugadores extends JFrame {
 
     private JTable tablaJugadores;
+    private DefaultTableModel modelo;
 
     public ListarJugadores() {
         setTitle("Listar Jugadores");
@@ -30,13 +30,32 @@ public class ListarJugadores extends JFrame {
         panel.add(tablaPanel);
 
         tablaJugadores = new JTable();
+        tablaJugadores.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tablaJugadores.setFont(new Font("Arial", Font.PLAIN, 13));
+        tablaJugadores.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2 && tablaJugadores.getSelectedRow() != -1) {
+                    int index = tablaJugadores.getSelectedRow();
+                    Jugador jugador = SerieNacional.getInstance().getTodosLosJugadores().get(index);
+                    ModificarJugador mod = new ModificarJugador(jugador);
+                    mod.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosed(WindowEvent e) {
+                            cargarJugadores();
+                        }
+                    });
+                    mod.setVisible(true);
+                }
+            }
+        });
+
         JScrollPane scroll = new JScrollPane(tablaJugadores);
         tablaPanel.add(scroll, BorderLayout.CENTER);
 
         JButton btnRegresar = new JButton();
         btnRegresar.setBounds(688, 488, 173, 40);
         hacerInvisible(btnRegresar);
-        btnRegresar.addActionListener((ActionEvent e) -> dispose());
+        btnRegresar.addActionListener(e -> dispose());
         panel.add(btnRegresar);
 
         cargarJugadores();
@@ -48,8 +67,8 @@ public class ListarJugadores extends JFrame {
     }
 
     private void cargarJugadores() {
-        String[] columnas = {"Nombre", "Edad", "Nacionalidad", "Equipo", "Posiciï¿½n", "Estado"};
-        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+        String[] columnas = {"Nombre", "Edad", "Nacionalidad", "Equipo", "Posición", "Estado"};
+        modelo = new DefaultTableModel(columnas, 0);
 
         for (Jugador j : SerieNacional.getInstance().getTodosLosJugadores()) {
             String equipo = (j.getEquipo() != null) ? j.getEquipo().getNombre() : "Sin equipo";
