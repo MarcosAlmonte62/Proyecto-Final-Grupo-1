@@ -23,6 +23,7 @@ public class SeleccionJugadores extends JFrame {
         setTitle("Seleccionar Jugadores");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(813, 565);
+        setResizable(false);
         setLocationRelativeTo(null);
         getContentPane().setLayout(null);
 
@@ -76,7 +77,7 @@ public class SeleccionJugadores extends JFrame {
         btnAceptar.addActionListener(e -> {
             int[] selectedRows = table.getSelectedRows();
             if (selectedRows.length == 0) {
-                JOptionPane.showMessageDialog(this, "No se seleccionó ningún jugador.");
+                JOptionPane.showMessageDialog(this, "No se seleccionï¿½ ningï¿½n jugador.");
                 return;
             }
 
@@ -114,7 +115,7 @@ public class SeleccionJugadores extends JFrame {
     }
 
     private void actualizarTabla(List<Jugador> jugadores) {
-        String[] columnas = {"Nombre", "Posición", "Estado"};
+        String[] columnas = {"Nombre", "Posiciï¿½n", "Estado"};
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 
         for (Jugador j : jugadores) {

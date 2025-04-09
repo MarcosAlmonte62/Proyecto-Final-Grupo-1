@@ -10,9 +10,10 @@ public class StatsPorJugador extends JFrame {
     private JTextArea txtStats;
 
     public StatsPorJugador() {
-        setTitle("Estadísticas por Jugador");
+        setTitle("Estadï¿½sticas por Jugador");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setSize(600, 400);
+        setResizable(false);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
@@ -33,7 +34,7 @@ public class StatsPorJugador extends JFrame {
                         "Puntos: " + s.puntosGenerados() + "\n" +
                         "Asistencias: " + s.getAsistencias() + "\n" +
                         "Rebotes: " + s.getRebotes() + "\n" +
-                        "Valoración: " + s.valoracion()
+                        "Valoraciï¿½n: " + s.valoracion()
                 );
             }
         });

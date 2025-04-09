@@ -14,6 +14,7 @@ public class SimulacionVisual extends JFrame {
     public SimulacionVisual(Partido partido) {
         setTitle("Simulación del Partido");
         setSize(920, 574);
+        setResizable(false);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         getContentPane().setLayout(null);

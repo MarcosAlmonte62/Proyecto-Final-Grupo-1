@@ -18,6 +18,7 @@ public class RegUsuario extends JFrame {
         setTitle("Registro de Usuario");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(540, 578);
+        setResizable(false);
         setLocationRelativeTo(null);
         getContentPane().setLayout(null);
 
@@ -86,11 +87,11 @@ public class RegUsuario extends JFrame {
         }
 
         if (!contrasena.equals(confirmar)) {
-            JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden");
+            JOptionPane.showMessageDialog(this, "Las contraseï¿½as no coinciden");
             return;
         }
         if (Control.getInstance().existeUsuario(nombreUsuario)) {
-            JOptionPane.showMessageDialog(this, "Ese nombre de usuario ya está en uso. Por favor, elige otro.");
+            JOptionPane.showMessageDialog(this, "Ese nombre de usuario ya estï¿½ en uso. Por favor, elige otro.");
             txtNombre.requestFocus(); // Coloca el foco en el campo de usuario
             return;
         }

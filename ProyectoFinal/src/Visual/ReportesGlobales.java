@@ -12,6 +12,7 @@ public class ReportesGlobales extends JFrame {
         setTitle("Reportes Globales");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(600, 400);
+        setResizable(false);
         setLocationRelativeTo(null);
 
         JLayeredPane layeredPane = new JLayeredPane();
@@ -63,7 +64,7 @@ public class ReportesGlobales extends JFrame {
         lblMejorJugador.setText("MVP del torneo: " +
                 (mvp != null ? mvp.getNombre() + " (" + mvp.getEquipo().getNombre() + ")" : "No disponible"));
 
-        lblMejorEquipo.setText("Equipo con más victorias: " +
+        lblMejorEquipo.setText("Equipo con mï¿½s victorias: " +
                 (mejorEquipo != null ? mejorEquipo.getNombre() : "No disponible"));
 
         lblStatsGlobales.setText("Total de partidos jugados: " + partidosJugados);

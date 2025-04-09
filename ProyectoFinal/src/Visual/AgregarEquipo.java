@@ -19,6 +19,7 @@ public class AgregarEquipo extends JFrame {
         setTitle("Agregar Equipo");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(910, 612);
+        setResizable(false);
         setLocationRelativeTo(null);
         getContentPane().setLayout(null);
 
