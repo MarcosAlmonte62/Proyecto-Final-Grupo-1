@@ -17,6 +17,7 @@ public class Login extends JFrame {
         setTitle("Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(540, 578);
+        setResizable(false);
         setLocationRelativeTo(null);
         getContentPane().setLayout(null);
 
@@ -60,7 +61,7 @@ public class Login extends JFrame {
                 new Principal().setVisible(true);
                 dispose();
             } else {
-                int opcion = JOptionPane.showConfirmDialog(this, "Usuario no encontrado. ¿Desea registrarse?", "Login", JOptionPane.YES_NO_OPTION);
+                int opcion = JOptionPane.showConfirmDialog(this, "Usuario no encontrado. ï¿½Desea registrarse?", "Login", JOptionPane.YES_NO_OPTION);
                 if (opcion == JOptionPane.YES_OPTION) {
                     new RegUsuario().setVisible(true);
                     dispose();

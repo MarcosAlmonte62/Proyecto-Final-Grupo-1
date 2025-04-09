@@ -14,6 +14,7 @@ public class ConsultarPartidos extends JFrame {
         setTitle("Consultar Partidos");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setSize(606, 400);
+        setResizable(false);
         setLocationRelativeTo(null);
 
         JLayeredPane layeredPane = new JLayeredPane();
@@ -57,7 +58,7 @@ public class ConsultarPartidos extends JFrame {
         if (index >= 0) {
             Partido p = SerieNacional.getInstance().getCalendario().get(index);
             String info = "Fecha:     " + (p.getFecha() != null ? p.getFecha() : "No registrada") + "\n" +
-                          "Ubicación: " + (p.getUbicacion() != null ? p.getUbicacion() : "Desconocida") + "\n" +
+                          "Ubicaciï¿½n: " + (p.getUbicacion() != null ? p.getUbicacion() : "Desconocida") + "\n" +
                           "Resultado: " + p.getPuntosLocal() + " - " + p.getPuntosVisitante();
             txtDetalle.setText(info);
         }

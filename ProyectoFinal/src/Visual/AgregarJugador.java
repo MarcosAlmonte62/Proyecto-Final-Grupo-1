@@ -24,6 +24,7 @@ public class AgregarJugador extends JFrame {
         setTitle("Agregar Jugador");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(909, 612);
+        setResizable(false);
         setLocationRelativeTo(null);
         getContentPane().setLayout(null);
 
@@ -44,8 +45,8 @@ public class AgregarJugador extends JFrame {
         cbPosicion.addItem("Base");
         cbPosicion.addItem("Escolta");
         cbPosicion.addItem("Alero");
-        cbPosicion.addItem("Ala-Pívot");
-        cbPosicion.addItem("Pívot");
+        cbPosicion.addItem("Ala-Pï¿½vot");
+        cbPosicion.addItem("Pï¿½vot");
         panel.add(cbPosicion);
 
         txtEdad = new JTextField();
@@ -61,7 +62,7 @@ public class AgregarJugador extends JFrame {
         cbNacionalidad = new JComboBox<>();
         cbNacionalidad.setBounds(96, 351, 197, 23);
         cbNacionalidad.setFont(new Font("Arial", Font.PLAIN, 14));
-        String[] paises = {"Dominicana", "Estadounidense", "Española", "Argentina", "Brasilera",
+        String[] paises = {"Dominicana", "Estadounidense", "Espaï¿½ola", "Argentina", "Brasilera",
                 "Francesa", "Alemana", "Italiana", "Canadiense", "Portuguesa"};
         for (String pais : paises) {
             cbNacionalidad.addItem(pais);
@@ -147,7 +148,7 @@ public class AgregarJugador extends JFrame {
             limpiarCampos();
 
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Los campos numéricos deben contener números válidos.");
+            JOptionPane.showMessageDialog(this, "Los campos numï¿½ricos deben contener nï¿½meros vï¿½lidos.");
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error al agregar jugador: " + ex.getMessage());
         }

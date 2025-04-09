@@ -15,6 +15,7 @@ public class ListarJugadores extends JFrame {
         setTitle("Listar Jugadores");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(917, 600);
+        setResizable(false);
         setLocationRelativeTo(null);
         getContentPane().setLayout(null);
 
@@ -47,7 +48,7 @@ public class ListarJugadores extends JFrame {
     }
 
     private void cargarJugadores() {
-        String[] columnas = {"Nombre", "Edad", "Nacionalidad", "Equipo", "Posición", "Estado"};
+        String[] columnas = {"Nombre", "Edad", "Nacionalidad", "Equipo", "Posiciï¿½n", "Estado"};
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 
         for (Jugador j : SerieNacional.getInstance().getTodosLosJugadores()) {

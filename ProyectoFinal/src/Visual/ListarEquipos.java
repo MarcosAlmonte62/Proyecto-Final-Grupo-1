@@ -15,6 +15,7 @@ public class ListarEquipos extends JFrame {
         setTitle("Listar Equipos");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(917, 600);
+        setResizable(false);
         setLocationRelativeTo(null);
         getContentPane().setLayout(null);
 

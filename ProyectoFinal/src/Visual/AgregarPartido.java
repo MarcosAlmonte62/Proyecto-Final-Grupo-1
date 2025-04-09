@@ -5,7 +5,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Date;
 import java.text.SimpleDateFormat;
-import javax.swing.SpinnerDateModel;
 
 import Logico.*;
 
@@ -21,6 +20,7 @@ public class AgregarPartido extends JFrame {
         setTitle("Agendar Partido");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(917, 600);
+        setResizable(false);
         setLocationRelativeTo(null);
         getContentPane().setLayout(null);
 

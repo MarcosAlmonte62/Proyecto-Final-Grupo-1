@@ -14,6 +14,7 @@ public class JugadoresSubmenu extends JFrame {
         setTitle("Jugadores");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(541, 431);
+        setResizable(false);
         setLocationRelativeTo(null);
 
         BackgroundPanel backgroundPanel = new BackgroundPanel("/images/jugadores.png");
@@ -53,7 +54,7 @@ public class JugadoresSubmenu extends JFrame {
         public BackgroundPanel(String imagePath) {
             try {
                 URL imageUrl = getClass().getResource(imagePath);
-                if (imageUrl == null) throw new RuntimeException("¡Imagen no encontrada!");
+                if (imageUrl == null) throw new RuntimeException("ï¿½Imagen no encontrada!");
                 backgroundImage = ImageIO.read(imageUrl);
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Error cargando imagen: " + e.getMessage());

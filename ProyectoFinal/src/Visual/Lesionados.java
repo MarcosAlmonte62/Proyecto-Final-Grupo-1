@@ -11,9 +11,10 @@ public class Lesionados extends JFrame {
         setTitle("Jugadores Lesionados");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setSize(600, 400);
+        setResizable(false);
         setLocationRelativeTo(null);
 
-        String[] columnNames = {"Nombre", "Equipo", "Tipo de Lesión", "Duración"};
+        String[] columnNames = {"Nombre", "Equipo", "Tipo de Lesiï¿½n", "Duraciï¿½n"};
         DefaultTableModel model = new DefaultTableModel(columnNames, 0);
 
         for (Jugador j : SerieNacional.getInstance().getTodosLosJugadores()) {
@@ -23,7 +24,7 @@ public class Lesionados extends JFrame {
                     j.getNombre(),
                     j.getEquipo() != null ? j.getEquipo().getNombre() : "Agente Libre",
                     l.getTipoLesion(),
-                    l.getDuracion() + " días"
+                    l.getDuracion() + " dï¿½as"
                 });
             }
         }
