@@ -390,35 +390,69 @@ public class Partido implements Serializable {
 
     private void finalizarPartido() {
         this.jugado = true;
-        actualizarStatsEquipo();
+        actualizarStatsJugadores();
+        actualizarStatsEquipos();
+        SerieNacional.getInstance().guardarDatos();
     }
 
-    private void actualizarStatsEquipo() {
-        StatsEquipo statsLocal = new StatsEquipo(equipoLocal);
-        StatsEquipo statsVisitante = new StatsEquipo(equipoVisitante);
+    private void actualizarStatsJugadores() {
+        for (StatsJugador statsPartido : statsJugadores) {
+            Jugador jugador = statsPartido.getJugador();
+            StatsJugador statsGlobal = jugador.getStats();
+            
+            if (statsGlobal == null) {
+                statsGlobal = new StatsJugador(jugador);
+                jugador.setStats(statsGlobal);
+            }
+            
+            statsGlobal.sumarStats(statsPartido);
+            statsGlobal.setPartidosJugados(1);
+        }
+    }
+
+    private void actualizarStatsEquipos() {
+        actualizarStatsEquipo(equipoLocal, true);
+        actualizarStatsEquipo(equipoVisitante, false);
         
-        for (StatsJugador stats : statsJugadores) {
-            if (stats.getJugador().getEquipo() == equipoLocal) {
-                statsLocal.actualizarStats(
-                    stats.getDobles(), stats.getRebotes(), stats.getAsistencias(),
-                    stats.getRobos(), stats.getBloqueos(), stats.getTirosLibres(),
-                    stats.getTirosLibresAcert(), stats.getTriples()
-                );
-            } else {
-                statsVisitante.actualizarStats(
-                    stats.getDobles(), stats.getRebotes(), stats.getAsistencias(),
-                    stats.getRobos(), stats.getBloqueos(), stats.getTirosLibres(),
-                    stats.getTirosLibresAcert(), stats.getTriples()
+        if (puntosLocal > puntosVisitante) {
+            equipoLocal.getStats().registrarVictoria(puntosLocal, puntosVisitante);
+            equipoVisitante.getStats().registrarDerrota(puntosVisitante, puntosLocal);
+        } else if (puntosVisitante > puntosLocal) {
+            equipoVisitante.getStats().registrarVictoria(puntosVisitante, puntosLocal);
+            equipoLocal.getStats().registrarDerrota(puntosLocal, puntosVisitante);
+        }
+    }
+
+    private void actualizarStatsEquipo(Equipo equipo, boolean esLocal) {
+        StatsEquipo stats = equipo.getStats();
+        if (stats == null) {
+            stats = new StatsEquipo(equipo);
+            equipo.setStats(stats);
+        }
+        
+        for (StatsJugador jugadorStats : statsJugadores) {
+            if (jugadorStats.getJugador().getEquipo().equals(equipo)) {
+                stats.actualizarStats(
+                    jugadorStats.getDobles(),
+                    jugadorStats.getRebotes(),
+                    jugadorStats.getAsistencias(),
+                    jugadorStats.getRobos(),
+                    jugadorStats.getBloqueos(),
+                    jugadorStats.getTirosLibres(),
+                    jugadorStats.getTirosLibresAcert(),
+                    jugadorStats.getTriples(),
+                    jugadorStats.puntosGenerados()
                 );
             }
         }
         
-        if (puntosLocal > puntosVisitante) {
-            statsLocal.setVictorias(1);
-            statsVisitante.setDerrotas(1);
-        } else if (puntosVisitante > puntosLocal) {
-            statsVisitante.setVictorias(1);
-            statsLocal.setDerrotas(1);
+        // Actualizar puntos totales
+        if (esLocal) {
+            stats.setPuntos(puntosLocal);
+            stats.setPuntosContra(puntosVisitante);
+        } else {
+            stats.setPuntos(puntosVisitante);
+            stats.setPuntosContra(puntosLocal);
         }
     }
 

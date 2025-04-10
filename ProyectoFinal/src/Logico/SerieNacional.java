@@ -84,6 +84,65 @@ public class SerieNacional implements Serializable {
 
         return mejor;
     }
+    
+    public Jugador maximoAnotador() {
+        Jugador mejor = null;
+        double mejorValor = 0;
+
+        for (Jugador j : todosLosJugadores) {
+            if (j.getStats() != null) {
+                int eficiencia = j.getStats().puntosGenerados();
+                if (eficiencia > mejorValor) {
+                    mejorValor = eficiencia;
+                    mejor = j;
+                }
+            }
+        }
+
+        return mejor;
+    }
+    public Jugador maximoAsistidor() {
+        Jugador mejor = null;
+        double mejorValor = 0;
+
+        for (Jugador j : todosLosJugadores) {
+            if (j.getStats() != null) {
+                int eficiencia = j.getStats().getAsistencias();
+                if (eficiencia > mejorValor) {
+                    mejorValor = eficiencia;
+                    mejor = j;
+                }
+            }
+        }
+
+        return mejor;
+    }
+    public Jugador mejorLanzadorFaltas() {
+        Jugador mejor = null;
+        double mejorValor = 0;
+
+        for (Jugador j : todosLosJugadores) {
+            if (j.getStats() != null) {
+                float eficiencia = j.getStats().eFTARate();
+                if (eficiencia > mejorValor) {
+                    mejorValor = eficiencia;
+                    mejor = j;
+                }
+            }
+        }
+
+        return mejor;
+    }
+
+    public int contarPartidosJugados() {
+        int contador = 0;
+        for (Partido partido : calendario) {
+            if (partido.isJugado()) {
+                contador++;
+            }
+        }
+        return contador;
+    }
 
     public Equipo liderClasificacion() {
         int mayor = 0;
@@ -143,7 +202,7 @@ public class SerieNacional implements Serializable {
                 e.printStackTrace();
                 return;
             }
-        }
+        } 
 
         // Si existe carga los datos
         try (FileInputStream fileIn = new FileInputStream(archivoDatos);

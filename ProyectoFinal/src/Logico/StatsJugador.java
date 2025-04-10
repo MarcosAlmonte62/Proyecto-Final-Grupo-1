@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class StatsJugador implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
     private int partidosJugados;
     private int tiros;
@@ -52,56 +52,155 @@ public class StatsJugador implements Serializable {
         this.jugador = jugador;
     }
 
-    public int getPartidosJugados() { return partidosJugados; }
-    public void setPartidosJugados(int partidosJugados) { this.partidosJugados += partidosJugados; }
-
-    public int getTiros() { return tiros; }
-    public void setTiros(int tiros) { this.tiros += tiros; }
-
-    public int getAsistencias() { return asistencias; }
-    public void setAsistencias(int asistencias) { this.asistencias += asistencias; }
-
-    public int getRebotes() { return rebotes; }
-    public void setRebotes(int rebotes) { this.rebotes += rebotes; }
-
-    public int getRebotesDef() { return rebotesDef; }
-    public void setRebotesDef(int rebotesDef) { this.rebotesDef += rebotesDef; }
-
-    public int getRobos() { return robos; }
-    public void setRobos(int robos) { this.robos += robos; }
-
-    public int getBloqueos() { return bloqueos; }
-    public void setBloqueos(int bloqueos) { this.bloqueos += bloqueos; }
-
-    public int getPerdidas() { return perdidas; }
-    public void setPerdidas(int perdidas) { this.perdidas += perdidas; }
-
-    public int getDobles() { return dobles; }
-    public void setDobles(int dobles) { this.dobles += dobles; }
-
-    public int getTriples() { return triples; }
-    public void setTriples(int triples) { this.triples += triples; }
-
-    public int getTirosLibres() { return tirosLibres; }
-    public void setTirosLibres(int tirosLibres) { this.tirosLibres += tirosLibres; }
-
-    public int getTirosAcert() { return tirosAcert; }
-    public void setTirosAcert(int tirosAcert) { this.tirosAcert += tirosAcert; }
-
-    public int getTirosLibresAcert() { return tirosLibresAcert; }
-    public void setTirosLibresAcert(int tirosLibresAcert) { this.tirosLibresAcert += tirosLibresAcert; }
-
-    public int getFaltas() { return faltas; }
-    public void setFaltas(int faltas) { this.faltas += faltas; }
-
-    public float getMinutos() { return minutos; }
-    public void setMinutos(float minutos) { this.minutos += minutos; }
-
-    public Jugador getJugador() { return jugador; }
-    public void setJugador(Jugador jugador) { this.jugador = jugador; }
-
     // =================== MÉTODOS DE LÓGICA ===================
 
+    
+    public void sumarStats(StatsJugador statsPartido) {
+        this.partidosJugados += 1;
+        this.tiros += statsPartido.getTiros();
+        this.tirosAcert += statsPartido.getTirosAcert();
+        this.dobles += statsPartido.getDobles();
+        this.triples += statsPartido.getTriples();
+        this.tirosLibres += statsPartido.getTirosLibres();
+        this.tirosLibresAcert += statsPartido.getTirosLibresAcert();
+        this.rebotes += statsPartido.getRebotes();
+        this.rebotesDef += statsPartido.getRebotesDef();
+        this.asistencias += statsPartido.getAsistencias();
+        this.robos += statsPartido.getRobos();
+        this.bloqueos += statsPartido.getBloqueos();
+        this.faltas += statsPartido.getFaltas();
+        this.perdidas += statsPartido.getPerdidas();
+        this.minutos += statsPartido.getMinutos();
+    }
+    
+    public int getPartidosJugados() {
+		return partidosJugados;
+	}
+
+	public void setPartidosJugados(int partidosJugados) {
+		this.partidosJugados += partidosJugados;
+	}
+
+	public int getTiros() {
+		return tiros;
+	}
+
+	public void setTiros(int tiros) {
+		this.tiros += tiros;
+	}
+
+	public int getAsistencias() {
+		return asistencias;
+	}
+
+	public void setAsistencias(int asistencias) {
+		this.asistencias += asistencias;
+	}
+
+	public int getRebotes() {
+		return rebotes;
+	}
+
+	public void setRebotes(int rebotes) {
+		this.rebotes += rebotes;
+	}
+
+	public int getRebotesDef() {
+		return rebotesDef;
+	}
+
+	public void setRebotesDef(int rebotesDef) {
+		this.rebotesDef += rebotesDef;
+	}
+
+	public int getRobos() {
+		return robos;
+	}
+
+	public void setRobos(int robos) {
+		this.robos += robos;
+	}
+
+	public int getBloqueos() {
+		return bloqueos;
+	}
+
+	public void setBloqueos(int bloqueos) {
+		this.bloqueos += bloqueos;
+	}
+
+	public int getPerdidas() {
+		return perdidas;
+	}
+
+	public void setPerdidas(int perdidas) {
+		this.perdidas += perdidas;
+	}
+
+	public int getDobles() {
+		return dobles;
+	}
+
+	public void setDobles(int dobles) {
+		this.dobles += dobles;
+	}
+
+	public int getTriples() {
+		return triples;
+	}
+
+	public void setTriples(int triples) {
+		this.triples = triples;
+	}
+
+	public int getTirosLibres() {
+		return tirosLibres;
+	}
+
+	public void setTirosLibres(int tirosLibres) {
+		this.tirosLibres += tirosLibres;
+	}
+
+	public int getTirosAcert() {
+		return tirosAcert;
+	}
+
+	public void setTirosAcert(int tirosAcert) {
+		this.tirosAcert += tirosAcert;
+	}
+
+	public int getTirosLibresAcert() {
+		return tirosLibresAcert;
+	}
+
+	public void setTirosLibresAcert(int tirosLibresAcert) {
+		this.tirosLibresAcert += tirosLibresAcert;
+	}
+
+	public int getFaltas() {
+		return faltas;
+	}
+
+	public void setFaltas(int faltas) {
+		this.faltas += faltas;
+	}
+
+	public float getMinutos() {
+		return minutos;
+	}
+
+	public void setMinutos(float minutos) {
+		this.minutos += minutos;
+	}
+
+	public Jugador getJugador() {
+		return jugador;
+	}
+
+	public void setJugador(Jugador jugador) {
+		this.jugador = jugador;
+	}
+    
     public int puntosGenerados() {
         return dobles * 2 + triples * 3 + tirosLibresAcert;
     }

@@ -15,7 +15,7 @@ public class ReportesSubmenu extends JFrame {
         setSize(541, 431);
         setResizable(false);
         setLocationRelativeTo(null);
-        getContentPane().setLayout(null); // <- importante para diseï¿½o absoluto
+        getContentPane().setLayout(null); // <- importante para diseño absoluto
 
         JPanel panel = new JPanel();
         panel.setLayout(null);
@@ -23,9 +23,9 @@ public class ReportesSubmenu extends JFrame {
         panel.setOpaque(false);
         getContentPane().add(panel);
 
-        // Botï¿½n invisible sobre la imagen
+        // Boton invisible sobre la imagen
         btnReporteGlobal = new JButton();
-        btnReporteGlobal.setBounds(147, 190, 233, 35); // Ajustado al botï¿½n visible en el PNG
+        btnReporteGlobal.setBounds(147, 190, 233, 35); // Ajustado al boton visible en el PNG
         hacerInvisible(btnReporteGlobal);
         panel.add(btnReporteGlobal);
 
