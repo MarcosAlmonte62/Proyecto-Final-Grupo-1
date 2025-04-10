@@ -22,7 +22,7 @@ public class Control implements Serializable {
     
     public static Control getInstance() {
         if (instancia == null) {
-            synchronized (Control.class) { // Sincronizar el bloque para garantizar la concurrencia segura
+            synchronized (Control.class) { 
                 if (instancia == null) {
                     instancia = new Control();
                 }
