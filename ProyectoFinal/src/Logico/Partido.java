@@ -185,7 +185,49 @@ public class Partido implements Serializable {
             antecesor = poseedor;
             accion = determinarAccion();
         }
+        mostrarEstadisticas();
         finalizarPartido();
+    }
+    
+    public void mostrarEstadisticas() {
+        System.out.println("\n=== ESTADÍSTICAS FINALES ===");
+        System.out.printf("Resultado: %s %d - %d %s\n", 
+            equipoLocal.getNombre(), 
+            puntosLocal, 
+            puntosVisitante, 
+            equipoVisitante.getNombre());
+        System.out.printf("\nMejor Jugador del Partido: %s de %s",mvpPartido().getNombre(), mvpPartido().getEquipo().getNombre());
+            
+        
+        System.out.println("\nEstadísticas por jugador:");
+		for (StatsJugador stats : statsJugadores) {
+			Jugador jugador = stats.getJugador();
+            System.out.printf("\n%s #%d (%s) - %s\n", 
+                jugador.getNombre(), 
+                jugador.getDorsal(),
+                jugador.getPosicion(), 
+                jugador.getEquipo().getNombre());
+            
+            System.out.printf("Puntos: %d (Dobles: %d/%d, Triples: %d/%d, TL: %d/%d)\n", 
+                stats.puntosGenerados(), 
+                stats.getDobles(), stats.getDobles() + (stats.getTirosAcert() - stats.getDobles() - stats.getTriples()),
+                stats.getTriples(), stats.getTriples() + (stats.getTiros() - stats.getTirosAcert()),
+                stats.getTirosLibresAcert(), stats.getTirosLibres());
+            
+            System.out.printf("Rebotes: %d (Of: %d, Def: %d) | Asistencias: %d\n", 
+                stats.getRebotes() + stats.getRebotesDef(), 
+                stats.getRebotes(), stats.getRebotesDef(),
+                stats.getAsistencias());
+            
+            System.out.printf("Robos: %d | Bloqueos: %d | Faltas: %d | Pérdidas: %d\n", 
+                stats.getRobos(), stats.getBloqueos(), 
+                stats.getFaltas(), stats.getPerdidas());
+            
+            System.out.printf("Valoración: %.1f | Eficiencia: %.1f%%\n", 
+                stats.puntosMvp(), stats.eFGPercent());
+            
+        }
+        
     }
 
     private void registrarPase(Jugador emisor, Jugador receptor) {
@@ -248,6 +290,7 @@ public class Partido implements Serializable {
             anotador.getNombre(), tipoTiro, puntos, equipoConPosesion.getNombre());
         
         cambiarPosesion();
+        pausa(1000);
         siguienteAccionPase();
     }
 
