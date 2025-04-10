@@ -9,7 +9,7 @@ public class PartidosSubmenu extends JFrame {
     private JButton btnAgendar, btnRegistrar, btnConsultar;
 
     public PartidosSubmenu() {
-        setTitle("Submen� Partidos");
+        setTitle("Submenu Partidos");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(541, 431);
         setResizable(false);

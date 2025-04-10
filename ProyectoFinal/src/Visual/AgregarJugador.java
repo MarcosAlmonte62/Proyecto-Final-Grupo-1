@@ -148,7 +148,7 @@ public class AgregarJugador extends JFrame {
             limpiarCampos();
 
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Los campos num�ricos deben contener n�meros v�lidos.");
+            JOptionPane.showMessageDialog(this, "Los campos numericos deben contener numeros validos.");
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error al agregar jugador: " + ex.getMessage());
         }

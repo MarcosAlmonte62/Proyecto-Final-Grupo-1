@@ -77,7 +77,7 @@ public class SeleccionJugadores extends JFrame {
         btnAceptar.addActionListener(e -> {
             int[] selectedRows = table.getSelectedRows();
             if (selectedRows.length == 0) {
-                JOptionPane.showMessageDialog(this, "No se seleccion� ning�n jugador.");
+                JOptionPane.showMessageDialog(this, "No se selecciono ningun jugador.");
                 return;
             }
 

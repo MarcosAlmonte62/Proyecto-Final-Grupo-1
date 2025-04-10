@@ -67,13 +67,13 @@ public class Control implements Serializable {
             } catch (IOException e) {
                 System.out.println("Error al crear el archivo 'usuarios.dat'");
                 e.printStackTrace();
-                return; // Terminar el m�todo si ocurre un error al crear el archivo
+                return; 
             }
         }
 
         if (archivoUsuarios.length() == 0) {
-            System.out.println("El archivo 'usuarios.dat' est� vac�o.");
-            return; // Terminar el m�todo si el archivo est� vac�o
+            System.out.println("El archivo 'usuarios.dat' esta vacio.");
+            return; 
         }
 
         try (FileInputStream fileIn = new FileInputStream(archivoUsuarios);
@@ -81,8 +81,8 @@ public class Control implements Serializable {
             ArrayList<User> usuarios = (ArrayList<User>) objectIn.readObject();
             Control.getInstance().setUsuarios(usuarios);
         } catch (FileNotFoundException e) {
-            // Manejar la excepci�n si el archivo no existe
-            System.out.println("El archivo 'usuarios.dat' no se encontr�.");
+            // Manejar la excepcion si el archivo no existe
+            System.out.println("El archivo 'usuarios.dat' no se encontro.");
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Error al leer los usuarios desde el archivo 'usuarios.dat'");
             e.printStackTrace();

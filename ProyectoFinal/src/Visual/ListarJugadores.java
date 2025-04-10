@@ -64,7 +64,7 @@ public class ListarJugadores extends JFrame {
     }
 
     private void cargarJugadores() {
-        String[] columnas = {"Nombre", "Edad", "Nacionalidad", "Equipo", "Posición", "Estado"};
+        String[] columnas = {"Nombre", "Edad", "Nacionalidad", "Equipo", "Posicion", "Estado"};
         modelo = new DefaultTableModel(columnas, 0);
 
         for (Jugador j : SerieNacional.getInstance().getTodosLosJugadores()) {

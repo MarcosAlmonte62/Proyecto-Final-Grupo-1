@@ -91,7 +91,7 @@ public class RegUsuario extends JFrame {
             return;
         }
         if (Control.getInstance().existeUsuario(nombreUsuario)) {
-            JOptionPane.showMessageDialog(this, "Ese nombre de usuario ya est� en uso. Por favor, elige otro.");
+            JOptionPane.showMessageDialog(this, "Ese nombre de usuario ya esta en uso. Por favor, elige otro.");
             txtNombre.requestFocus(); 
             return;
         }

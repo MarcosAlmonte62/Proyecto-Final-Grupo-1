@@ -25,7 +25,7 @@ public class ReportesSubmenu extends JFrame {
 
         // Boton invisible sobre la imagen
         btnReporteGlobal = new JButton();
-        btnReporteGlobal.setBounds(147, 190, 233, 35); // Ajustado al boton visible en el PNG
+        btnReporteGlobal.setBounds(147, 190, 233, 35); 
         hacerInvisible(btnReporteGlobal);
         panel.add(btnReporteGlobal);
 

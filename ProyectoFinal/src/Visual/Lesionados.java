@@ -14,7 +14,7 @@ public class Lesionados extends JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
 
-        String[] columnNames = {"Nombre", "Equipo", "Tipo de Lesi�n", "Duraci�n"};
+        String[] columnNames = {"Nombre", "Equipo", "Tipo de Lesion", "Duracion"};
         DefaultTableModel model = new DefaultTableModel(columnNames, 0);
 
         for (Jugador j : SerieNacional.getInstance().getTodosLosJugadores()) {
@@ -24,7 +24,7 @@ public class Lesionados extends JFrame {
                     j.getNombre(),
                     j.getEquipo() != null ? j.getEquipo().getNombre() : "Agente Libre",
                     l.getTipoLesion(),
-                    l.getDuracion() + " d�as"
+                    l.getDuracion() + " dias"
                 });
             }
         }

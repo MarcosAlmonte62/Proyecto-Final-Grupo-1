@@ -54,7 +54,7 @@ public class JugadoresSubmenu extends JFrame {
         public BackgroundPanel(String imagePath) {
             try {
                 URL imageUrl = getClass().getResource(imagePath);
-                if (imageUrl == null) throw new RuntimeException("�Imagen no encontrada!");
+                if (imageUrl == null) throw new RuntimeException("Imagen no encontrada!");
                 backgroundImage = ImageIO.read(imageUrl);
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Error cargando imagen: " + e.getMessage());

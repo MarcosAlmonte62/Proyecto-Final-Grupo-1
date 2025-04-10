@@ -58,7 +58,7 @@ public class ConsultarPartidos extends JFrame {
         if (index >= 0) {
             Partido p = SerieNacional.getInstance().getCalendario().get(index);
             String info = "Fecha:     " + (p.getFecha() != null ? p.getFecha() : "No registrada") + "\n" +
-                          "Ubicaci�n: " + (p.getUbicacion() != null ? p.getUbicacion() : "Desconocida") + "\n" +
+                          "Ubicacion: " + (p.getUbicacion() != null ? p.getUbicacion() : "Desconocida") + "\n" +
                           "Resultado: " + p.getPuntosLocal() + " - " + p.getPuntosVisitante();
             txtDetalle.setText(info);
         }

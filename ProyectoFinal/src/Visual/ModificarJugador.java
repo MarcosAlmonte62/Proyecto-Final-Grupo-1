@@ -29,7 +29,7 @@ public class ModificarJugador extends JFrame {
 
         // Labels
         panel.add(crearLabel("Nombre:", 96, 160));
-        panel.add(crearLabel("Posición:", 344, 160));
+        panel.add(crearLabel("Posicion:", 344, 160));
         panel.add(crearLabel("Edad:", 96, 216));
         panel.add(crearLabel("Altura (cm):", 344, 216));
         panel.add(crearLabel("Nacionalidad:", 96, 278));
@@ -48,7 +48,7 @@ public class ModificarJugador extends JFrame {
         cbPosicion.addItem("Base");
         cbPosicion.addItem("Escolta");
         cbPosicion.addItem("Alero");
-        cbPosicion.addItem("Ala-Pívot");
+        cbPosicion.addItem("Ala-Pivot");
         cbPosicion.addItem("Pívot");
         cbPosicion.setSelectedItem(jugador.getPosicion());
         panel.add(cbPosicion);

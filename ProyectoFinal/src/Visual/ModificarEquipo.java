@@ -32,6 +32,7 @@ public class ModificarEquipo extends JFrame {
         JLabel lblNombre = crearLabel("Nombre:", 96, 160);
         panel.add(lblNombre);
         txtNombre = new JTextField(equipo.getNombre());
+        txtNombre.setBackground(new Color(255, 255, 255));
         txtNombre.setBounds(200, 160, 300, 25);
         estilizarInput(txtNombre);
         panel.add(txtNombre);
